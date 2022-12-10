@@ -11,7 +11,14 @@ const routes = [
   {
     path: '/home',
     name: 'home',
+    meta: { title: '小游戏数字连线' },
     component: () => import('../views/home/index.vue'),
+  },
+  {
+    path: '/model',
+    name: 'model',
+    meta: { title: '答题连线' },
+    component: () => import('../views/home/model.vue'),
   },
 ]
 

@@ -20,6 +20,7 @@ module.exports = {
   outputDir: 'dist/' + pageName,
   devServer: {
     port: port,
+    open: true,
     disableHostCheck: true,
     // compress: true // GZIP
   },
@@ -35,6 +36,7 @@ module.exports = {
     },
   },
   chainWebpack: config => {
+    console.log(process.env.PROCESS_ENV,11111,process.env.NODE_ENV,222222,[process.env.PROCESS_ENV.toLocaleUpperCase()],333333,'-----环境变量')
     // 注入环境变量
     config.plugin('define').tap(args => {
       args[0]['process.env'] = JSON.stringify(
