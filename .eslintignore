@@ -1,0 +1,8 @@
+webpack/
+dist/
+src/utils
+src/axios
+commitlint.config.js
+vue.config.js
+.editorconfig
+.eslintignore
