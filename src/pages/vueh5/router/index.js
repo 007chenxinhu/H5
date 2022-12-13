@@ -20,6 +20,12 @@ const routes = [
     meta: { title: '答题连线' },
     component: () => import('../views/home/model.vue'),
   },
+  {
+    path: '/demo-view',
+    name: 'demo-view',
+    meta: { title: '演示视频' },
+    component: () => import('../views/demo-view/index.vue'),
+  },
 ]
 
 const router = new VueRouter({

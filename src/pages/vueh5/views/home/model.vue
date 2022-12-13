@@ -44,6 +44,7 @@
 export default {
   data() {
     return {
+      isFirst: true,
       leftArr: [],
       rightArr: [],
       location: [],
@@ -140,11 +141,10 @@ export default {
       },
     },
   },
-  mounted() {
-    this.init()
-
+  async mounted() {
+    await this.init()
     // 添加滚动事件 监听 解决因为滚动引起的拖动线不对的问题
-    window.addEventListener(
+    await window.addEventListener(
       'scroll',
       e => {
         // 加个防抖
@@ -193,7 +193,6 @@ export default {
             index: i,
           }
         })
-        console.log(this.leftDom, this.rightDom, '123')
         this.value.map(r => {
           this.leftArr[r.left].line = this.attachment(r.left, r.right)
           this.leftArr[r.left].value = [r.right]
@@ -203,23 +202,18 @@ export default {
     },
     // 触摸结束
     touchend(e, item, index) {
-      console.log('触摸结束')
       let event = e.changedTouches[0]
       // document.elementFromPoint 重点，根据x,y坐标 取当前元素 所有能运行的逻辑 都依托于这里。
       let dom = document.elementFromPoint(event.pageX, event.pageY)
       // 右边的dom是哪个
-      console.log(right, this.rightDom, '-----')
       let right = this.rightDom.find(r => r.bom === dom)
       // 不管是哪个都清除掉 底部的线
       this.canvasB.clearRect(0, 0, this.clientWidth, this.clientHeight)
-      console.log('000')
       // 如果不是右边的dom 直接把 线 干掉 -- 证明不是 没有拖到右边上
       if (!right) {
-        console.log('111')
         item.line = []
         return
       }
-      console.log(item, '====touchend')
 
       // 如果已有的不是我自己 直接替换掉上一个的
       if (item.value[0] !== right.index) {
@@ -232,7 +226,6 @@ export default {
       }
       // 重新赋值 线的 x y 轴
       item.line = this.attachment(index, right.index)
-      console.log(item, '===item')
       this.drawing()
       let model = this.leftArr
         .map((r, i) => {
@@ -243,7 +236,6 @@ export default {
         })
         .filter(r => r.right !== undefined)
       this.$emit('input', model)
-      console.log(JSON.stringify(model))
     },
     // 触摸开始
     touchstart(e, item) {
@@ -252,7 +244,6 @@ export default {
         event.pageX,
         event.pageY - this.$refs.connect.offsetTop + this.scrollTop,
       ]
-      console.log(item.line, '====start')
     },
     // 触摸中
     touchmove(e, item) {
@@ -264,6 +255,7 @@ export default {
     // 拖动的时候画线
     backstrockline(val) {
       let canvasB = this.canvasB
+
       canvasB.clearRect(0, 0, this.clientWidth, this.clientHeight)
       canvasB.save()
       canvasB.beginPath()
@@ -277,6 +269,7 @@ export default {
     // 渲染出拖动之后的线
     drawing() {
       let canvasA = this.canvasA
+
       this.canvasA.clearRect(0, 0, this.clientWidth, this.clientHeight)
       canvasA.beginPath()
       canvasA.lineWidth = 2
