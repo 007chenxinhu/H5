@@ -23,7 +23,7 @@ const routes = [
   {
     path: '/demo-view',
     name: 'demo-view',
-    meta: { title: '演示视频' },
+    meta: { title: '连连看' },
     component: () => import('../views/demo-view/index.vue'),
   },
 ]
