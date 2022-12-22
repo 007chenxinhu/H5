@@ -1,4 +1,15 @@
+.box{
+    position: relative;
+}
 #canvas{
+    display: block;
+    margin: 50px auto;
+}
+#line{
+    position: absolute;
+    left: 50%;
+    top: 50px;
+    transform: translateX(-50%);
     display: block;
     margin: 50px auto;
 }

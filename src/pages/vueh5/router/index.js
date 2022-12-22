@@ -26,6 +26,18 @@ const routes = [
     meta: { title: '连连看' },
     component: () => import('../views/demo-view/index.vue'),
   },
+  {
+    path: '/visual-field-following',
+    name: 'visual-field-following',
+    meta: { title: '灵动眼' },
+    component: () => import('../views/visual-field-following/index.vue'),
+  },
+  {
+    path: '/shortest-path',
+    name: 'shortest-path',
+    meta: { title: '最短路径' },
+    component: () => import('../views/home/shortest-path.vue'),
+  },
 ]
 
 const router = new VueRouter({
