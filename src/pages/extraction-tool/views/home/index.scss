@@ -1,1 +1,72 @@
-.home {}
+@mixin wh($width, $height) {
+  width: $width;
+  height: $height;
+}
+@mixin font($size, $weight, $color) {
+  font-size: $size;
+  color: $color;
+  font-weight: $weight;
+}
+@mixin bg($url) {
+  background-image: url($url);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.home {
+    text-align: center;
+    // padding-top: 2rem;
+    font-family: '阿里妈妈数黑体 Bold';
+    .header{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(66, 74, 80);
+        border-radius: 0.3rem 0.3rem 0 0;
+        .icon{
+            @include wh(0.7rem,0.7rem);
+        }
+        h1{
+            color: rgb(167, 131, 100);
+            font-size: 0.8rem;
+            padding: 0.2rem;
+        }
+    }
+    
+    .contain{
+        background-color: rgb(244, 249, 243);
+        .tab-card{
+          padding: 1rem;
+          font-size: 0.4rem;
+        }
+        .van-tabs__content{
+          .van-tab__pane{
+            // height: 2rem;
+          }
+        }
+        /deep/ .van-tab{
+          span{
+            font-size: 0.34rem;
+          }
+        }
+        .van-tab__text--ellipsis{
+          font-size: 50px;
+        }
+        /deep/ .van-switch-cell{
+          .van-cell__title{
+            text-align: left;
+          }
+        }
+        // .van-radio-group{
+        //   background-color: #fff;
+        // }
+        .van-cell--clickable{
+          text-align: left;
+        }
+        /deep/ .van-field__body{
+          .van-field__control{
+            text-align: right;
+          }
+        }
+        
+    }
+}
