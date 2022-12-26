@@ -22,10 +22,16 @@
                   </template>
                 </van-cell> -->
                 <van-cell-group>
-                  <van-switch-cell v-model="checked" title="是否所有人参与" />
+                  <van-switch-cell
+                    v-model="checked"
+                    @change="change"
+                    title="是否所有人参与"
+                  />
                 </van-cell-group>
                 <van-field
                   v-model="number"
+                  :class="checked && 'number-Participants'"
+                  :disabled="checked"
                   name="参与人数"
                   label="参与人数"
                   placeholder="请输入参与人数"
@@ -65,6 +71,8 @@
                     提交
                   </van-button>
                 </div>
+                <!-- </van-cell-group> -->
+                <!-- </van-cell-group> -->
               </van-form>
             </div>
           </div>
@@ -92,7 +100,7 @@ export default {
       number: null,
       group: null,
       checked: true,
-      radio: true,
+      radio: '1',
       listTags: [
         '随机分配小组',
         '随机分配任务',
@@ -103,8 +111,30 @@ export default {
   },
   mounted() {},
   methods: {
+    change() {
+      console.log(this.checked)
+    },
     onSubmit() {
       console.log(this.number, this.group)
+    },
+    randomArray(length) {
+      let i = 0
+      let index = 0
+      let temp = null
+      let arr = [length]
+      length = typeof length === 'undefined' ? 9 : length
+      for (i = 1; i <= length; i++) {
+        arr[i - 1] = i
+      }
+      for (i = 1; i <= length; i++) {
+        index = window.parseInt(Math.random() * (length - i)) + i
+        if (index != i) {
+          temp = arr[i - 1]
+          arr[i - 1] = arr[index - 1]
+          arr[index - 1] = temp
+        }
+      }
+      return arr
     },
   },
 }
