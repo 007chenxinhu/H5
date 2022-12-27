@@ -31,16 +31,25 @@
             padding: 0.2rem;
         }
     }
-    
     .contain{
         background-color: rgb(244, 249, 243);
         .tab-card{
           padding: 1rem;
           font-size: 0.4rem;
-        }
-        .van-tabs__content{
-          .van-tab__pane{
-            // height: 2rem;
+          .title{
+            font-size: 0.4rem;
+            padding: 0.5rem;
+            background-color: rgb(24, 124, 177);
+            border-radius: 0.2rem 0.2rem 0 0;
+          }
+          .group-box{
+            padding: 0.5rem;
+            background-color: bisque;
+            border-radius: 0 0 0.2rem 0.2rem;
+            .group-box_item{
+              line-height: 0.3rem;
+              text-align:left;
+            }
           }
         }
         /deep/ .van-tab{
@@ -56,9 +65,7 @@
             text-align: left;
           }
         }
-        // .van-radio-group{
-        //   background-color: #fff;
-        // }
+       
         .van-cell--clickable{
           text-align: left;
         }
@@ -67,9 +74,27 @@
             text-align: right;
           }
         }
+        /deep/ .van-field__label{
+          white-space: nowrap;
+        }
         
     }
 }
 .number-Participants{
   text-decoration: line-through;
+}
+.add-box{
+  position: relative;
+  height: 1rem;
+  .add-task{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1rem;
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.2rem;
+    background-color: antiquewhite;
+    font-size: 0.24rem;
+    cursor: pointer;
+  }
 }
