@@ -85,6 +85,15 @@
                     <van-button round block type="info" native-type="submit">
                       {{ btnText }}
                     </van-button>
+                    <van-button
+                      style="margin-top: 0.2rem"
+                      round
+                      block
+                      type="warning"
+                      @click="reSet(1)"
+                    >
+                      重制
+                    </van-button>
                   </div>
                 </van-form>
               </div>
@@ -122,7 +131,7 @@
                   <div class="add-box">
                     <div class="add-task" @click="addTask">添加</div>
                   </div>
-                  <div class="group-box" v-if="taskNameLists.length">
+                  <div class="group-box" v-if="taskNameLists.length > 0">
                     <div
                       class="group-box_item"
                       v-for="(item, index) in taskNameLists"
@@ -130,10 +139,33 @@
                     >
                       任务{{ index + 1 + ':&nbsp;&nbsp;&nbsp;' + item }}
                     </div>
+                    <div>
+                      <div
+                        class="group-box_item"
+                        v-for="(item, index) in targetTaskList"
+                        :key="index"
+                      >
+                        成员/小组{{
+                          index +
+                          1 +
+                          '&nbsp;&nbsp;=>&nbsp;&nbsp;' +
+                          (item ? item : '')
+                        }}
+                      </div>
+                    </div>
                   </div>
                   <div style="margin: 16px">
                     <van-button round block type="info" native-type="submit">
                       提交
+                    </van-button>
+                    <van-button
+                      style="margin-top: 0.2rem"
+                      round
+                      block
+                      type="warning"
+                      @click="reSet(2)"
+                    >
+                      重制
                     </van-button>
                   </div>
                 </van-form>
@@ -142,7 +174,27 @@
           </div>
         </van-tab>
         <van-tab title="随机抽取汇报回答表演人选">
-          <div class="tab-card">内容随机分配汇报回答表演人选</div>
+          <div class="tab-card">
+            <div>
+              <div>
+                {{ textNumber }}
+              </div>
+              <div>最小值1</div>
+              <div>最大值100</div>
+              <div>点击开始</div>
+              <div>
+                <van-button
+                  style="margin-top: 0.2rem"
+                  round
+                  block
+                  type="warning"
+                  @click="reSet(3)"
+                >
+                  重制
+                </van-button>
+              </div>
+            </div>
+          </div>
         </van-tab>
         <van-tab title="自定义抽取">
           <div class="tab-card">内容自定义抽取</div>
@@ -157,6 +209,7 @@ export default {
   name: 'Home',
   data() {
     return {
+      textNumber: '请点击开始',
       btnText: '提交',
       groupArray: [],
       activity: null,
@@ -170,6 +223,7 @@ export default {
       taskChecked: false,
       taskName: null,
       taskNameLists: [],
+      targetTaskList: [],
       listTags: [
         '随机分配小组',
         '随机分配任务',
@@ -229,6 +283,7 @@ export default {
       }
     },
     //随机生成乱序数组
+    // 输入长度
     randomArray(length) {
       let i = 0
       let index = 0
@@ -270,9 +325,51 @@ export default {
       // }
       // return newArray
     },
+    //输入数组，随机生成乱序数组
+    ranSort(arr) {
+      let newArr = []
+      while (arr.length > 0) {
+        let ranIndex = Math.floor(Math.random() * arr.length)
+        newArr.push(arr[ranIndex])
+        arr.splice(ranIndex, 1)
+      }
+      return newArr
+    },
+
     //随机派发任务
     onSubmitTask() {
-      console.log(this.taskName)
+      if (!this.taskNumber) {
+        this.$toast('请输入参与人数/组数...')
+        return
+      }
+      if (!this.taskNameLists.length) {
+        this.$toast('请输入任务...')
+        return
+      }
+      if (this.targetTaskList.length > 0) {
+        this.targetTaskList = []
+      }
+      //目标数组的长度就是参与人数的长度
+      // this.targetTaskList.length = this.taskNumber
+      // 先打乱任务顺序
+      let arr = JSON.parse(JSON.stringify(this.taskNameLists))
+      arr = this.ranSort(arr)
+
+      //重复派发任务
+      if (this.taskChecked) {
+        for (let i = 0; i < this.taskNumber; i++) {
+          let index = Math.floor(Math.random() * this.taskNameLists.length)
+          this.targetTaskList.push(this.taskNameLists[index])
+        }
+      } else {
+        for (let i = 0; i < this.taskNumber; i++) {
+          this.targetTaskList.push(arr[i])
+        }
+        // this.targetTaskList.forEach((r, i) => {
+        //   this.targetTaskList[i] = arr[i]
+        // })
+        // this.targetTaskList.length = this.taskNumber
+      }
     },
     addTask() {
       if (!this.taskName) {
@@ -280,6 +377,27 @@ export default {
         return
       }
       this.taskNameLists.push(this.taskName)
+      this.$toast('添加成功')
+      this.taskName = null
+    },
+    reSet(e) {
+      switch (e) {
+        case 1:
+          this.number = null
+          this.groupNumber = null
+          this.groups = null
+          this.groupArray = []
+          break
+        case 2:
+          this.taskNumber = null
+          this.taskNameLists = null
+          this.targetTaskList = null
+          break
+        case 3:
+          break
+        default:
+          break
+      }
     },
   },
 }
