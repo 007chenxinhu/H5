@@ -14,7 +14,6 @@
 }
 .home {
     text-align: center;
-    // padding-top: 2rem;
     font-family: '阿里妈妈数黑体 Bold';
     .header{
         display: flex;
@@ -98,4 +97,10 @@
     font-size: 0.24rem;
     cursor: pointer;
   }
+}
+.showNumber-box{
+  padding: 0.5rem;
+  font-size: 0.34rem;
+  box-shadow: 0.01rem 0.01rem 0.05rem 0.01rem rgba($color: #000000, $alpha: 1.0);
+  background:linear-gradient(to bottom,white 0%,white 50%,#f3f3f3 50.01%,#f3f3f3 100%);
 }

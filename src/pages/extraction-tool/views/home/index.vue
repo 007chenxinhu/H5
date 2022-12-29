@@ -12,7 +12,7 @@
             <div class="tab-card">
               <div class="title">随机分配小组</div>
               <div>
-                <van-form @submit="onSubmit">
+                <van-form>
                   <van-field
                     v-model="number"
                     name="总人数"
@@ -82,7 +82,7 @@
                     </div>
                   </div>
                   <div style="margin: 16px">
-                    <van-button round block type="info" native-type="submit">
+                    <van-button round block type="info" @click="onSubmit">
                       {{ btnText }}
                     </van-button>
                     <van-button
@@ -108,7 +108,7 @@
             <div class="tab-card">
               <div class="title">随机派发任务</div>
               <div>
-                <van-form @submit="onSubmitTask">
+                <van-form>
                   <van-field
                     v-model="taskNumber"
                     name="参与人数/组数"
@@ -155,7 +155,7 @@
                     </div>
                   </div>
                   <div style="margin: 16px">
-                    <van-button round block type="info" native-type="submit">
+                    <van-button round block type="info" @click="onSubmitTask">
                       提交
                     </van-button>
                     <van-button
@@ -173,27 +173,27 @@
             </div>
           </div>
         </van-tab>
-        <van-tab title="随机抽取汇报回答表演人选">
+        <van-tab title="选号">
           <div class="tab-card">
-            <div>
-              <div>
-                {{ textNumber }}
-              </div>
-              <div>最小值1</div>
-              <div>最大值100</div>
-              <div>点击开始</div>
-              <div>
-                <van-button
-                  style="margin-top: 0.2rem"
-                  round
-                  block
-                  type="warning"
-                  @click="reSet(3)"
-                >
-                  重制
-                </van-button>
-              </div>
+            <div class="title">随机抽取汇报回答表演人选</div>
+            <div class="showNumber-box">
+              {{ textNumber }}
             </div>
+            <van-field
+              v-model="min"
+              name="最小值"
+              label="最小值"
+              placeholder="请输入最小值"
+            />
+            <van-field
+              v-model="max"
+              name="最大值"
+              label="最大值"
+              placeholder="请输入最大值"
+            />
+            <van-button round block type="info" @click="getLimitNumber">
+              {{ beginBtn }}
+            </van-button>
           </div>
         </van-tab>
         <van-tab title="自定义抽取">
@@ -230,6 +230,11 @@ export default {
         '随机分配汇报回答表演人选',
         '自定义抽取',
       ],
+      min: 1,
+      max: 100,
+      beginBtn: '点击开始',
+      flag: true,
+      timer: null,
     }
   },
   mounted() {},
@@ -365,10 +370,6 @@ export default {
         for (let i = 0; i < this.taskNumber; i++) {
           this.targetTaskList.push(arr[i])
         }
-        // this.targetTaskList.forEach((r, i) => {
-        //   this.targetTaskList[i] = arr[i]
-        // })
-        // this.targetTaskList.length = this.taskNumber
       }
     },
     addTask() {
@@ -389,15 +390,41 @@ export default {
           this.groupArray = []
           break
         case 2:
+          this.taskName = null
           this.taskNumber = null
-          this.taskNameLists = null
-          this.targetTaskList = null
-          break
-        case 3:
+          this.taskNameLists = []
+          this.targetTaskList = []
           break
         default:
           break
       }
+    },
+    getLimitNumber() {
+      if (!this.min) {
+        this.$toast('请输入最小值...')
+        return
+      }
+      if (!this.max) {
+        this.$toast('请输入最大值...')
+        return
+      }
+      const _this = this
+      this.flag = !this.flag
+      if (this.flag == false) {
+        this.timer = setInterval(function () {
+          _this.textNumber = _this.randomFrom(_this.min, _this.max)
+          _this.beginBtn = '暂停' //给按钮从新赋值
+        }, 50)
+      } else {
+        clearInterval(this.timer)
+        this.beginBtn = '点击开始' //给按钮从新赋值
+        this.textNumber = this.randomFrom(this.min, this.max)
+      }
+    },
+    randomFrom(lowerValue, upperValue) {
+      return Math.floor(
+        Math.random() * (upperValue - lowerValue + 1) + lowerValue,
+      )
     },
   },
 }
