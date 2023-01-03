@@ -16,4 +16,18 @@ export default {
   width: 100%;
   -webkit-overflow-scrolling: touch;
 }
+html,
+body {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  font-size: calc(100vw / 19.2);
+}
+div,
+span,
+p,
+h1,
+h2 {
+  font-size: 0.16rem;
+}
 </style>

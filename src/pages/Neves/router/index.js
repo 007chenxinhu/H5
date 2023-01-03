@@ -4,6 +4,11 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 const routes = [
   {
+    path: '*',
+    name: '',
+    redirect: '/Neves',
+  },
+  {
     path: '/Neves',
     name: 'Neves',
     meta: { title: '七巧板游戏' },

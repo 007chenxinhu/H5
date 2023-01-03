@@ -1,14 +1,17 @@
 <template>
   <div class="home">
     <h1>七巧板游戏</h1>
+    <div class="hint">
+      是一种拼图游戏，它是用七块板，包括五块等腰直角三角形（两块小型三角形、一块中型三角形和两块大型三角形）、一块正方形和一块平行四边形，以各种不同的拼凑法来拼搭千变万化的形象图案。
+    </div>
+    <div class="hint">拖动图形到方块内，可双击旋转图形角度</div>
     <div style="height: 100%; width: 100%">
       <canvas
         id="canvas"
-        @mousedown="canvasClick($event)"
-        @mouseup="stopdrag($event)"
-        @mouseout="stopdrag($event)"
-        @mousemove="drag($event)"
-        @dblclick="dblik($event)"
+        @touchstart="canvasClick"
+        @touchend="stopdrag"
+        @mouseout="stopdrag"
+        @touchmove="drag"
       >
         <p>you brower is not support canvas</p>
       </canvas>
@@ -18,6 +21,25 @@
 
 <script>
 export default {
+  // ①touchstart：当手指触碰到屏幕的时候触发
+  // ②touchmove：当手指在屏幕上滑动的时候触发
+  // ③touchend：当手指离开屏幕的时候时候触发
+  //   每个touch对象包含的属性
+  // 1. clientX：触摸目标在视口中的x坐标。
+  // 2. clientY：触摸目标在视口中的y坐标。
+  // 3. identifier：标识触摸的唯一ID。
+  // 4. pageX：触摸目标在页面中的x坐标。
+  // 5. pageY：触摸目标在页面中的y坐标。
+  // 6. screenX：触摸目标在屏幕中的x坐标。
+  // 7. screenY：触摸目标在屏幕中的y坐标。
+  // 8. target：触目的DOM节点目标。
+  // click	单击鼠标左键时发生，如果右键也按下则不会发生。
+  // dblclick	双击鼠标左键时发生，如果右键也按下则不会发生
+  // mousedown	单击任意一个鼠标按钮时发生
+  // mouseout	鼠标指针位于某个元素上且将要移出元素的边界时发生
+  // mouseover	鼠标指针移出某个元素到另一个元素上时发生
+  // mouseup	松开任意一个鼠标按钮时发生
+  // mousemove	鼠标在某个元素上时持续发生
   name: 'Home',
   data() {
     return {
@@ -190,6 +212,9 @@ export default {
         },
       ],
       isDragging: false,
+      verClickNum: 1,
+      clickTimer: null,
+      lastClickTime: 0,
     }
   },
   mounted() {
@@ -200,8 +225,8 @@ export default {
     } else {
       console.log('不支持canvas')
     }
-    this.canvas.width = 2000
-    this.canvas.height = 2000
+    this.canvas.width = window.screen.width
+    this.canvas.height = 500
     this.draw()
   },
   methods: {
@@ -223,13 +248,31 @@ export default {
         this.context.fill()
         this.context.closePath()
       }
-      this.context.strokeRect(this.mWidth - 101, 300, 202, 202)
+      this.context.strokeRect(this.mWidth - 101, 10, 202, 202)
     },
     canvasClick(e) {
+      var nowTime = new Date().getTime()
+      if (nowTime - this.lastClickTime < 300) {
+        /*双击*/
+        this.verClickNum++
+        this.lastClickTime = 0
+        // 双击旋转
+        this.dblik(e)
+        this.clickTimer && clearTimeout(this.clickTimer)
+      } else {
+        /*单击*/
+        this.lastClickTime = nowTime
+        this.clickTimer = setTimeout(function () {
+          if (this.verClickNum > 1) {
+            this.verClickNum = 1
+            return
+          } else {
+          }
+        }, 300)
+      }
       // 取得画布上被单击的点
-      var clickX = e.pageX - this.canvas.offsetLeft
-      var clickY = e.pageY - this.canvas.offsetTop
-
+      var clickX = e.changedTouches[0].pageX - this.canvas.offsetLeft
+      var clickY = e.changedTouches[0].pageY - this.canvas.offsetTop
       for (var i = 0; i < this.points.length; i++) {
         var flag = false
         if (this.points[i].types == 3) {
@@ -303,7 +346,6 @@ export default {
         this.points2[this.select].p[j].x = xianx2
         this.points2[this.select].p[j].y = xiany2
       }
-      console.log(this.points[this.select].p)
       // 更新画布
       this.draw()
 
@@ -316,9 +358,8 @@ export default {
         // 判断拖拽对象是否存在
 
         // 取得鼠标位置
-        var x = e.pageX - this.canvas.offsetLeft
-        var y = e.pageY - this.canvas.offsetTop
-
+        var x = e.changedTouches[0].pageX - this.canvas.offsetLeft
+        var y = e.changedTouches[0].pageY - this.canvas.offsetTop
         var changdu = this.points[this.select].p.length
 
         var xx = x - this.points2[this.select].p[0].x
@@ -392,7 +433,6 @@ export default {
           ymax = reactpostions[i].y
         }
       }
-
       if (xmin < x && xmax > x && ymin < y && ymax > y) {
         return true
       } else {
@@ -404,5 +444,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// @import './index.scss';
+@import './index.scss';
 </style>
