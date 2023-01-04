@@ -38,6 +38,10 @@
         .tab-card{
           padding: 1rem;
           font-size: 0.4rem;
+          .title-hint{
+            font-size: 0.4rem;
+            color: #555151;
+          }
           .title{
             font-size: 0.4rem;
             padding: 0.5rem;
@@ -49,35 +53,57 @@
             background-color: bisque;
             border-radius: 0 0 0.2rem 0.2rem;
             .group-box_item{
-              line-height: 0.3rem;
+              font-size: 0.32rem;
+              line-height: 0.4rem;
               text-align:left;
             }
           }
         }
         /deep/ .van-tab{
           span{
-            font-size: 0.34rem;
+            font-size: 0.38rem;
           }
         }
         .van-tab__text--ellipsis{
-          font-size: 50px;
+          font-size: 0.5rem;
         }
         /deep/ .van-switch-cell{
           .van-cell__title{
             text-align: left;
+            span{
+              font-size: 0.32rem;
+            }
           }
         }
        
-        .van-cell--clickable{
+        /deep/ .van-cell--clickable{
           text-align: left;
+          .van-cell__title{
+            text-align: left;
+            span{
+              font-size: 0.32rem;
+            }
+          }
         }
         /deep/ .van-field__body{
           .van-field__control{
             text-align: right;
+            font-size: 0.32rem;
+
           }
         }
         /deep/ .van-field__label{
           white-space: nowrap;
+          span{
+            font-size: 0.32rem;
+          }
+        }
+        /deep/ .van-button{
+          .van-button__content{
+            .van-button__text{
+                font-size: 0.32rem;
+            }
+          }
         }
         
     }
@@ -97,7 +123,7 @@
     padding: 0.1rem 0.3rem;
     border-radius: 0.2rem;
     background-color: antiquewhite;
-    font-size: 0.24rem;
+    font-size: 0.32rem;
     cursor: pointer;
   }
 }

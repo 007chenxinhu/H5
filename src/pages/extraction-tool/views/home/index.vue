@@ -8,7 +8,9 @@
       <van-tabs v-model="activity" swipeable>
         <van-tab title="分组">
           <div class="tab-card">
-            <div>输入总人数及分配方式，系统随机给各个小伙伴随机分配小组</div>
+            <div class="title-hint">
+              输入总人数及分配方式，系统随机给各个小伙伴随机分配小组
+            </div>
             <div class="tab-card">
               <div class="title">随机分配小组</div>
               <div>
@@ -87,7 +89,7 @@
         </van-tab>
         <van-tab title="分工">
           <div class="tab-card">
-            <div>
+            <div class="title-hint">
               输入主题、各项任务及人数，如：打扫卫生；系统随机分配给各个小伙伴任务
             </div>
             <div class="tab-card">
@@ -160,7 +162,9 @@
         </van-tab>
         <van-tab title="选号">
           <div class="tab-card">
-            <div>输入最小号码和最大号码，随机抽取一个号码</div>
+            <div class="title-hint">
+              输入最小号码和最大号码，随机抽取一个号码
+            </div>
             <div class="tab-card">
               <div class="title">随机抽取汇报回答表演人选</div>
               <div class="showNumber-box">
