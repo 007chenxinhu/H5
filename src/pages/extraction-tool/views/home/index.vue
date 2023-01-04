@@ -19,21 +19,6 @@
                     label="总人数"
                     placeholder="请输入总人数"
                   />
-                  <!-- <van-cell-group>
-                  <van-switch-cell
-                    v-model="checked"
-                    @change="change"
-                    title="是否所有人参与"
-                  />
-                </van-cell-group> -->
-                  <!-- <van-field
-                  v-model="numberPar"
-                  :class="checked && 'number-Participants'"
-                  :disabled="checked"
-                  name="参与人数"
-                  label="参与人数"
-                  placeholder="请输入参与人数"
-                /> -->
                   <van-radio-group v-model="radio">
                     <van-cell-group>
                       <van-cell
@@ -175,25 +160,28 @@
         </van-tab>
         <van-tab title="选号">
           <div class="tab-card">
-            <div class="title">随机抽取汇报回答表演人选</div>
-            <div class="showNumber-box">
-              {{ textNumber }}
+            <div>输入最小号码和最大号码，随机抽取一个号码</div>
+            <div class="tab-card">
+              <div class="title">随机抽取汇报回答表演人选</div>
+              <div class="showNumber-box">
+                {{ textNumber }}
+              </div>
+              <van-field
+                v-model="min"
+                name="最小值"
+                label="最小值"
+                placeholder="请输入最小值"
+              />
+              <van-field
+                v-model="max"
+                name="最大值"
+                label="最大值"
+                placeholder="请输入最大值"
+              />
+              <van-button round block type="info" @click="getLimitNumber">
+                {{ beginBtn }}
+              </van-button>
             </div>
-            <van-field
-              v-model="min"
-              name="最小值"
-              label="最小值"
-              placeholder="请输入最小值"
-            />
-            <van-field
-              v-model="max"
-              name="最大值"
-              label="最大值"
-              placeholder="请输入最大值"
-            />
-            <van-button round block type="info" @click="getLimitNumber">
-              {{ beginBtn }}
-            </van-button>
           </div>
         </van-tab>
         <van-tab title="自定义抽取">

@@ -15,6 +15,9 @@
 .home {
     text-align: center;
     font-family: '阿里妈妈数黑体 Bold';
+    .contain{
+      padding: 0 2rem;
+    }
     .header{
         display: flex;
         justify-content: center;
