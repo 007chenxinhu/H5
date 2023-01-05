@@ -5,7 +5,7 @@
       是一种拼图游戏，它是用七块板，包括五块等腰直角三角形（两块小型三角形、一块中型三角形和两块大型三角形）、一块正方形和一块平行四边形，以各种不同的拼凑法来拼搭千变万化的形象图案。
     </div>
     <div class="hint">拖动图形到方块内，可双击旋转图形角度</div>
-    <div style="height: 100%; width: 100%">
+    <div class="canvas-box">
       <canvas
         id="canvas"
         @touchstart="canvasClick"
@@ -52,9 +52,9 @@ export default {
       points: [
         {
           p: [
-            { x: 0, y: 0 },
-            { x: 200, y: 0 },
-            { x: 100, y: 100 },
+            { x: 110, y: 10 },
+            { x: 10, y: 110 },
+            { x: 210, y: 110 },
           ],
           color: '#caff67',
           click: false,
@@ -63,9 +63,9 @@ export default {
         },
         {
           p: [
-            { x: 0, y: 0 },
-            { x: 100, y: 100 },
-            { x: 0, y: 200 },
+            { x: 150, y: 10 },
+            { x: 350, y: 10 },
+            { x: 250, y: 110 },
           ],
           color: '#67becf',
           click: false,
@@ -74,10 +74,10 @@ export default {
         },
         {
           p: [
-            { x: 200, y: 0 },
-            { x: 200, y: 100 },
-            { x: 150, y: 150 },
-            { x: 150, y: 50 },
+            { x: 400, y: 0 },
+            { x: 400, y: 100 },
+            { x: 350, y: 150 },
+            { x: 350, y: 50 },
           ],
           color: '#ef3d61',
           click: false,
@@ -86,9 +86,9 @@ export default {
         },
         {
           p: [
-            { x: 150, y: 50 },
-            { x: 150, y: 150 },
-            { x: 100, y: 100 },
+            { x: 60, y: 120 },
+            { x: 60, y: 220 },
+            { x: 10, y: 170 },
           ],
           color: '#f9f51a',
           click: false,
@@ -97,10 +97,10 @@ export default {
         },
         {
           p: [
-            { x: 100, y: 100 },
-            { x: 150, y: 150 },
-            { x: 100, y: 200 },
-            { x: 50, y: 150 },
+            { x: 130, y: 120 },
+            { x: 180, y: 170 },
+            { x: 130, y: 220 },
+            { x: 80, y: 170 },
           ],
           color: '#a594c0',
           click: false,
@@ -109,9 +109,9 @@ export default {
         },
         {
           p: [
-            { x: 50, y: 150 },
-            { x: 100, y: 200 },
-            { x: 0, y: 200 },
+            { x: 400, y: 150 },
+            { x: 450, y: 200 },
+            { x: 350, y: 200 },
           ],
           color: '#fa8ecc',
           click: false,
@@ -120,9 +120,9 @@ export default {
         },
         {
           p: [
-            { x: 200, y: 100 },
+            { x: 300, y: 100 },
+            { x: 300, y: 200 },
             { x: 200, y: 200 },
-            { x: 100, y: 200 },
           ],
           color: '#f6ca29',
           click: false,
@@ -133,9 +133,9 @@ export default {
       points2: [
         {
           p: [
-            { x: 0, y: 0 },
-            { x: 200, y: 0 },
-            { x: 100, y: 100 },
+            { x: 110, y: 10 },
+            { x: 10, y: 110 },
+            { x: 210, y: 110 },
           ],
           color: '#caff67',
           click: false,
@@ -144,9 +144,9 @@ export default {
         },
         {
           p: [
-            { x: 0, y: 0 },
-            { x: 100, y: 100 },
-            { x: 0, y: 200 },
+            { x: 150, y: 10 },
+            { x: 350, y: 10 },
+            { x: 250, y: 110 },
           ],
           color: '#67becf',
           click: false,
@@ -155,10 +155,10 @@ export default {
         },
         {
           p: [
-            { x: 200, y: 0 },
-            { x: 200, y: 100 },
-            { x: 150, y: 150 },
-            { x: 150, y: 50 },
+            { x: 400, y: 0 },
+            { x: 400, y: 100 },
+            { x: 350, y: 150 },
+            { x: 350, y: 50 },
           ],
           color: '#ef3d61',
           click: false,
@@ -167,9 +167,9 @@ export default {
         },
         {
           p: [
-            { x: 150, y: 50 },
-            { x: 150, y: 150 },
-            { x: 100, y: 100 },
+            { x: 60, y: 120 },
+            { x: 60, y: 220 },
+            { x: 10, y: 170 },
           ],
           color: '#f9f51a',
           click: false,
@@ -178,10 +178,10 @@ export default {
         },
         {
           p: [
-            { x: 100, y: 100 },
-            { x: 150, y: 150 },
-            { x: 100, y: 200 },
-            { x: 50, y: 150 },
+            { x: 130, y: 120 },
+            { x: 180, y: 170 },
+            { x: 130, y: 220 },
+            { x: 80, y: 170 },
           ],
           color: '#a594c0',
           click: false,
@@ -190,9 +190,9 @@ export default {
         },
         {
           p: [
-            { x: 50, y: 150 },
-            { x: 100, y: 200 },
-            { x: 0, y: 200 },
+            { x: 400, y: 150 },
+            { x: 450, y: 200 },
+            { x: 350, y: 200 },
           ],
           color: '#fa8ecc',
           click: false,
@@ -201,9 +201,9 @@ export default {
         },
         {
           p: [
-            { x: 200, y: 100 },
+            { x: 300, y: 100 },
+            { x: 300, y: 200 },
             { x: 200, y: 200 },
-            { x: 100, y: 200 },
           ],
           color: '#f6ca29',
           click: false,
@@ -225,8 +225,8 @@ export default {
     } else {
       console.log('不支持canvas')
     }
-    this.canvas.width = window.screen.width
-    this.canvas.height = 500
+    this.canvas.width = window.screen.width - 100
+    this.canvas.height = 242
     this.draw()
   },
   methods: {
@@ -248,7 +248,7 @@ export default {
         this.context.fill()
         this.context.closePath()
       }
-      this.context.strokeRect(this.mWidth - 101, 10, 202, 202)
+      this.context.strokeRect(this.mWidth + 100, 20, 202, 202)
     },
     canvasClick(e) {
       var nowTime = new Date().getTime()
@@ -360,6 +360,10 @@ export default {
         // 取得鼠标位置
         var x = e.changedTouches[0].pageX - this.canvas.offsetLeft
         var y = e.changedTouches[0].pageY - this.canvas.offsetTop
+        if (x < 1) x = 1
+        if (x > 970) x = 970
+        if (y < 1) y = 1
+        if (y > 192) y = 192
         var changdu = this.points[this.select].p.length
 
         var xx = x - this.points2[this.select].p[0].x
