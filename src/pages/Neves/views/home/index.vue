@@ -362,7 +362,7 @@ export default {
         var y = e.changedTouches[0].pageY - this.canvas.offsetTop
         if (x < 1) x = 1
         if (x > 970) x = 970
-        if (y < 1) y = 1
+        if (y < 7) y = 7
         if (y > 192) y = 192
         var changdu = this.points[this.select].p.length
 

@@ -16,7 +16,7 @@
     text-align: center;
     font-family: '阿里妈妈数黑体 Bold';
     .contain{
-      padding: 0 2rem;
+      // padding: 0 2rem;
     }
     .header{
         display: flex;
@@ -56,6 +56,22 @@
               font-size: 0.32rem;
               line-height: 0.4rem;
               text-align:left;
+            }
+          }
+          .change-quantity{
+            display: flex;
+            justify-content: center;
+            background-color: #fff;
+            padding: 0.2rem 0;
+            .quantity{
+              border: 0.01rem solid #555151;
+              padding: 0.1rem;
+              font-size: 0.34rem;
+              margin:  0 0.2rem;
+              cursor: pointer;
+            }
+            .live{
+              background-color: #1989fa;
             }
           }
         }
@@ -132,4 +148,8 @@
   font-size: 0.34rem;
   box-shadow: 0.01rem 0.01rem 0.05rem 0.01rem rgba($color: #000000, $alpha: 1.0);
   background:linear-gradient(to bottom,white 0%,white 50%,#f3f3f3 50.01%,#f3f3f3 100%);
+  .showNumber{
+    font-size: 0.34rem;
+    margin:  0 0.1rem;
+  }
 }

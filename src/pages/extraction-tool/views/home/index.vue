@@ -168,7 +168,26 @@
             <div class="tab-card">
               <div class="title">随机抽取汇报回答表演人选</div>
               <div class="showNumber-box">
-                {{ textNumber }}
+                <template v-if="!showNumber">
+                  <span class="showNumber" v-for="item in length" :key="item">
+                    {{ textNumber }}
+                  </span>
+                </template>
+                <template v-else>
+                  <span class="showNumber"> 请点击开始 </span>
+                </template>
+              </div>
+              <div class="change-quantity">
+                <div
+                  :class="
+                    changeQuantity === item ? 'quantity live' : 'quantity'
+                  "
+                  v-for="item in quantityArr"
+                  :key="item"
+                  @click="liveQuantity(item)"
+                >
+                  {{ item }}
+                </div>
               </div>
               <van-field
                 v-model="min"
@@ -201,7 +220,9 @@ export default {
   name: 'Home',
   data() {
     return {
-      textNumber: '请点击开始',
+      quantity: '01',
+      quantityArr: ['01', '02', '05', '10'],
+      textNumber: 1,
       btnText: '提交',
       groupArray: [],
       activity: null,
@@ -227,10 +248,33 @@ export default {
       beginBtn: '点击开始',
       flag: true,
       timer: null,
+      changeQuantity: '01',
+      length: 1,
+      showNumber: true,
     }
   },
   mounted() {},
   methods: {
+    liveQuantity(e) {
+      switch (e) {
+        case '01':
+          this.length = 1
+          break
+        case '02':
+          this.length = 2
+          break
+        case '05':
+          this.length = 5
+          break
+        case '10':
+          this.length = 10
+          break
+        default:
+          break
+      }
+      this.changeQuantity = e
+      this.showNumber = true
+    },
     change() {
       console.log(this.checked)
     },
@@ -402,15 +446,24 @@ export default {
       }
       const _this = this
       this.flag = !this.flag
+      this.showNumber = false
       if (this.flag == false) {
         this.timer = setInterval(function () {
+          // _this.textNumber = _this.randomFrom(_this.min, _this.max)
           _this.textNumber = _this.randomFrom(_this.min, _this.max)
-          _this.beginBtn = '暂停' //给按钮从新赋值
         }, 50)
+        _this.beginBtn = '暂停' //给按钮从新赋值
       } else {
         clearInterval(this.timer)
         this.beginBtn = '点击开始' //给按钮从新赋值
-        this.textNumber = this.randomFrom(this.min, this.max)
+        // _this.textNumber.map((item, index) => {
+        //   _this.textNumber[index] = _this.randomFrom(_this.min, _this.max)
+        // })
+        for (let i = 0; i < _this.textNumber.length; i++) {
+          _this.textNumber[i] = _this.randomFrom(_this.min, _this.max)
+        }
+
+        // this.textNumber = this.randomFrom(this.min, this.max)
       }
     },
     randomFrom(lowerValue, upperValue) {
