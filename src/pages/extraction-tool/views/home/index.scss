@@ -61,7 +61,9 @@
           .change-quantity{
             display: flex;
             justify-content: center;
+            align-items: center;
             background-color: #fff;
+            font-size: 0.34rem;
             padding: 0.2rem 0;
             .quantity{
               border: 0.01rem solid #555151;

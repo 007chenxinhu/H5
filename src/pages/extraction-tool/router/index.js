@@ -4,6 +4,11 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 const routes = [
   {
+    path: '*',
+    name: '',
+    redirect: '/home',
+  },
+  {
     path: '/home',
     name: 'home',
     meta: { title: '随机抽签' },

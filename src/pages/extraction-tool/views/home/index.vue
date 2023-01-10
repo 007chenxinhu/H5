@@ -169,15 +169,20 @@
               <div class="title">随机抽取汇报回答表演人选</div>
               <div class="showNumber-box">
                 <template v-if="!showNumber">
-                  <span class="showNumber" v-for="item in length" :key="item">
-                    {{ textNumber }}
+                  <span
+                    class="showNumber"
+                    v-for="item in textNumber"
+                    :key="item"
+                  >
+                    {{ item }}
                   </span>
                 </template>
-                <template v-else>
+                <template v-if="showNumber">
                   <span class="showNumber"> 请点击开始 </span>
                 </template>
               </div>
               <div class="change-quantity">
+                选择抽取号码数量
                 <div
                   :class="
                     changeQuantity === item ? 'quantity live' : 'quantity'
@@ -208,7 +213,7 @@
           </div>
         </van-tab>
         <van-tab title="自定义抽取">
-          <div class="tab-card">内容自定义抽取</div>
+          <div class="tab-card">自定义抽签</div>
         </van-tab>
       </van-tabs>
     </div>
@@ -222,7 +227,7 @@ export default {
     return {
       quantity: '01',
       quantityArr: ['01', '02', '05', '10'],
-      textNumber: 1,
+      textNumber: [null],
       btnText: '提交',
       groupArray: [],
       activity: null,
@@ -256,18 +261,30 @@ export default {
   mounted() {},
   methods: {
     liveQuantity(e) {
+      clearInterval(this.timer)
       switch (e) {
         case '01':
-          this.length = 1
+          this.textNumber = [null]
           break
         case '02':
-          this.length = 2
+          this.textNumber = [null, null]
           break
         case '05':
-          this.length = 5
+          this.textNumber = [null, null, null, null, null]
           break
         case '10':
-          this.length = 10
+          this.textNumber = [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
           break
         default:
           break
@@ -448,22 +465,22 @@ export default {
       this.flag = !this.flag
       this.showNumber = false
       if (this.flag == false) {
-        this.timer = setInterval(function () {
-          // _this.textNumber = _this.randomFrom(_this.min, _this.max)
-          _this.textNumber = _this.randomFrom(_this.min, _this.max)
+        _this.timer = setInterval(function () {
+          for (let i = 0; i < _this.textNumber.length; i++) {
+            _this.$set(
+              _this.textNumber,
+              i,
+              _this.randomFrom(_this.min, _this.max),
+            )
+          }
         }, 50)
         _this.beginBtn = '暂停' //给按钮从新赋值
       } else {
         clearInterval(this.timer)
         this.beginBtn = '点击开始' //给按钮从新赋值
-        // _this.textNumber.map((item, index) => {
-        //   _this.textNumber[index] = _this.randomFrom(_this.min, _this.max)
-        // })
         for (let i = 0; i < _this.textNumber.length; i++) {
           _this.textNumber[i] = _this.randomFrom(_this.min, _this.max)
         }
-
-        // this.textNumber = this.randomFrom(this.min, this.max)
       }
     },
     randomFrom(lowerValue, upperValue) {
