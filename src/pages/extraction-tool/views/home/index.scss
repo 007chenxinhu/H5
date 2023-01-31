@@ -51,7 +51,7 @@
           .group-box{
             padding: 0.5rem;
             background-color: bisque;
-            border-radius: 0 0 0.2rem 0.2rem;
+            border-radius: 0.2rem;
             .group-box_item{
               font-size: 0.32rem;
               line-height: 0.4rem;
@@ -81,6 +81,9 @@
           span{
             font-size: 0.38rem;
           }
+        }
+        /deep/ .van-popup{
+          border-radius: 0.2rem;
         }
         .van-tab__text--ellipsis{
           font-size: 0.5rem;

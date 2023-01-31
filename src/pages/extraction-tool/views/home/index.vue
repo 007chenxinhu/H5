@@ -59,7 +59,18 @@
                     placeholder="请输入分组数量"
                     :disabled="radio === '2'"
                   />
-                  <div class="group-box" v-if="groupArray.length">
+                  <van-popup close-on-click-overlay="false" v-model="showPopup">
+                    <div class="group-box">
+                      <div
+                        class="group-box_item"
+                        v-for="(item, index) in groupArray"
+                        :key="index"
+                      >
+                        小组{{ index + 1 + ':&nbsp;&nbsp;' + item }}
+                      </div>
+                    </div>
+                  </van-popup>
+                  <!-- <div class="group-box" v-if="groupArray.length">
                     <div
                       class="group-box_item"
                       v-for="(item, index) in groupArray"
@@ -67,7 +78,7 @@
                     >
                       小组{{ index + 1 + ':&nbsp;&nbsp;' + item }}
                     </div>
-                  </div>
+                  </div> -->
                   <div style="margin: 16px">
                     <van-button round block type="info" @click="onSubmit">
                       {{ btnText }}
@@ -90,7 +101,7 @@
         <van-tab title="分工">
           <div class="tab-card">
             <div class="title-hint">
-              输入主题、各项任务及人数，如：打扫卫生；系统随机分配给各个小伙伴任务
+              输入主题、各项任务及人数，如：打扫卫生、擦黑板；系统随机分配给各个小伙伴任务
             </div>
             <div class="tab-card">
               <div class="title">随机派发任务</div>
@@ -212,9 +223,9 @@
             </div>
           </div>
         </van-tab>
-        <van-tab title="自定义抽取">
+        <!-- <van-tab title="自定义抽取">
           <div class="tab-card">自定义抽签</div>
-        </van-tab>
+        </van-tab> -->
       </van-tabs>
     </div>
   </div>
@@ -225,6 +236,7 @@ export default {
   name: 'Home',
   data() {
     return {
+      showPopup: false,
       quantity: '01',
       quantityArr: ['01', '02', '05', '10'],
       textNumber: [null],
@@ -330,6 +342,7 @@ export default {
         }
         this.groupArray = this.splitGroup(totalNumber, this.groupNumber)
       }
+      this.showPopup = true
     },
     //切换分组模式
     changeRadio(e) {

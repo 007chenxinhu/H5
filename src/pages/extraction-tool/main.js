@@ -13,6 +13,7 @@ import {
   RadioGroup,
   Radio,
   Cell,
+  Popup,
 } from 'vant'
 import './style/common.scss'
 import 'vant/lib/index.css'
@@ -34,6 +35,7 @@ Vue.use(Toast)
   .use(RadioGroup)
   .use(Radio)
   .use(Cell)
+  .use(Popup)
 
 new Vue({
   render: h => h(App),

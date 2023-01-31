@@ -1,10 +1,10 @@
 <template>
   <div class="home">
     <h1>七巧板游戏</h1>
-    <div class="hint">
+    <!-- <div class="hint">
       是一种拼图游戏，它是用七块板，包括五块等腰直角三角形（两块小型三角形、一块中型三角形和两块大型三角形）、一块正方形和一块平行四边形，以各种不同的拼凑法来拼搭千变万化的形象图案。
     </div>
-    <div class="hint">拖动图形到方块内，可双击旋转图形角度</div>
+    <div class="hint">拖动图形到方块内，可双击旋转图形角度</div> -->
     <div class="canvas-box">
       <canvas
         id="canvas"
