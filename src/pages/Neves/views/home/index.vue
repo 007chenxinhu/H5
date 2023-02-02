@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1>七巧板游戏</h1>
+    <h1 @click="autoMove">七巧板游戏</h1>
     <!-- <div class="hint">
       是一种拼图游戏，它是用七块板，包括五块等腰直角三角形（两块小型三角形、一块中型三角形和两块大型三角形）、一块正方形和一块平行四边形，以各种不同的拼凑法来拼搭千变万化的形象图案。
     </div>
@@ -44,6 +44,7 @@ export default {
   data() {
     return {
       mWidth: window.screen.width / 2,
+      mHeight: window.screen.height * 0.7,
       canvas: null,
       context: null,
       angles: [],
@@ -215,6 +216,8 @@ export default {
       verClickNum: 1,
       clickTimer: null,
       lastClickTime: 0,
+      timerX: null,
+      timerY: null,
     }
   },
   mounted() {
@@ -226,10 +229,37 @@ export default {
       console.log('不支持canvas')
     }
     this.canvas.width = window.screen.width - 100
-    this.canvas.height = 242
+    this.canvas.height = window.screen.height * 0.7
     this.draw()
   },
+  watch: {
+    points: function (val) {
+      console.log(val, this.points2[0].p[i].x + this.mWidth + 90)
+      if (val[0].p[i].x === this.points2[0].p[i].x + this.mWidth + 90) {
+        clearInterval(this.timerX)
+      }
+    },
+    deep: true,
+  },
   methods: {
+    autoMove() {
+      let self = this
+      for (let i = 0; i < this.points[0].p.length; i++) {
+        self.timerX = setInterval(function () {
+          self.points[0].p[i].x = self.points[0].p[i].x + 100
+          self.points[0].p[i].y = self.points[0].p[i].y + 10
+          // 更新画布
+          self.draw()
+        }, 500)
+      }
+      // for (var i = 0; i < this.points[0].p.length; i++) {
+      //   self.timerY = setInterval(function () {
+      //     self.points[0].p[i].y = self.points[0].p[i].y + 10
+      //     // 更新画布
+      //     self.draw()
+      //   }, 500)
+      // }
+    },
     draw() {
       // 清除画布，准备绘制
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
@@ -248,7 +278,12 @@ export default {
         this.context.fill()
         this.context.closePath()
       }
-      this.context.strokeRect(this.mWidth + 100, 20, 202, 202)
+      this.context.strokeRect(
+        this.mWidth + 100,
+        this.mHeight / 2 - 100,
+        202,
+        202,
+      )
     },
     canvasClick(e) {
       var nowTime = new Date().getTime()
@@ -363,7 +398,7 @@ export default {
         if (x < 1) x = 1
         if (x > 970) x = this.mWidth + 310
         if (y < 7) y = 7
-        if (y > 192) y = 225
+        if (y > window.screen.height * 0.6) y = window.screen.height * 0.6
         var changdu = this.points[this.select].p.length
 
         var xx = x - this.points2[this.select].p[0].x

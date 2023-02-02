@@ -59,7 +59,7 @@
                     placeholder="请输入分组数量"
                     :disabled="radio === '2'"
                   />
-                  <van-popup close-on-click-overlay="false" v-model="showPopup">
+                  <!-- <van-popup v-model="showPopup">
                     <div class="group-box">
                       <div
                         class="group-box_item"
@@ -69,8 +69,8 @@
                         小组{{ index + 1 + ':&nbsp;&nbsp;' + item }}
                       </div>
                     </div>
-                  </van-popup>
-                  <!-- <div class="group-box" v-if="groupArray.length">
+                  </van-popup> -->
+                  <div class="group-box" v-if="groupArray.length">
                     <div
                       class="group-box_item"
                       v-for="(item, index) in groupArray"
@@ -78,7 +78,7 @@
                     >
                       小组{{ index + 1 + ':&nbsp;&nbsp;' + item }}
                     </div>
-                  </div> -->
+                  </div>
                   <div style="margin: 16px">
                     <van-button round block type="info" @click="onSubmit">
                       {{ btnText }}
@@ -98,7 +98,7 @@
             </div>
           </div>
         </van-tab>
-        <van-tab title="分工">
+        <!-- <van-tab title="分工">
           <div class="tab-card">
             <div class="title-hint">
               输入主题、各项任务及人数，如：打扫卫生、擦黑板；系统随机分配给各个小伙伴任务
@@ -170,7 +170,7 @@
               </div>
             </div>
           </div>
-        </van-tab>
+        </van-tab> -->
         <van-tab title="选号">
           <div class="tab-card">
             <div class="title-hint">
@@ -274,6 +274,7 @@ export default {
   methods: {
     liveQuantity(e) {
       clearInterval(this.timer)
+      this.textNumber = []
       switch (e) {
         case '01':
           this.textNumber = [null]
@@ -408,45 +409,45 @@ export default {
     },
 
     //随机派发任务
-    onSubmitTask() {
-      if (!this.taskNumber) {
-        this.$toast('请输入参与人数/组数...')
-        return
-      }
-      if (!this.taskNameLists.length) {
-        this.$toast('请输入任务...')
-        return
-      }
-      if (this.targetTaskList.length > 0) {
-        this.targetTaskList = []
-      }
-      //目标数组的长度就是参与人数的长度
-      // this.targetTaskList.length = this.taskNumber
-      // 先打乱任务顺序
-      let arr = JSON.parse(JSON.stringify(this.taskNameLists))
-      arr = this.ranSort(arr)
+    // onSubmitTask() {
+    //   if (!this.taskNumber) {
+    //     this.$toast('请输入参与人数/组数...')
+    //     return
+    //   }
+    //   if (!this.taskNameLists.length) {
+    //     this.$toast('请输入任务...')
+    //     return
+    //   }
+    //   if (this.targetTaskList.length > 0) {
+    //     this.targetTaskList = []
+    //   }
+    //   //目标数组的长度就是参与人数的长度
+    //   // this.targetTaskList.length = this.taskNumber
+    //   // 先打乱任务顺序
+    //   let arr = JSON.parse(JSON.stringify(this.taskNameLists))
+    //   arr = this.ranSort(arr)
 
-      //重复派发任务
-      if (this.taskChecked) {
-        for (let i = 0; i < this.taskNumber; i++) {
-          let index = Math.floor(Math.random() * this.taskNameLists.length)
-          this.targetTaskList.push(this.taskNameLists[index])
-        }
-      } else {
-        for (let i = 0; i < this.taskNumber; i++) {
-          this.targetTaskList.push(arr[i])
-        }
-      }
-    },
-    addTask() {
-      if (!this.taskName) {
-        this.$toast('请输入任务名...')
-        return
-      }
-      this.taskNameLists.push(this.taskName)
-      this.$toast('添加成功')
-      this.taskName = null
-    },
+    //   //重复派发任务
+    //   if (this.taskChecked) {
+    //     for (let i = 0; i < this.taskNumber; i++) {
+    //       let index = Math.floor(Math.random() * this.taskNameLists.length)
+    //       this.targetTaskList.push(this.taskNameLists[index])
+    //     }
+    //   } else {
+    //     for (let i = 0; i < this.taskNumber; i++) {
+    //       this.targetTaskList.push(arr[i])
+    //     }
+    //   }
+    // },
+    // addTask() {
+    //   if (!this.taskName) {
+    //     this.$toast('请输入任务名...')
+    //     return
+    //   }
+    //   this.taskNameLists.push(this.taskName)
+    //   this.$toast('添加成功')
+    //   this.taskName = null
+    // },
     reSet(e) {
       switch (e) {
         case 1:
@@ -455,12 +456,12 @@ export default {
           this.groups = null
           this.groupArray = []
           break
-        case 2:
-          this.taskName = null
-          this.taskNumber = null
-          this.taskNameLists = []
-          this.targetTaskList = []
-          break
+        // case 2:
+        //   this.taskName = null
+        //   this.taskNumber = null
+        //   this.taskNameLists = []
+        //   this.targetTaskList = []
+        //   break
         default:
           break
       }
