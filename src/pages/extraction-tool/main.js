@@ -56,10 +56,10 @@ function loadMessages() {
 }
 
 const { context, messages } = loadMessages()
-console.log(messages, ',====);')
+console.log(messages, context, ',====);')
 // VueI18n 实例
 Vue.use(VueI18n)
-console.log(navigator)
+
 const i18n = new VueI18n({
   // locale: 'zh-CN',
   locale: navigator.language, // 根据浏览器环境设置网站语言

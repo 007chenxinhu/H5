@@ -242,7 +242,7 @@ export default {
       textNumber: [null],
       btnText: '提交',
       groupArray: [],
-      activity: null,
+      activity: 1,
       number: null,
       groups: null,
       checked: true,
