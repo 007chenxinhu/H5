@@ -11,8 +11,20 @@ const routes = [
   {
     path: '/home',
     name: 'home',
-    meta: { title: '随机抽签' },
+    meta: { title: '随机抽签首页' },
     component: () => import('../views/home/index.vue'),
+  },
+  {
+    path: '/grouping',
+    name: 'grouping',
+    meta: { title: '分组' },
+    component: () => import('../views/home/grouping.vue'),
+  },
+  {
+    path: '/random-number',
+    name: 'random-number',
+    meta: { title: '选号' },
+    component: () => import('../views/home/random-number.vue'),
   },
 ]
 

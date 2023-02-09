@@ -13,11 +13,10 @@
   background-size: 100% 100%;
 }
 .home {
+  height: 100%;
+  position: relative;
     text-align: center;
     font-family: '阿里妈妈数黑体 Bold';
-    // .contain{
-      // padding: 0 2rem;
-    // }
     .header{
         display: flex;
         justify-content: center;
@@ -34,127 +33,24 @@
         }
     }
     .contain{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
         background-color: rgb(244, 249, 243);
-        .tab-card{
-          padding: 1rem;
-          font-size: 0.4rem;
-          .title-hint{
-            font-size: 0.4rem;
-            color: #555151;
-          }
-          .title{
-            font-size: 0.4rem;
-            padding: 0.5rem;
-            background-color: rgb(24, 124, 177);
-            border-radius: 0.2rem 0.2rem 0 0;
-          }
-          .group-box{
-            padding: 0.5rem;
-            background-color: bisque;
-            border-radius: 0.2rem;
-            .group-box_item{
-              font-size: 0.32rem;
-              line-height: 0.4rem;
-              text-align:left;
-            }
-          }
-          .change-quantity{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #fff;
-            font-size: 0.34rem;
-            padding: 0.2rem 0;
-            .quantity{
-              border: 0.01rem solid #555151;
-              padding: 0.1rem;
-              font-size: 0.34rem;
-              margin:  0 0.2rem;
-              cursor: pointer;
-            }
-            .live{
-              background-color: #1989fa;
-            }
-          }
+        .contain-buttonGroup{
+          padding: 3rem, 3rem;
+          margin-bottom: 1rem;
+          border: 0.01rem solid #000000;
+          font-family: '阿里妈妈数黑体 Bold';
+          font-size: 0.48rem;
         }
-        /deep/ .van-tab{
-          span{
-            font-size: 0.38rem;
-          }
+        .contain-buttonRandomNumber{
+          padding: 3rem, 3rem;
+          border: 0.01rem solid #000000;
+          font-family: '阿里妈妈数黑体 Bold';
+          font-size: 0.48rem;
         }
-        /deep/ .van-popup{
-          border-radius: 0.2rem;
-        }
-        .van-tab__text--ellipsis{
-          font-size: 0.5rem;
-        }
-        /deep/ .van-switch-cell{
-          .van-cell__title{
-            text-align: left;
-            span{
-              font-size: 0.32rem;
-            }
-          }
-        }
-       
-        /deep/ .van-cell--clickable{
-          text-align: left;
-          .van-cell__title{
-            text-align: left;
-            span{
-              font-size: 0.32rem;
-            }
-          }
-        }
-        /deep/ .van-field__body{
-          .van-field__control{
-            text-align: right;
-            font-size: 0.32rem;
-
-          }
-        }
-        /deep/ .van-field__label{
-          white-space: nowrap;
-          span{
-            font-size: 0.32rem;
-          }
-        }
-        /deep/ .van-button{
-          .van-button__content{
-            .van-button__text{
-                font-size: 0.32rem;
-            }
-          }
-        }
-        
     }
 }
-.number-Participants{
-  text-decoration: line-through;
-}
-.add-box{
-  position: relative;
-  height: 1rem;
-  margin-top: 0.2rem;
-  .add-task{
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 1rem;
-    padding: 0.1rem 0.3rem;
-    border-radius: 0.2rem;
-    background-color: antiquewhite;
-    font-size: 0.32rem;
-    cursor: pointer;
-  }
-}
-.showNumber-box{
-  padding: 0.5rem;
-  font-size: 0.34rem;
-  box-shadow: 0.01rem 0.01rem 0.05rem 0.01rem rgba($color: #000000, $alpha: 1.0);
-  background:linear-gradient(to bottom,white 0%,white 50%,#f3f3f3 50.01%,#f3f3f3 100%);
-  .showNumber{
-    font-size: 0.34rem;
-    margin:  0 0.1rem;
-  }
-}
+
