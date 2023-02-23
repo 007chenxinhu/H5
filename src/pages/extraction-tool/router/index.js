@@ -4,6 +4,18 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 const routes = [
   {
+    path: '/index',
+    name: 'index',
+    meta: { title: '抽签助手' },
+    component: () => import('../views/index.vue'),
+  },
+  {
+    path: '/random',
+    name: 'random',
+    meta: { title: '抽签助手' },
+    component: () => import('../views/random.vue'),
+  },
+  {
     path: '*',
     name: '',
     redirect: '/home',

@@ -1,0 +1,37 @@
+<template>
+  <div id="circle" ref="circle">
+    <svg width="600" height="600">
+      <circle cx="300" cy="300" r="275" stroke="rgba(0, 71, 204, .8)" stroke-width="50" fill="rgba(0, 71, 204, .2)" />
+      <circle ref="ball" :cx="cx" :cy="cy" r="25" fill="rgba(0, 71, 204, .8)" />
+    </svg>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      cx: 300,
+      cy: 275,
+      x: 0,
+      y: 0,
+      length: 0,
+      angle: 0
+    }
+  },
+  mounted() {
+    let swing = setInterval(() => {
+      this.length = this.length >= 300 ? 0 : this.length + 5;
+      // 球的X,Y坐标
+      this.cx = 300 + this.length * Math.sin(this.angle);
+      this.cy = 275 - this.length * Math.cos(this.angle);
+      // X,Y移动后，改变angle
+      this.angle += 0.1;
+    }, 10)
+
+  },
+}
+</script>
+<style scoped>
+
+</style>

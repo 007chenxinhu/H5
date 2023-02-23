@@ -23,8 +23,11 @@ body {
   margin: 0;
   padding: 0;
   position: relative;
-  font-size: calc(100vw / 19.2);
+  font-size: calc(100vw / 12.8);
 }
+/* html {
+  filter: grayscale(1);
+} */
 div,
 span,
 p,

@@ -1,0 +1,19 @@
+@mixin wh($width, $height) {
+  width: $width;
+  height: $height;
+}
+@mixin font($size, $weight, $color) {
+  font-size: $size;
+  color: $color;
+  font-weight: $weight;
+}
+@mixin bg($url) {
+  background-image: url($url);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.home {
+}
+
+
+

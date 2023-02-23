@@ -17,6 +17,7 @@ import {
   Radio,
   Cell,
   Popup,
+  Slider,
 } from 'vant'
 import './style/common.scss'
 import 'vant/lib/index.css'
@@ -38,6 +39,7 @@ Vue.use(Toast)
   .use(Radio)
   .use(Cell)
   .use(Popup)
+  .use(Slider)
 // 加载所有语言环境并记住上下文
 function loadMessages() {
   const context = require.context('./lang', true, /[a-z0-9-_]+.json$/i)
@@ -51,7 +53,6 @@ function loadMessages() {
       }),
       {},
     )
-
   return { context, messages }
 }
 

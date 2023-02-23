@@ -1,0 +1,103 @@
+模拟
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>20个球体对撞重力模拟</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var width = canvas.width = window.innerWidth;
+        var height = canvas.height = window.innerHeight;
+        var balls = [];
+        var numBalls = 20;
+        var gravity = 0.2;
+        var friction = 0.9;
+        var colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B', '#000000'];
+        function random(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+        function Ball(x, y, velX, velY, color, size) {
+            this.x = x;
+            this.y = y;
+            this.velX = velX;
+            this.velY = velY;
+            this.color = color;
+            this.size = size;
+        }
+        Ball.prototype.draw = function () {
+            ctx.beginPath();
+            ctx.fillStyle = this.color;
+            ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+        Ball.prototype.update = function () {
+            if ((this.x + this.size) >= width) {
+                this.velX = -(this.velX);
+            }
+            if ((this.x - this.size) <= 0) {
+                this.velX = -(this.velX);
+            }
+            if ((this.y + this.size) >= height) {
+                this.velY = -(this.velY);
+                this.velX *= friction;
+            }
+            if ((this.y - this.size) <= 0) {
+                this.velY = -(this.velY);
+            }
+            this.velY += gravity;
+            this.x += this.velX;
+            this.y += this.velY;
+        }
+        Ball.prototype.collisionDetect = function () {
+            for (var j = 0; j < balls.length; j++) {
+                if (!(this === balls[j])) {
+                    var dx = this.x - balls[j].x;
+                    var dy = this.y - balls[j].y;
+                    var distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < this.size + balls[j].size) {
+                        balls[j].color = this.color = 'rgb(' + random(0, 255) + ',' + random(0, 255) + ',' + random(0, 255) + ')';
+                    }
+                }
+            }
+        }
+        function loop() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+            ctx.fillRect(0, 0, width, height);
+            while (balls.length < numBalls) {
+                var size = random(10, 20);
+                var ball = new Ball(
+                    random(0 + size, width - size),
+                    random(0 + size, height - size),
+                    random(-7, 7),
+                    random(-7, 7),
+                    colors[Math.floor(Math.random() * colors.length)],
+                    size
+                );
+                balls.push(ball);
+            }
+            for (var i = 0; i < balls.length; i++) {
+                balls[i].draw();
+                balls[i].update();
+                balls[i].collisionDetect();
+            }
+            requestAnimationFrame(loop);
+        }
+        loop();
+    </script>
+</body>
+</html>
