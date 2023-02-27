@@ -6,7 +6,7 @@ const routes = [
   {
     path: '/index',
     name: 'index',
-    meta: { title: '抽签助手' },
+    meta: { title: '随机数' },
     component: () => import('../views/index.vue'),
   },
   {

@@ -23,7 +23,7 @@ body {
   margin: 0;
   padding: 0;
   position: relative;
-  font-size: calc(100vw / 12.8);
+  font-size: calc(100vw / 6);
 }
 /* html {
   filter: grayscale(1);
