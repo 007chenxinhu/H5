@@ -8,6 +8,18 @@
     <div class="rocket">
       <img class="rocket-box" src="../assets/galaxy_plane.png" />
     </div>
+    <!-- 星球 -->
+    <div class="celestial-body1">
+      <img class="celestial-body-box1" src="../assets/galaxy_blue.png" />
+    </div>
+    <!-- 星球 -->
+    <div class="celestial-body2">
+      <img class="celestial-body-box2" src="../assets/galaxy_green.png" />
+    </div>
+    <!-- 星球 -->
+    <div class="celestial-body3">
+      <img class="celestial-body-box3" src="../assets/galaxy_red.png" />
+    </div>
     <!-- 球载体 -->
     <div class="draw">
       <div class="draw-box">
@@ -21,31 +33,34 @@
                 height: ball.height,
                 'border-radius': ball.borderRadius,
                 position: 'absolute',
-                left: ball.x * 0.02 + 'rem',
-                top: ball.y * 0.02 + 'rem',
+                left: ball.x * 0.01 + 'rem',
+                top: ball.y * 0.01 + 'rem',
+                border: '0.03rem solid #ccc',
               }"
               v-if="!ball.isMoveball"
               @redirect="redirect(key)"
             >
-              {{ key + value[0] }}
+              <!-- {{ key + value[0] }}  -->
             </div>
           </div>
         </div>
       </div>
     </div>
     <!-- 飞船吸球 -->
-    <div class="main-img" id="serve-img-area">
-      <div class="point-area">
+    <div class="main-img" id="serve-img-area" v-show="isShowUFO">
+      <!-- <div class="point-area">
         <p
           class="point-name"
           style="position: absolute; top: 0.3rem; left: 0.5rem"
-        >
-          <!-- 华东 -->
-        </p>
+        ></p>
         <a class="point point-dot"></a>
         <div class="point point-10"></div>
         <div class="point point-40"></div>
         <div class="point point-shadow point-80"></div>
+      </div> -->
+      <div class="ufo fadeInLeftBig animated">
+        <img class="ufo-box" src="../assets/ufo.png" />
+        <img class="ufo-light-box" src="../assets/light.png" />
       </div>
     </div>
     <!-- 飞船吸球过程 -->
@@ -54,18 +69,19 @@
         <div v-for="(ball, key) in arrResult" :key="key">
           <div
             class="move-ball"
-            v-if="number[key]"
+            v-if="numberArr[key]"
             :style="{
               'background-color': ball.color,
               width: ball.width,
               height: ball.height,
               'border-radius': ball.borderRadius,
               position: 'absolute',
-              left: ball.x * 0.02 + 'rem',
-              top: ball.y * 0.02 + 'rem',
+              left: ball.x * 0.01 + 'rem',
+              top: ball.y * 0.01 + 'rem',
+              border: '0.03rem solid #ccc',
             }"
           >
-            {{ number[key] }}
+            <!-- {{ number[key] }} -->
           </div>
         </div>
       </div>
@@ -77,7 +93,7 @@
     </div> -->
 
     <div class="set-btn" @click="setParam">设置</div>
-    <div class="btn" @click="getResult">抽取</div>
+    <!-- <div class="btn" @click="getResult">抽取</div> -->
     <div :class="showPopupClass" v-show="showPopup">
       <div class="closeWrapper" @click="closePopup">
         <div class="close"></div>
@@ -97,6 +113,22 @@
       </div>
       <button @click="submit" class="submit">确定</button>
     </div>
+    <!-- 结果展示款 -->
+    <div :class="showResultPopupClass" v-show="isShowResultPopup">
+      <div class="closeWrapper" @click="closeResultPopup">
+        <div class="close"></div>
+      </div>
+      <div
+        class="result-ball"
+        v-for="item in numberArr"
+        :key="item"
+        :style="{
+          'background-color': randomColor,
+        }"
+      >
+        {{ item }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -106,7 +138,7 @@ export default {
   data() {
     return {
       first: true,
-      number: [],
+      numberArr: [],
       bollNumber: 20,
       ballitems: [],
       coordinate: [],
@@ -120,11 +152,15 @@ export default {
       showPopup: false,
       value: [1, 20],
       showPopupClass: 'solid-limit bounceInDown animated',
-      showValue: '当前值取值区间：【1-20】',
+      showResultPopupClass: 'result-popup bounceInDown animated',
+      showValue: '【1-20】',
       quantityArr: ['01', '02', '05', '10'],
       changeQuantity: '01',
       arrResult: [],
       showDrawMove: false, //初始化是否全部显示，除了选中的球
+      isShowUFO: false,
+      isShowResultPopup: false,
+      randomColor: `#${Math.floor(Math.random() * 0xffffff).toString(16)}`,
     }
   },
   created: function () {
@@ -179,15 +215,22 @@ export default {
     },
     closePopup() {
       let self = this
-      this.showPopupClass = 'solid-limit hinge animated'
+      this.showPopupClass = 'solid-limit bounceOutRight animated'
       setTimeout(() => {
         self.showPopupClass = 'solid-limit bounceInDown animated'
         self.showPopup = false
       }, 2000)
     },
+    closeResultPopup() {
+      let self = this
+      this.showResultPopupClass = 'result-popup bounceOutRight animated'
+      setTimeout(() => {
+        self.showResultPopupClass = 'result-popup bounceInDown animated'
+        self.isShowResultPopup = false
+      }, 2000)
+    },
     onChange(value) {
-      this.showValue =
-        '当前值取值区间：【' + this.value[0] + ' - ' + this.value[1] + '】'
+      this.showValue = '【' + this.value[0] + ' - ' + this.value[1] + '】'
     },
     setParam() {
       this.showPopup = true
@@ -195,16 +238,20 @@ export default {
     submit() {
       this.first = false
       let self = this
-      this.showPopupClass = 'solid-limit hinge animated'
+      this.showPopupClass = 'solid-limit bounceOutRight animated'
       this.ballNumber = this.value[1] - this.value[0]
       this.createBall()
       this.move()
       this.isShowBall = false
-      this.number = []
+      this.numberArr = []
+      this.isShowUFO = true
       setTimeout(() => {
         self.showPopup = false
         self.showPopupClass = 'solid-limit bounceInDown animated'
       }, 2000)
+      setTimeout(() => {
+        this.getResult()
+      }, 3000)
     },
     randomFrom(lowerValue, upperValue) {
       return Math.floor(
@@ -216,9 +263,9 @@ export default {
         this.$toast('请先设置大小...')
         return
       }
-      this.number = []
-      self.arrResult = []
-      clearInterval(this.timer)
+      this.numberArr = []
+      this.arrResult = []
+
       // if (this.number) return
       // this.number = Number(this.randomFrom(this.value[0], this.value[1]))
       // this.arrResult.push(this.ballitems[this.number])
@@ -243,51 +290,60 @@ export default {
       let self = this
       let num = Number(e)
       let chooseBall
+
       if (num === 1) {
-        this.number.push(Number(this.randomFrom(this.value[0], this.value[1])))
-        chooseBall = this.ballitems[this.number - 1]
+        this.numberArr.push(
+          Number(this.randomFrom(this.value[0], this.value[1])),
+        )
+        chooseBall = this.ballitems[this.numberArr.length - 1]
         this.arrResult.push(chooseBall)
         this.getResultTimer = setInterval(() => {
           self.arrResult.forEach((ball, i) => {
             ball.isMoveball = true
-            ball.x > 475 ? ball.x-- : ball.x
-            ball.x < 475 ? ball.x++ : ball.x > 475 ? ball.x : ball.x++
-            ball.y > -128 ? ball.y-- : ball.y
-            ball.y < -128 ? ball.y++ : ball.y > -128 ? ball.y : ball.y++
+            ball.x > 630 ? ball.x-- : ball.x
+            ball.x < 630 ? ball.x++ : ball.x > 630 ? ball.x : ball.x++
+            ball.y > -10 ? ball.y-- : ball.y
+            ball.y < -10 ? ball.y++ : ball.y > -10 ? ball.y : ball.y++
           }, 1)
           setTimeout(function () {
-            clearInterval(self.getResultTimer)
-            self.isShowBall = true
-          }, 3000)
+            clearInterval(self.timer)
+            self.isShowResultPopup = true
+          }, 1000)
         })
+        setTimeout(function () {
+          clearInterval(self.getResultTimer)
+        }, 2500)
       } else {
-        console.log(this.number.length, num, '执行')
-        while (this.number.length < num) {
-          this.number.push(
+        while (this.numberArr.length < num) {
+          this.numberArr.push(
             Number(this.randomFrom(this.value[0], this.value[1])),
           )
-          chooseBall = this.ballitems[this.number[this.number.length - 1]]
+          chooseBall = this.ballitems[this.numberArr[this.numberArr.length - 1]]
           this.arrResult.push(chooseBall)
           if (this.arrResult.length === num) {
             this.getResultTimer = setInterval(() => {
               self.arrResult.forEach((ball, i) => {
                 ball.isMoveball = true
-                console.log(ball)
-                ball.x > 475 ? ball.x-- : ball.x
-                ball.x < 475 ? ball.x++ : ball.x > 475 ? ball.x : ball.x++
-                ball.y > -128 ? ball.y-- : ball.y
-                ball.y < -128 ? ball.y++ : ball.y > -128 ? ball.y : ball.y++
+                ball.x > 630 ? ball.x-- : ball.x
+                ball.x < 630 ? ball.x++ : ball.x > 630 ? ball.x : ball.x++
+                ball.y > -10 ? ball.y-- : ball.y
+                ball.y < -10 ? ball.y++ : ball.y > -10 ? ball.y : ball.y++
               })
               setTimeout(function () {
-                clearInterval(self.getResultTimer)
-                self.isShowBall = true
-              }, 3000)
+                clearInterval(self.timer)
+                self.isShowResultPopup = true
+              }, 1000)
             }, 1)
+            setTimeout(function () {
+              clearInterval(self.getResultTimer)
+            }, 2500)
           }
         }
       }
+      // clearInterval(self.timer) //终止圆内球一直滚动
+
       this.ballitems.forEach((ball, i) => {
-        this.number.forEach((item, index) => {
+        this.numberArr.forEach((item, index) => {
           if (i + 1 === item) {
             ball.isMoveball = true
           }
@@ -297,10 +353,10 @@ export default {
     //随机生成圆内的坐标
     isCir() {
       while (true) {
-        const x = Math.random() * (2 * 160) - 160
-        const y = Math.random() * (2 * 160) - 160
-        if (x * x + y * y <= 160 * 160) {
-          return [160 + x, 160 + y]
+        const x = Math.random() * (2 * 320) - 320
+        const y = Math.random() * (2 * 320) - 320
+        if (x * x + y * y <= 320 * 320) {
+          return [320 + x, 320 + y]
         }
       }
     },
@@ -313,8 +369,8 @@ export default {
           ball.y += ball.direct.y * ball.speedY
 
           if (!self.pointInsideCircle(ball.x, ball.y)) {
-            ball.direct.x *= -Math.random()
-            ball.direct.y *= -Math.random()
+            ball.direct.x *= -1
+            ball.direct.y *= -1
             // if (!this.pointInsideCircle(ball.x, ball.y)) {
             //   if (
             //     left + this.ballItem[i].offsetWidth >= circle.offsetWidth ||
@@ -424,9 +480,9 @@ export default {
      *  返回true为真，false为假
      *  */
     pointInsideCircle(x, y) {
-      var dx = 160 - x
-      var dy = 160 - y
-      return dx * dx + dy * dy <= 160 * 160
+      var dx = 320 - x
+      var dy = 320 - y
+      return dx * dx + dy * dy <= 320 * 320
     },
     createCircle() {
       //随机生成圆点宽高
@@ -490,680 +546,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@mixin wh($width, $height) {
-  width: $width;
-  height: $height;
-}
-@mixin bg($url) {
-  background-image: url($url);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-}
-.buttom-bg {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  .buttom-box {
-    width: 100%;
-  }
-}
-.rocket {
-  @include wh(3.28rem, 2.44rem);
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
-  .rocket-box {
-    width: 100%;
-    animation: rocket 17s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
-  }
-}
-.content {
-  position: relative;
-  overflow: hidden;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  // align-items: center;
-  @include bg('../assets/bg.png');
-  // background-color: gainsboro;
-}
-
-.draw {
-  position: relative;
-  @include wh(13.68rem, 13.68rem);
-  @include bg('../assets/bg_light.png');
-  animation: fadenum 10s infinite;
-  -webkit-animation: fadenum 10s infinite; /* Safari 和 Chrome */
-  .draw-box {
-    position: relative;
-    top: 2.7rem;
-    left: 2.7rem;
-    @include wh(8.08rem, 8.08rem);
-    @include bg('../assets/bg_earth.png');
-  }
-}
-@keyframes fadenum {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-#circle {
-  position: relative;
-  width: 7rem;
-  height: 7rem;
-  // background-color: lightblue;
-  border-radius: 50%;
-  margin-top: 0.1rem;
-  top: 0.5rem;
-  left: 3.75rem;
-  transform: translate(-45%, 0);
-}
-
-.ball {
-  text-align: center;
-  line-height: 0.6rem;
-  font-size: 0.34rem;
-  font-weight: 500;
-}
-
-.set-btn {
-  position: absolute;
-  font-size: 0.3rem;
-  top: 50%;
-  left: 0%;
-  transform: translate(50%, -50%);
-  padding: 0.4rem 0.9rem;
-  background: rgb(9, 193, 150);
-  border-radius: 15%;
-}
-
-.btn {
-  position: absolute;
-  font-size: 0.3rem;
-  top: 50%;
-  right: 0%;
-  transform: translate(-50%, -50%);
-  padding: 0.4rem 0.9rem;
-  background: rgb(9, 193, 150);
-  border-radius: 15%;
-}
-
-.draw-ball {
-  position: absolute;
-  // width: 0;
-  top: 45.5%;
-  right: 48%;
-  text-align: center;
-  margin: auto;
-  padding: 0.26rem;
-  font-size: 0.34rem;
-  border-radius: 50%;
-  background: #b4a078 radial-gradient(at 30% 30%, #f7f5f1, #b4a078);
-  /* 当动画完成后，保持最后一帧 */
-  animation: bounce 2s cubic-bezier(0.1, 0.25, 1, 0.25) forwards;
-}
-
-.solid-limit {
-  width: 70%;
-  padding: 1.5rem 0.8rem;
-  position: absolute;
-  top: 25%;
-  text-align: center;
-  background-color: hsla(0, 0%, 100%, 0.5);
-  backdrop-filter: blur(10px);
-  border-radius: 1rem;
-  z-index: 1;
-}
-
-.value {
-  font-size: 0.5rem;
-  // margin-left: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.submit {
-  font-size: 0.5rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.3rem;
-}
-
-.main-img {
-  position: absolute;
-  top: 2%;
-  right: 20.5%;
-}
-
-.change-quantity {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.5rem;
-  padding: 0.5rem 0;
-
-  .quantity {
-    border: 0.01rem solid #555151;
-    padding: 0.1rem;
-    font-size: 0.5rem;
-    margin: 0 0.2rem;
-    cursor: pointer;
-  }
-  .live {
-    background-color: #1e80ff;
-  }
-}
-.draw-move-ball {
-  position: absolute;
-  width: 7rem;
-  height: 7rem;
-  // background-color: lightblue;
-  border-radius: 50%;
-  margin-top: 0.1rem;
-  top: 3.25rem;
-  left: 50%;
-  transform: translate(-50%, 0);
-  .move-ball {
-    text-align: center;
-    line-height: 0.6rem;
-    font-size: 0.34rem;
-    font-weight: 500;
-  }
-}
-.closeWrapper {
-  position: absolute;
-  width: 0.5rem;
-  height: 0.5rem;
-  top: 0.44rem;
-  right: 0.64rem;
-}
-
-.close {
-  position: absolute;
-  width: 0.5rem;
-  height: 0.5rem;
-  border: 0.01rem solid;
-  border-radius: 50%;
-}
-
-.close::before,
-.close::after {
-  position: absolute;
-  content: '';
-  background-color: #cccccc;
-  width: 0px;
-  height: 0.33rem;
-  border: 0.01rem solid;
-  left: 50%;
-  top: 20%;
-}
-
-.close::before {
-  transform: rotate(45deg);
-}
-
-.close::after {
-  transform: rotate(-45deg);
-}
-
-// 火箭
-@keyframes rocket {
-  25% {
-    transform: translateY(-0.8rem);
-    animation-timing-function: ease-in;
-    transform: rotate(5deg);
-  }
-
-  50% {
-    transform: translate(1rem, -0.2rem);
-  }
-
-  70% {
-    transform: translateX(0.6rem);
-    transform: rotate(-10deg);
-  }
-
-  90% {
-    transform: translateY(1rem);
-  }
-}
-@-webkit-keyframes rocket /* Safari 与 Chrome */ {
-  25% {
-    transform: translateY(-0.8rem);
-    animation-timing-function: ease-in;
-    transform: rotate(5deg);
-  }
-
-  50% {
-    transform: translate(0.5rem, -0.2rem);
-  }
-
-  70% {
-    transform: translateX(0.6rem);
-    transform: rotate(-10deg);
-  }
-
-  90% {
-    transform: translateY(0.5rem);
-  }
-}
-
-// 结果弹跳求
-@keyframes bounce {
-  40%,
-  60%,
-  80%,
-  to {
-    transform: translateY(3.8rem);
-    animation-timing-function: ease-in;
-  }
-
-  50% {
-    transform: translateY(2.6rem);
-  }
-
-  70% {
-    transform: translateY(3rem);
-  }
-
-  90% {
-    transform: translateY(3.6rem);
-  }
-}
-
-@-webkit-keyframes ripple {
-  0% {
-    opacity: 0;
-    -webkit-transform: scale(0.1, 0.1);
-  }
-
-  5% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    -webkit-transform: scale(1);
-  }
-}
-
-@-moz-keyframes ripple {
-  0% {
-    opacity: 0;
-    -moz-transform: scale(0.1, 0.1);
-  }
-
-  5% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    -moz-transform: scale(1);
-  }
-}
-
-@-o-keyframes ripple {
-  0% {
-    opacity: 0;
-    -o-transform: scale(0.1, 0.1);
-  }
-
-  5% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    -o-transform: scale(1);
-  }
-}
-
-@keyframes ripple {
-  0% {
-    opacity: 0;
-    -webkit-transform: scale(0.1, 0.1);
-    -moz-transform: scale(0.1, 0.1);
-    -ms-transform: scale(0.1, 0.1);
-    transform: scale(0.1, 0.1);
-  }
-
-  5% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    transform: scale(1);
-  }
-}
-
-// UFO光圈
-#serve-img-area.paused .point-area .point-10:after,
-#serve-img-area.paused .point-area .point-20:after,
-#serve-img-area.paused .point-area .point-80:after {
-  animation-play-state: paused;
-  -webkit-animation-play-state: paused;
-  /* Safari 和 Chrome */
-}
-
-/* 定义范围*/
-#serve-img-area .point-area {
-  text-align: center;
-  position: relative;
-  width: 1.5rem;
-  height: 1.5rem;
-  -webkit-transition: opacity 0.5s ease-out;
-  -moz-transition: opacity 0.5s ease-out;
-  -o-transition: opacity 0.5s ease-out;
-  transition: opacity 0.5s ease-out;
-}
-
-/* 定义圆点*/
-#serve-img-area .point-area .point {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  width: 0.2rem;
-  height: 0.2rem;
-  -webkit-border-radius: 50%;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 50%;
-  -moz-background-clip: padding;
-  border-radius: 50%;
-  background-clip: padding-box;
-  background: transparent;
-}
-
-/* 定义圆扩散的阴影*/
-#serve-img-area .point-area .point-shadow:after {
-  -webkit-box-shadow: inset 0 0 5em rgba(0, 205, 236, 0.16);
-  -moz-box-shadow: inset 0 0 5em rgba(0, 205, 236, 0.16);
-  box-shadow: inset 0 0 5em rgba(0, 205, 236, 0.16);
-}
-
-// #serve-img-area .point-area .point-dot {
-//   z-index: 1;
-//   background-color: #6ad7e9;
-//   border: 1px solid rgba(0, 205, 236, 0.37);
-// }
-#serve-img-area .point-area .point-10 {
-  width: 100%;
-  height: 100%;
-}
-
-#serve-img-area .point-area .point-10:after {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  border-radius: 50%;
-  border: 0.09rem solid #00cdec;
-  opacity: 0;
-  -webkit-animation: ripple 4500ms ease-out 225ms infinite;
-  -moz-animation: ripple 4500ms ease-out 225ms infinite;
-  -o-animation: ripple 4500ms ease-out 225ms infinite;
-  animation: ripple 4500ms ease-out 225ms infinite;
-}
-
-#serve-img-area .point-area .point-40 {
-  width: 100%;
-  height: 100%;
-}
-
-#serve-img-area .point-area .point-40:after {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  border-radius: 50%;
-  border: 0.1rem solid #00cdec;
-  opacity: 0;
-  -webkit-animation: ripple 4500ms ease-out 900ms infinite;
-  -moz-animation: ripple 4500ms ease-out 900ms infinite;
-  -o-animation: ripple 4500ms ease-out 900ms infinite;
-  animation: ripple 4500ms ease-out 900ms infinite;
-}
-
-#serve-img-area .point-area .point-80 {
-  width: 100%;
-  height: 100%;
-}
-
-#serve-img-area .point-area .point-80:after {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  border-radius: 50%;
-  border: 0.12rem solid #00cdec;
-  opacity: 0;
-  -webkit-animation: ripple 4500ms ease-out 1800ms infinite;
-  -moz-animation: ripple 4500ms ease-out 1800ms infinite;
-  -o-animation: ripple 4500ms ease-out 1800ms infinite;
-  animation: ripple 4500ms ease-out 1800ms infinite;
-}
-
-// 设置弹窗动画
-// 进场
-/*base code*/
-.animated {
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-
-.animated.infinite {
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-}
-
-.animated.hinge {
-  -webkit-animation-duration: 2s;
-  animation-duration: 2s;
-}
-
-/*the animation definition*/
-@-webkit-keyframes bounceInDown {
-  0%,
-  100%,
-  60%,
-  75%,
-  90% {
-    -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-
-  0% {
-    opacity: 0;
-    -webkit-transform: translate3d(0, -3000px, 0);
-    transform: translate3d(0, -3000px, 0);
-  }
-
-  60% {
-    opacity: 1;
-    -webkit-transform: translate3d(0, 25px, 0);
-    transform: translate3d(0, 25px, 0);
-  }
-
-  75% {
-    -webkit-transform: translate3d(0, -10px, 0);
-    transform: translate3d(0, -10px, 0);
-  }
-
-  90% {
-    -webkit-transform: translate3d(0, 5px, 0);
-    transform: translate3d(0, 5px, 0);
-  }
-
-  100% {
-    -webkit-transform: none;
-    transform: none;
-  }
-}
-
-@keyframes bounceInDown {
-  0%,
-  100%,
-  60%,
-  75%,
-  90% {
-    -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-
-  0% {
-    opacity: 0;
-    -webkit-transform: translate3d(0, -3000px, 0);
-    -ms-transform: translate3d(0, -3000px, 0);
-    transform: translate3d(0, -3000px, 0);
-  }
-
-  60% {
-    opacity: 1;
-    -webkit-transform: translate3d(0, 25px, 0);
-    -ms-transform: translate3d(0, 25px, 0);
-    transform: translate3d(0, 25px, 0);
-  }
-
-  75% {
-    -webkit-transform: translate3d(0, -10px, 0);
-    -ms-transform: translate3d(0, -10px, 0);
-    transform: translate3d(0, -10px, 0);
-  }
-
-  90% {
-    -webkit-transform: translate3d(0, 5px, 0);
-    -ms-transform: translate3d(0, 5px, 0);
-    transform: translate3d(0, 5px, 0);
-  }
-
-  100% {
-    -webkit-transform: none;
-    -ms-transform: none;
-    transform: none;
-  }
-}
-
-.bounceInDown {
-  -webkit-animation-name: bounceInDown;
-  animation-name: bounceInDown;
-}
-
-//离场
-/*base code*/
-.animated {
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-
-.animated.infinite {
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-}
-
-.animated.hinge {
-  -webkit-animation-duration: 2s;
-  animation-duration: 2s;
-}
-
-/*the animation definition*/
-@-webkit-keyframes hinge {
-  0% {
-    -webkit-transform-origin: top left;
-    transform-origin: top left;
-    -webkit-animation-timing-function: ease-in-out;
-    animation-timing-function: ease-in-out;
-  }
-
-  20%,
-  60% {
-    -webkit-transform: rotate3d(0, 0, 1, 80deg);
-    transform: rotate3d(0, 0, 1, 80deg);
-    -webkit-transform-origin: top left;
-    transform-origin: top left;
-    -webkit-animation-timing-function: ease-in-out;
-    animation-timing-function: ease-in-out;
-  }
-
-  40%,
-  80% {
-    -webkit-transform: rotate3d(0, 0, 1, 60deg);
-    transform: rotate3d(0, 0, 1, 60deg);
-    -webkit-transform-origin: top left;
-    transform-origin: top left;
-    -webkit-animation-timing-function: ease-in-out;
-    animation-timing-function: ease-in-out;
-    opacity: 1;
-  }
-
-  100% {
-    -webkit-transform: translate3d(0, 700px, 0);
-    transform: translate3d(0, 700px, 0);
-    opacity: 0;
-  }
-}
-
-@keyframes hinge {
-  0% {
-    -webkit-transform-origin: top left;
-    -ms-transform-origin: top left;
-    transform-origin: top left;
-    -webkit-animation-timing-function: ease-in-out;
-    animation-timing-function: ease-in-out;
-  }
-
-  20%,
-  60% {
-    -webkit-transform: rotate3d(0, 0, 1, 80deg);
-    -ms-transform: rotate3d(0, 0, 1, 80deg);
-    transform: rotate3d(0, 0, 1, 80deg);
-    -webkit-transform-origin: top left;
-    -ms-transform-origin: top left;
-    transform-origin: top left;
-    -webkit-animation-timing-function: ease-in-out;
-    animation-timing-function: ease-in-out;
-  }
-
-  40%,
-  80% {
-    -webkit-transform: rotate3d(0, 0, 1, 60deg);
-    -ms-transform: rotate3d(0, 0, 1, 60deg);
-    transform: rotate3d(0, 0, 1, 60deg);
-    -webkit-transform-origin: top left;
-    -ms-transform-origin: top left;
-    transform-origin: top left;
-    -webkit-animation-timing-function: ease-in-out;
-    animation-timing-function: ease-in-out;
-    opacity: 1;
-  }
-  100% {
-    -webkit-transform: translate3d(0, 700px, 0);
-    -ms-transform: translate3d(0, 700px, 0);
-    transform: translate3d(0, 700px, 0);
-    opacity: 0;
-  }
-}
-
-.hinge {
-  -webkit-animation-name: hinge;
-  animation-name: hinge;
-}
+@import './index.scss';
 </style>
