@@ -13,7 +13,7 @@ export default {
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   -webkit-overflow-scrolling: touch;
   background-color: rgb(244, 249, 243);
