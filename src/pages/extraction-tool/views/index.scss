@@ -21,10 +21,10 @@
   }
 }
 .rocket {
-  @include wh(3.28rem, 2.44rem);
+  @include wh(14vw, 17.4%);
   position: absolute;
-  top: 2rem;
-  left: 2rem;
+  top: 16%;
+  left: 14.8%;
   .rocket-box {
     width: 100%;
     animation: rocket 30s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite
@@ -32,30 +32,30 @@
   }
 }
 .celestial-body1 {
-  @include wh(1.14rem, 1.14rem);
+  @include wh(6vw, 6vw);
   position: absolute;
-  bottom: 4rem;
-  left: 2rem;
+  bottom: 23.5vh;
+  left: 15.5vw;
   .celestial-body-box1 {
     width: 100%;
     animation: rocket 50s cubic-bezier(0, 0.1, 0.55, 0.25) infinite;
   }
 }
 .celestial-body2 {
-  @include wh(0.96rem, 0.96rem);
+  @include wh(4vw, 4vw);
   position: absolute;
-  top: 1rem;
-  right: 8rem;
+  top: 6.2vh;
+  right: 23.3vw;
   .celestial-body-box2 {
     width: 100%;
     animation: rocket 60s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
   }
 }
 .celestial-body3 {
-  @include wh(1.28rem, 1.28rem);
+  @include wh(5.33vw, 5.33vw);
   position: absolute;
-  bottom: 6rem;
-  right: 5rem;
+  bottom: 33.7vh;
+  right: 22vw;
   .celestial-body-box3 {
     width: 100%;
     animation: rocket 80s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
@@ -75,18 +75,18 @@
 
 .draw {
   position: relative;
-  @include wh(13.68rem, 13.68rem);
+  @include wh(52vw, 52vw);
+  // width: 50%;
+  // height: 50%;
   @include bg('../assets/bg_light.png');
-  animation: fadenum 3s infinite linear;
-  -webkit-animation: fadenum 3s infinite linear; /* Safari 和 Chrome */
+  animation: fadenum 5s infinite linear;
+  -webkit-animation: fadenum 5s infinite linear; /* Safari 和 Chrome */
   .draw-box {
     position: relative;
-    // top: 2.7rem;
-    // left: 2.7rem;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    @include wh(8.08rem, 8.08rem);
+    @include wh(30.3vw, 30.3vw);
     @include bg('../assets/bg_earth.png');
   }
 }
@@ -97,102 +97,68 @@
 }
 #circle {
   position: relative;
-  width: 7rem;
-  height: 7rem;
+  width: 26vw;
+  height: 26vw;
   // background-color: lightblue;
   border-radius: 50%;
-  margin-top: 0.1rem;
-  top: 0.5rem;
-  left: 3.75rem;
-  transform: translate(-45%, 0);
+  // margin-top: 2.8vh;
+  top: 50%;
+  left: 50%;
+  // transform: translate(-45%, 0);
+  transform: translate(-50%, -50%);
 }
 
 .ball {
   text-align: center;
-  line-height: 0.6rem;
-  font-size: 0.34rem;
   font-weight: 500;
 }
 
 .set-btn {
   position: absolute;
-  font-size: 0.3rem;
+  font-size: 3vh;
   top: 50%;
   left: 0%;
   transform: translate(50%, -50%);
-  padding: 0.4rem 0.9rem;
+  padding: 2.3vh 3vw;
   background: rgb(9, 193, 150);
   border-radius: 15%;
-}
-
-.btn {
-  position: absolute;
-  font-size: 0.3rem;
-  top: 50%;
-  right: 0%;
-  transform: translate(-50%, -50%);
-  padding: 0.4rem 0.9rem;
-  background: rgb(9, 193, 150);
-  border-radius: 15%;
-}
-
-.draw-ball {
-  position: absolute;
-  // width: 0;
-  top: 45.5%;
-  right: 48%;
-  text-align: center;
-  margin: auto;
-  padding: 0.26rem;
-  font-size: 0.34rem;
-  border-radius: 50%;
-  background: #b4a078 radial-gradient(at 30% 30%, #f7f5f1, #b4a078);
-  /* 当动画完成后，保持最后一帧 */
-  animation: bounce 2s cubic-bezier(0.1, 0.25, 1, 0.25) forwards;
 }
 
 .solid-limit {
-  width: 70%;
-  padding: 1.5rem 0.8rem;
+  width: 70vw;
+  padding: 5vh 5vw;
   position: absolute;
-  top: 25%;
+  top: 30%;
   text-align: center;
   background-color: hsla(0, 0%, 100%, 0.5);
-  backdrop-filter: blur(10px);
-  border-radius: 1rem;
+  backdrop-filter: blur(1vw);
+  border-radius: 2.8vw;
   z-index: 1;
 }
 
 .value {
-  font-size: 0.5rem;
-  // margin-left: 0.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 2vw;
+  margin-bottom: 2vh;
 }
 
 .submit {
-  font-size: 0.5rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.3rem;
-}
-
-.main-img {
-  position: absolute;
-  top: 1.5rem;
-  right: 9.5rem;
+  font-size: 1.6vw;
+  padding: 1vh 2vw;
+  border-radius: 1vw;
 }
 
 .change-quantity {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.5rem;
-  padding: 0.5rem 0;
+  font-size: 2vw;
+  padding: 2vh 0;
 
   .quantity {
-    border: 0.01rem solid #555151;
-    padding: 0.1rem;
-    font-size: 0.5rem;
-    margin: 0 0.2rem;
+    border: 0.01vw solid #555151;
+    padding: 0.6vw;
+    font-size: 1.7vw;
+    margin: 0 0.7vw;
     cursor: pointer;
   }
   .live {
@@ -201,50 +167,55 @@
 }
 .draw-move-ball {
   position: absolute;
-  width: 7rem;
-  height: 7rem;
+  width: 26vw;
+  height: 26vw;
   // background-color: lightblue;
   border-radius: 50%;
-  margin-top: 0.1rem;
-  // top: 3.25rem;
-  // left: 50%;
-  top: 1.5rem;
-  right: 9.5rem;
-  // transform: translate(-50%, 0);
+  // margin-top: 1vh;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
   .move-ball {
     text-align: center;
-    line-height: 0.6rem;
-    font-size: 0.34rem;
+    line-height: 3vh;
+    font-size: 2vw;
     font-weight: 500;
   }
+}
+.main-img {
+  position: absolute;
+  right: 33.8vw;
+  top: 14.2vh;
 }
 .ufo {
   position: absolute;
   .ufo-box {
+    @include wh(14.8vw, 12.8vw);
     animation: ufoRotate 1.5s linear forwards;
     -webkit-animation: ufoRotate 1.5s forwards; /* Safari 和 Chrome */
   }
   .ufo-light-box {
+    @include wh(12.8vw, 12.8vw);
     position: absolute;
-    right: 1.3rem;
-    top: 1.3rem;
+    right: 7.6vw;
+    top: 15.7vh;
     transform: rotate(10deg);
     animation: ufoLight 1.5s linear forwards;
   }
 }
 .closeWrapper {
   position: absolute;
-  width: 0.5rem;
-  height: 0.5rem;
-  top: 0.44rem;
-  right: 0.64rem;
+  width: 5vw;
+  height: 5vw;
+  top: 3.33vh;
+  right: 0.4vw;
 }
 
 .close {
   position: absolute;
-  width: 0.5rem;
-  height: 0.5rem;
-  border: 0.01rem solid;
+  width: 1.5vw;
+  height: 1.5vw;
+  border: 0.1vh solid;
   border-radius: 50%;
 }
 
@@ -254,10 +225,10 @@
   content: '';
   background-color: #cccccc;
   width: 0px;
-  height: 0.33rem;
-  border: 0.01rem solid;
+  height: 1vw;
+  border: 0.1vh solid;
   left: 50%;
-  top: 20%;
+  top: 10%;
 }
 
 .close::before {
@@ -270,86 +241,64 @@
 .result-popup {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   align-items: center;
   width: 70%;
-  padding: 1.5rem 0.8rem;
+  padding: 5.5vh 5.5vw;
   position: absolute;
-  top: 25%;
+  top: 30%;
   text-align: center;
   background-color: hsla(0, 0%, 100%, 0.5);
-  backdrop-filter: blur(10px);
-  border-radius: 1rem;
+  backdrop-filter: blur(1vw);
+  border-radius: 2.8vw;
   z-index: 1;
 }
 .result-ball {
-  @include wh(2rem, 2rem);
+  @include wh(8.3vw, 8.3vw);
   border-radius: 50%;
-  line-height: 2rem;
-  font-size: 0.56rem;
-  margin: 0.5rem;
+  line-height: 8.3vw;
+  font-size: 3vw;
+  margin: 2vw;
 }
 // 火箭
 @keyframes rocket {
   25% {
-    transform: translateY(-0.8rem);
+    transform: translateY(-2vh);
     animation-timing-function: ease-in;
     transform: rotate(5deg);
   }
 
   50% {
-    transform: translate(1rem, -0.2rem);
+    transform: translate(5vh, -2vw);
   }
 
   70% {
-    transform: translateX(0.6rem);
+    transform: translateX(3vw);
     transform: rotate(-10deg);
   }
 
   90% {
-    transform: translateY(1rem);
+    transform: translateY(5vh);
   }
 }
 @-webkit-keyframes rocket /* Safari 与 Chrome */ {
   25% {
-    transform: translateY(-0.8rem);
+    transform: translateY(-2vh);
     animation-timing-function: ease-in;
     transform: rotate(5deg);
   }
 
   50% {
-    transform: translate(0.5rem, -0.2rem);
+    transform: translate(5vh, -2vw);
   }
 
   70% {
-    transform: translateX(0.6rem);
+    transform: translateX(3vw);
     transform: rotate(-10deg);
   }
 
   90% {
-    transform: translateY(0.5rem);
-  }
-}
-
-// 结果弹跳求
-@keyframes bounce {
-  40%,
-  60%,
-  80%,
-  to {
-    transform: translateY(3.8rem);
-    animation-timing-function: ease-in;
-  }
-
-  50% {
-    transform: translateY(2.6rem);
-  }
-
-  70% {
-    transform: translateY(3rem);
-  }
-
-  90% {
-    transform: translateY(3.6rem);
+    transform: translateY(5vh);
   }
 }
 
@@ -430,115 +379,6 @@
   animation-play-state: paused;
   -webkit-animation-play-state: paused;
   /* Safari 和 Chrome */
-}
-
-/* 定义范围*/
-#serve-img-area .point-area {
-  text-align: center;
-  position: relative;
-  width: 1.5rem;
-  height: 1.5rem;
-  -webkit-transition: opacity 0.5s ease-out;
-  -moz-transition: opacity 0.5s ease-out;
-  -o-transition: opacity 0.5s ease-out;
-  transition: opacity 0.5s ease-out;
-}
-
-/* 定义圆点*/
-#serve-img-area .point-area .point {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  width: 0.2rem;
-  height: 0.2rem;
-  -webkit-border-radius: 50%;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 50%;
-  -moz-background-clip: padding;
-  border-radius: 50%;
-  background-clip: padding-box;
-  background: transparent;
-}
-
-/* 定义圆扩散的阴影*/
-#serve-img-area .point-area .point-shadow:after {
-  -webkit-box-shadow: inset 0 0 5em rgba(0, 205, 236, 0.16);
-  -moz-box-shadow: inset 0 0 5em rgba(0, 205, 236, 0.16);
-  box-shadow: inset 0 0 5em rgba(0, 205, 236, 0.16);
-}
-
-// #serve-img-area .point-area .point-dot {
-//   z-index: 1;
-//   background-color: #6ad7e9;
-//   border: 1px solid rgba(0, 205, 236, 0.37);
-// }
-#serve-img-area .point-area .point-10 {
-  width: 100%;
-  height: 100%;
-}
-
-#serve-img-area .point-area .point-10:after {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  border-radius: 50%;
-  border: 0.09rem solid #00cdec;
-  opacity: 0;
-  -webkit-animation: ripple 4500ms ease-out 225ms infinite;
-  -moz-animation: ripple 4500ms ease-out 225ms infinite;
-  -o-animation: ripple 4500ms ease-out 225ms infinite;
-  animation: ripple 4500ms ease-out 225ms infinite;
-}
-
-#serve-img-area .point-area .point-40 {
-  width: 100%;
-  height: 100%;
-}
-
-#serve-img-area .point-area .point-40:after {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  border-radius: 50%;
-  border: 0.1rem solid #00cdec;
-  opacity: 0;
-  -webkit-animation: ripple 4500ms ease-out 900ms infinite;
-  -moz-animation: ripple 4500ms ease-out 900ms infinite;
-  -o-animation: ripple 4500ms ease-out 900ms infinite;
-  animation: ripple 4500ms ease-out 900ms infinite;
-}
-
-#serve-img-area .point-area .point-80 {
-  width: 100%;
-  height: 100%;
-}
-
-#serve-img-area .point-area .point-80:after {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  border-radius: 50%;
-  border: 0.12rem solid #00cdec;
-  opacity: 0;
-  -webkit-animation: ripple 4500ms ease-out 1800ms infinite;
-  -moz-animation: ripple 4500ms ease-out 1800ms infinite;
-  -o-animation: ripple 4500ms ease-out 1800ms infinite;
-  animation: ripple 4500ms ease-out 1800ms infinite;
 }
 
 @-webkit-keyframes ufoRotate {

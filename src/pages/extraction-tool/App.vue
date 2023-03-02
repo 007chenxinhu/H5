@@ -11,19 +11,20 @@ export default {
 </script>
 
 <style>
-#app {
+/* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   -webkit-overflow-scrolling: touch;
   background-color: rgb(244, 249, 243);
-}
+} */
 html,
 body {
   margin: 0;
   padding: 0;
   position: relative;
   font-size: calc(100vw / 6);
+  /* 600 350 */
 }
 /* html {
   filter: grayscale(1);

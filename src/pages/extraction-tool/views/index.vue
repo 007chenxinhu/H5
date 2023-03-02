@@ -33,31 +33,19 @@
                 height: ball.height,
                 'border-radius': ball.borderRadius,
                 position: 'absolute',
-                left: ball.x * 0.01 + 'rem',
-                top: ball.y * 0.01 + 'rem',
-                border: '0.03rem solid #ccc',
+                left: ball.x / 6 + 'vw',
+                top: ball.y / 3.5 + 'vh',
+                border: '0.03vw solid #ccc',
               }"
               v-if="!ball.isMoveball"
               @redirect="redirect(key)"
-            >
-              <!-- {{ key + value[0] }}  -->
-            </div>
+            ></div>
           </div>
         </div>
       </div>
     </div>
     <!-- 飞船吸球 -->
     <div class="main-img" id="serve-img-area" v-show="isShowUFO">
-      <!-- <div class="point-area">
-        <p
-          class="point-name"
-          style="position: absolute; top: 0.3rem; left: 0.5rem"
-        ></p>
-        <a class="point point-dot"></a>
-        <div class="point point-10"></div>
-        <div class="point point-40"></div>
-        <div class="point point-shadow point-80"></div>
-      </div> -->
       <div class="ufo fadeInLeftBig animated">
         <img class="ufo-box" src="../assets/ufo.png" />
         <img class="ufo-light-box" src="../assets/light.png" />
@@ -76,20 +64,15 @@
               height: ball.height,
               'border-radius': ball.borderRadius,
               position: 'absolute',
-              left: ball.x * 0.01 + 'rem',
-              top: ball.y * 0.01 + 'rem',
-              border: '0.03rem solid #ccc',
+              left: ball.x / 6 + 'vw',
+              top: ball.y / 3.5 + 'vh',
+              border: '0.03vw solid #ccc',
             }"
           ></div>
         </div>
       </div>
     </div>
-    <!-- 抽奖完弹跳的球 -->
-    <!-- <div v-for="item in Number(changeQuantity)" :key="item">
-      <div class="draw-ball" v-show="isShowBall">{{ number }}</div>
-    </div> -->
     <div class="set-btn" @click="setParam">设置</div>
-    <!-- <div class="btn" @click="getResult">抽取</div> -->
     <div :class="showPopupClass" v-show="showPopup">
       <div class="closeWrapper" @click="closePopup">
         <div class="close"></div>
@@ -199,14 +182,14 @@ export default {
           // let cirWidth = parseInt(Math.random() * 20 + 20) //产生20到40的数
           this.ballitems.push({
             color: '#' + co,
-            width: '0.6rem',
-            height: '0.6rem',
+            width: '2.5vw',
+            height: '2.5vw',
             borderRadius: '50%',
             x: x,
             y: y,
             //随机生成x和y轴移动速度
-            speedX: parseInt(Math.random() * 20 + 5), //5-15,
-            speedY: parseInt(Math.random() * 30 + 10), //5-15,
+            speedX: parseInt(Math.random() * 5 + 2.5), //5-15,
+            speedY: parseInt(Math.random() * 10 + 5), //5-15,
             direct: {
               x: Math.random() > 0.5 ? Math.random() : -Math.random(),
               y: Math.random() > 0.5 ? Math.random() : -Math.random(),
@@ -282,7 +265,9 @@ export default {
         this.isShowBall = false
         this.numberArr = []
         this.isShowUFO = true
-        this.playAudioUFO()
+        setTimeout(() => {
+          self.playAudioUFO()
+        }, 1000)
         setTimeout(() => {
           self.showPopup = false
           self.showPopupClass = 'solid-limit bounceInDown animated'
@@ -311,26 +296,7 @@ export default {
         }
         this.numberArr = []
         this.arrResult = []
-
-        // if (this.number) return
-        // this.number = Number(this.randomFrom(this.value[0], this.value[1]))
-        // this.arrResult.push(this.ballitems[this.number])
         this.chooseMoveBall(this.changeQuantity)
-        // this.getResultTimer = setInterval(() => {
-        //   this.ballitems.forEach((ball, i) => {
-        //     if (Number(this.number) === i) {
-        //       ball.x > 475 ? ball.x-- : ball.x
-        //       ball.x < 475 ? ball.x++ : ball.x > 475 ? ball.x : ball.x++
-        //       ball.y > -128 ? ball.y-- : ball.y
-        //       ball.y < -128 ? ball.y++ : ball.y > -128 ? ball.y : ball.y++
-        //     }
-        //   })
-        // }, 1)
-        // this.number = this.number < 10 ? '0' + this.number : this.number
-        // setTimeout(function () {
-        //   clearInterval(self.getResultTimer)
-        //   self.isShowBall = true
-        // }, 3000)
       } catch (error) {
         console.log(error)
       }
@@ -350,15 +316,15 @@ export default {
           this.getResultTimer = setInterval(() => {
             self.arrResult.forEach((ball, i) => {
               ball.isMoveball = true
-              ball.x > 740 ? ball.x-- : ball.x
-              ball.x < 740 ? ball.x++ : ball.x > 740 ? ball.x : ball.x++
-              ball.y > 160 ? ball.y-- : ball.y
-              ball.y < 160 ? ball.y++ : ball.y > 160 ? ball.y : ball.y++
+              ball.x > 185 ? ball.x-- : ball.x
+              ball.x < 185 ? ball.x++ : ball.x > 185 ? ball.x : ball.x++
+              ball.y > 22 ? ball.y-- : ball.y
+              ball.y < 22 ? ball.y++ : ball.y > 22 ? ball.y : ball.y++
             }, 1)
             setTimeout(function () {
               clearInterval(self.timer)
               self.isShowResultPopup = true
-            }, 1000)
+            }, 800)
           })
           setTimeout(function () {
             clearInterval(self.getResultTimer)
@@ -375,16 +341,16 @@ export default {
               this.getResultTimer = setInterval(() => {
                 self.arrResult.forEach((ball, i) => {
                   ball.isMoveball = true
-                  ball.x > 740 ? ball.x-- : ball.x
-                  ball.x < 740 ? ball.x++ : ball.x > 740 ? ball.x : ball.x++
-                  ball.y > 160 ? ball.y-- : ball.y
-                  ball.y < 160 ? ball.y++ : ball.y > 160 ? ball.y : ball.y++
+                  ball.x > 185 ? ball.x-- : ball.x
+                  ball.x < 185 ? ball.x++ : ball.x > 185 ? ball.x : ball.x++
+                  ball.y > 22 ? ball.y-- : ball.y
+                  ball.y < 22 ? ball.y++ : ball.y > 22 ? ball.y : ball.y++
                 })
                 setTimeout(function () {
                   clearInterval(self.timer)
                   self.isShowResultPopup = true
-                }, 1000)
-              }, 1)
+                }, 800)
+              }, 10)
               setTimeout(function () {
                 clearInterval(self.getResultTimer)
               }, 3000)
@@ -408,10 +374,10 @@ export default {
     isCir() {
       try {
         while (true) {
-          const x = Math.random() * (2 * 320) - 320
-          const y = Math.random() * (2 * 320) - 320
-          if (x * x + y * y <= 320 * 320) {
-            return [320 + x, 320 + y]
+          const x = Math.random() * (2 * 70) - 70
+          const y = Math.random() * (2 * 70) - 70
+          if (x * x + y * y <= 70 * 70) {
+            return [70 + x, 70 + y]
           }
         }
       } catch (error) {
@@ -436,98 +402,6 @@ export default {
       } catch (error) {
         console.log(error)
       }
-
-      // if (!this.pointInsideCircle(ball.x, ball.y)) {
-      //   if (
-      //     left + this.ballItem[i].offsetWidth >= circle.offsetWidth ||
-      //     left <= 0
-      //   ) {
-      //     ball.direct.x *= -1
-      //     ball.direct.y *= -1
-      //   }
-      //   // 垂直状态
-      //   if (
-      //     top + this.ballItem[i].offsetHeight >= circle.offsetHeight ||
-      //     top <= 0
-      //   ) {
-      //     ball.direct.x *= -1
-      //     ball.direct.y *= -1
-      //   }
-      // }
-
-      // 如果球碰到边界，令direct * -1
-      // if (ball.x >= 400 || ball.x <= 0) {
-      //   ball.direct.x *= -1
-      // }
-      // if (ball.y >= 400 || ball.y <= 0) {
-      //   ball.direct.y *= -1
-      // }
-
-      // 水平状态
-      // 判断当前小球所在的位置是否达到围栏限制的位置
-      // let left = this.ballItem[i].offsetLeft
-      // let top = this.ballItem[i].offsetTop
-      // if (!this.pointInsideCircle(ball.x, ball.y)) {
-      //   if (
-      //     left + this.ballItem[i].offsetWidth >= circle.offsetWidth ||
-      //     left <= 0
-      //   ) {
-      //     this.ballitems[i].speedX *= -1
-      //   }
-      //   // 垂直状态
-      //   if (
-      //     top + this.ballItem[i].offsetHeight >= circle.offsetHeight ||
-      //     top <= 0
-      //   ) {
-      //     this.ballitems[i].speedY *= -1
-      //   }
-      // }
-      // let left = this.ballItem[i].offsetLeft
-      // let top = this.ballItem[i].offsetTop
-      // if (this.pointInsideCircle(ball.x, ball.y)) {
-      //   this.coordinate[i].x1 = ball.x
-      //   this.coordinate[i].y1 = ball.y
-      // } else {
-      // this.ballitems[i].speedX = -Math.cos(
-      //   (Math.atan2(
-      //     ball.y - this.coordinate[i].y1,
-      //     ball.x - this.coordinate[i].x1,
-      //   ) *
-      //     180) /
-      //     Math.PI,
-      // )
-      // ball.y *= -1
-      // this.ballitems[i].speedY = -Math.sin(
-      //   (Math.atan2(
-      //     ball.y - this.coordinate[i].y1,
-      //     ball.x - this.coordinate[i].x1,
-      //   ) *
-      //     180) /
-      //     Math.PI,
-      // )
-      // if (ball.x >= 400 || ball.x <= 0) {
-      //   ball.direct.x *= -1
-      // }
-      // if (ball.y >= 400 || ball.y <= 0) {
-      //   ball.direct.y *= -1
-      // }
-      // }
-      // 修改小球水平运动速度方向
-      // left = left + this.ballitems[i].speedX
-      // top = top + this.ballitems[i].speedY
-      // //防止小球超出边界
-      // if (left < 0) {
-      //   left = 0
-      // } else if (left > circle.offsetWidth - this.ballItem[i].offsetWidth) {
-      //   left = circle.offsetWidth - this.ballItem[i].offsetWidth
-      // }
-      // if (top < 0) {
-      //   top = 0
-      // } else if (top > circle.offsetHeight - this.ballItem[i].offsetHeight) {
-      //   top = circle.offsetHeight - this.ballItem[i].offsetHeight
-      // }
-      // ball.x = left
-      // ball.y = top
     },
     // 跳转，当球碰到边界时调用的方法，令其方向转变
     redirect(key) {
@@ -548,70 +422,9 @@ export default {
      *  */
     pointInsideCircle(x, y) {
       try {
-        var dx = 320 - x
-        var dy = 320 - y
-        return dx * dx + dy * dy <= 320 * 320
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    createCircle() {
-      try {
-        //随机生成圆点宽高
-        cirWidth = parseInt(Math.random() * 40 + 10) //产生10到50的数
-
-        //随机生成颜色
-        var co = ''
-        for (var i = 0; i < 6; i++) {
-          co = co + color[parseInt(Math.random() * color.length)]
-        }
-        var colors = '#' + co
-        var boll = document.createElement('div')
-
-        boll.style.width = cirWidth * 0.01 + 'rem'
-        boll.style.height = cirWidth * 0.01 + 'rem'
-        //定义生成的坐标
-        cirX = parseInt(Math.random() * (wrap.offsetWidth - cirWidth))
-        cirY = parseInt(Math.random() * (wrap.offsetHeight - cirWidth))
-        //生成div标签
-        boll.style.left = cirX * 0.01 + 'rem'
-        boll.style.top = cirY * 0.01 + 'rem'
-        boll.style.background = colors
-        wrap.appendChild(boll)
-
-        //随机生成x和y轴移动速度
-        var speedX = parseInt(Math.random() * 10 + 5) //5-15
-        var speedY = parseInt(Math.random() * 10 + 10) //10-20
-        //定义圆点移动函数
-        setInterval(function () {
-          // 判断当前小球所在的位置是否达到围栏限制的位置
-          // 水平状态
-          var left = boll.offsetLeft
-          var top = boll.offsetTop
-          if (left + boll.offsetWidth >= wrap.offsetWidth || left <= 0) {
-            speedX *= -1
-          }
-          // 垂直状态
-          if (top + boll.offsetHeight >= wrap.offsetHeight || top <= 0) {
-            speedY *= -1
-          }
-          // 修改小球水平运动速度方向
-          left = left + speedX
-          top = top + speedY
-          //防止小球超出边界
-          if (left < 0) {
-            left = 0
-          } else if (left > wrap.offsetWidth - boll.offsetWidth) {
-            left = wrap.offsetWidth - boll.offsetWidth
-          }
-          if (top < 0) {
-            top = 0
-          } else if (top > wrap.offsetHeight - boll.offsetHeight) {
-            top = wrap.offsetHeight - boll.offsetHeight
-          }
-          boll.style.left = left * 0.01 + 'rem'
-          boll.style.top = top * 0.01 + 'rem'
-        }, 15)
+        var dx = 70 - x
+        var dy = 70 - y
+        return dx * dx + dy * dy <= 70 * 70
       } catch (error) {
         console.log(error)
       }
