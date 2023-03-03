@@ -76,16 +76,14 @@
 .draw {
   position: relative;
   @include wh(52vw, 52vw);
-  // width: 50%;
-  // height: 50%;
   @include bg('../assets/bg_light.png');
-  animation: fadenum 5s infinite linear;
-  -webkit-animation: fadenum 5s infinite linear; /* Safari 和 Chrome */
+  animation: fadenum 3s infinite linear;
+  -webkit-animation: fadenum 3s infinite linear; /* Safari 和 Chrome */
   .draw-box {
-    position: relative;
-    top: 50%;
+    position: absolute;
+    top: 10.85vw;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     @include wh(30.3vw, 30.3vw);
     @include bg('../assets/bg_earth.png');
   }
@@ -97,22 +95,58 @@
 }
 #circle {
   position: relative;
-  width: 26vw;
-  height: 26vw;
+  width: 26.3vw;
+  height: 26.3vw;
   // background-color: lightblue;
   border-radius: 50%;
   // margin-top: 2.8vh;
-  top: 50%;
+  top: 1.85vw;
   left: 50%;
   // transform: translate(-45%, 0);
-  transform: translate(-50%, -50%);
+  transform: translateX(-49.5%);
 }
 
 .ball {
   text-align: center;
   font-weight: 500;
 }
-
+.draw-move-ball {
+  position: absolute;
+  width: 26.3vw;
+  height: 26.3vw;
+  // background-color: lightblue;
+  border-radius: 50%;
+  top: 12.7vw;
+  left: 50%;
+  transform: translateX(-49.5%);
+  .move-ball {
+    text-align: center;
+    line-height: 2.5vw;
+    font-size: 2vw;
+    font-weight: 500;
+  }
+}
+.main-img {
+  position: absolute;
+  right: 33.8vw;
+  top: 6.66vw;
+}
+.ufo {
+  position: absolute;
+  .ufo-box {
+    @include wh(14.8vw, 12.8vw);
+    animation: ufoRotate 1.5s linear forwards;
+    -webkit-animation: ufoRotate 1.5s forwards; /* Safari 和 Chrome */
+  }
+  .ufo-light-box {
+    @include wh(12.8vw, 12.8vw);
+    position: absolute;
+    right: 7.6vw;
+    top: 9vw;
+    transform: rotate(10deg);
+    animation: ufoLight 1.5s linear forwards;
+  }
+}
 .set-btn {
   position: absolute;
   font-size: 3vh;
@@ -165,49 +199,11 @@
     background-color: #1e80ff;
   }
 }
-.draw-move-ball {
-  position: absolute;
-  width: 26vw;
-  height: 26vw;
-  // background-color: lightblue;
-  border-radius: 50%;
-  // margin-top: 1vh;
-  top: 50%;
-  right: 50%;
-  transform: translate(50%, -50%);
-  .move-ball {
-    text-align: center;
-    line-height: 3vh;
-    font-size: 2vw;
-    font-weight: 500;
-  }
-}
-.main-img {
-  position: absolute;
-  right: 33.8vw;
-  top: 14.2vh;
-}
-.ufo {
-  position: absolute;
-  .ufo-box {
-    @include wh(14.8vw, 12.8vw);
-    animation: ufoRotate 1.5s linear forwards;
-    -webkit-animation: ufoRotate 1.5s forwards; /* Safari 和 Chrome */
-  }
-  .ufo-light-box {
-    @include wh(12.8vw, 12.8vw);
-    position: absolute;
-    right: 7.6vw;
-    top: 15.7vh;
-    transform: rotate(10deg);
-    animation: ufoLight 1.5s linear forwards;
-  }
-}
 .closeWrapper {
   position: absolute;
   width: 5vw;
   height: 5vw;
-  top: 3.33vh;
+  top: 2vw;
   right: 0.4vw;
 }
 
