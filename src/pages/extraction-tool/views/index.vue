@@ -20,6 +20,34 @@
     <div class="celestial-body3">
       <img class="celestial-body-box3" src="../assets/galaxy_red.png" />
     </div>
+    <!-- 星星 -->
+    <div>
+      <div class="star1">
+        <img class="star-box1" src="../assets/galaxy_star_normal.png" />
+      </div>
+      <div class="star2">
+        <img class="star-box2" src="../assets/galaxy_star_normal.png" />
+      </div>
+      <div class="star3">
+        <img class="star-box3" src="../assets/galaxy_star_normal.png" />
+      </div>
+      <div class="star4">
+        <img class="star-box4" src="../assets/galaxy_star_normal.png" />
+      </div>
+      <div class="star5">
+        <img class="star-box5" src="../assets/galaxy_star_normal.png" />
+      </div>
+      <div class="star6">
+        <img class="star-box6" src="../assets/galaxy_star_normal.png" />
+      </div>
+      <div class="star7">
+        <img class="star-box7" src="../assets/galaxy_star_normal.png" />
+      </div>
+      <div class="star8">
+        <img class="star-box8" src="../assets/galaxy_star_normal.png" />
+      </div>
+    </div>
+
     <!-- 球载体 -->
     <div class="draw">
       <div class="draw-box">
@@ -118,6 +146,8 @@
 </template>
 
 <script>
+import { debounce } from 'lodash'
+
 export default {
   props: [],
   data() {
@@ -218,7 +248,7 @@ export default {
         setTimeout(() => {
           self.showPopupClass = 'solid-limit bounceInDown animated'
           self.showPopup = false
-        }, 2000)
+        }, 999)
       } catch (error) {
         console.log(error)
       }
@@ -243,15 +273,15 @@ export default {
         console.log(error)
       }
     },
-    setParam() {
+    setParam: debounce(function () {
       try {
         this.showPopup = true
         this.playAudioBtn()
       } catch (error) {
         console.log(error)
       }
-    },
-    submit() {
+    }, 1000),
+    submit: debounce(function () {
       try {
         let self = this
 
@@ -263,7 +293,7 @@ export default {
         this.move() //移动球
         this.numberArr = []
         setTimeout(() => {
-          this.isShowUFO = true
+          this.isShowUFO = true //重置ufo消失
         }, 0)
         setTimeout(() => {
           self.playAudioUFO() //播放飞船声音
@@ -278,7 +308,7 @@ export default {
       } catch (error) {
         console.log(error)
       }
-    },
+    }, 500),
 
     getResult() {
       try {
@@ -304,8 +334,8 @@ export default {
           this.getResultTimer = setInterval(() => {
             self.arrResult.forEach((ball, i) => {
               ball.isMoveball = true
-              ball.x > 175 ? ball.x-- : ball.x
-              ball.x < 175 ? ball.x++ : ball.x > 175 ? ball.x : ball.x++
+              ball.x > 185 ? ball.x-- : ball.x
+              ball.x < 185 ? ball.x++ : ball.x > 185 ? ball.x : ball.x++
               ball.y > 38 ? ball.y-- : ball.y
               ball.y < 38 ? ball.y++ : ball.y > 38 ? ball.y : ball.y++
             }, 1)
@@ -335,8 +365,8 @@ export default {
               this.getResultTimer = setInterval(() => {
                 self.arrResult.forEach((ball, i) => {
                   ball.isMoveball = true
-                  ball.x > 175 ? ball.x-- : ball.x
-                  ball.x < 175 ? ball.x++ : ball.x > 175 ? ball.x : ball.x++
+                  ball.x > 185 ? ball.x-- : ball.x
+                  ball.x < 185 ? ball.x++ : ball.x > 185 ? ball.x : ball.x++
                   ball.y > 22 ? ball.y-- : ball.y
                   ball.y < 22 ? ball.y++ : ball.y > 22 ? ball.y : ball.y++
                 })

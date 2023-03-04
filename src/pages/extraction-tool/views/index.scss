@@ -61,6 +61,87 @@
     animation: rocket 80s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
   }
 }
+.star1 {
+  @include wh(4.66vw, 4.66vw);
+  position: absolute;
+  top: 4.8vw;
+  left: 10.83vw;
+  .star-box1 {
+    width: 100%;
+    animation: starOpacity 5s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
+  }
+}
+.star2 {
+  @include wh(2.33vw, 2.33vw);
+  position: absolute;
+  top: 15.8vw;
+  left: 14.83vw;
+  .star-box2 {
+    width: 100%;
+    animation: starOpacity 8s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
+  }
+}
+.star3 {
+  @include wh(3vw, 3vw);
+  position: absolute;
+  top: 8.8vw;
+  right: 10.83vw;
+  .star-box3 {
+    width: 100%;
+    animation: starOpacity 13s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
+  }
+}
+.star4 {
+  @include wh(3.5vw, 3.5vw);
+  position: absolute;
+  top: 3.8vw;
+  left: 50vw;
+  .star-box4 {
+    width: 100%;
+    animation: starOpacity 3s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
+  }
+}
+.star5 {
+  @include wh(2.66vw, 2.66vw);
+  position: absolute;
+  bottom: 15.8vw;
+  left: 10.83vw;
+  .star-box5 {
+    width: 100%;
+    animation: starOpacity 4s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
+  }
+}
+.star6 {
+  @include wh(4.66vw, 4.66vw);
+  position: absolute;
+  top: 4.8vw;
+  right: 3.83vw;
+  .star-box6 {
+    width: 100%;
+    animation: starOpacity 7s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
+  }
+}
+
+.star7 {
+  @include wh(4.66vw, 4.66vw);
+  position: absolute;
+  top: 0.8vw;
+  right: 16.83vw;
+  .star-box7 {
+    width: 100%;
+    animation: starOpacity 20s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
+  }
+}
+.star8 {
+  @include wh(3vw, 3vw);
+  position: absolute;
+  top: 16vw;
+  left: 1.83vw;
+  .star-box8 {
+    width: 100%;
+    animation: starOpacity 30s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
+  }
+}
 .content {
   position: relative;
   overflow: hidden;
@@ -81,11 +162,11 @@
   -webkit-animation: fadenum 3s infinite linear; /* Safari 和 Chrome */
   .draw-box {
     position: absolute;
-    top: 10.85vw;
+    top: 12vw;
     left: 50%;
     transform: translateX(-50%);
-    @include wh(30.3vw, 30.3vw);
-    @include bg('../assets/bg_earth.png');
+    @include wh(28vw, 28vw);
+    @include bg('../assets/galaxy_earth.png');
   }
 }
 @keyframes fadenum {
@@ -95,12 +176,10 @@
 }
 #circle {
   position: relative;
-  width: 26.3vw;
-  height: 26.3vw;
+  width: 28vw;
+  height: 28vw;
   // background-color: lightblue;
   border-radius: 50%;
-  // margin-top: 2.8vh;
-  top: 1.85vw;
   left: 50%;
   // transform: translate(-45%, 0);
   transform: translateX(-49.5%);
@@ -112,11 +191,11 @@
 }
 .draw-move-ball {
   position: absolute;
-  width: 26.3vw;
-  height: 26.3vw;
+  width: 28vw;
+  height: 28vw;
   // background-color: lightblue;
   border-radius: 50%;
-  top: 12.7vw;
+  top: 12vw;
   left: 50%;
   transform: translateX(-49.5%);
   .move-ball {
@@ -154,8 +233,23 @@
   left: 0%;
   transform: translate(50%, -50%);
   padding: 2.3vh 3vw;
+  // background: rgba(224, 0, 0, 0.363);
   background: rgb(9, 193, 150);
-  border-radius: 15%;
+  border-radius: 50%;
+  // width: fit-content;
+  padding: 25px 30px;
+  color: #a6f885;
+  font-size: 24px;
+  text-transform: uppercase;
+  transition: 0.5s;
+  letter-spacing: 4px;
+  cursor: pointer;
+}
+.set-btn:hover {
+  background-color: #4de41f;
+  color: #4de41f;
+  box-shadow: 0 0 5px #4de41f, 0 0 25px #4de41f, 0 0 50px #4de41f,
+    0 0 200px #4de41f;
 }
 
 .solid-limit {
@@ -255,6 +349,34 @@
   line-height: 8.3vw;
   font-size: 3vw;
   margin: 2vw;
+}
+@keyframes starOpacity {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes starOpacity /* Safari 与 Chrome */ {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 // 火箭
 @keyframes rocket {
