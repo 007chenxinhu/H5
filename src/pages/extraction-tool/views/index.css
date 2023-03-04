@@ -3,10 +3,37 @@
   width: 100%;
   position: absolute;
   bottom: 0;
+  animation: buttomBg 10s infinite linear;
+  -webkit-animation: buttomBg 10s infinite linear;
+  /* Safari 和 Chrome */
 }
 
 .buttom-bg .buttom-box {
   width: 100%;
+}
+
+@keyframes buttomBg {
+  0% {
+    transform: translateY(0vh);
+  }
+  50% {
+    transform: translateY(1vh);
+  }
+  100% {
+    transform: translateY(0vh);
+  }
+}
+
+@-webkit-keyframes buttomBg /* Safari 与 Chrome */ {
+  0% {
+    transform: translateY(0vh);
+  }
+  50% {
+    transform: translateY(1vh);
+  }
+  100% {
+    transform: translateY(0vh);
+  }
 }
 
 .rocket {
@@ -20,6 +47,7 @@
 .rocket .rocket-box {
   width: 100%;
   animation: rocket 30s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite alternate-reverse;
+  -webkit-animation: rocket 30s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite alternate-reverse;
 }
 
 .celestial-body1 {
@@ -33,6 +61,7 @@
 .celestial-body1 .celestial-body-box1 {
   width: 100%;
   animation: rocket 50s cubic-bezier(0, 0.1, 0.55, 0.25) infinite;
+  -webkit-animation: rocket 50s cubic-bezier(0, 0.1, 0.55, 0.25) infinite;
 }
 
 .celestial-body2 {
@@ -46,6 +75,7 @@
 .celestial-body2 .celestial-body-box2 {
   width: 100%;
   animation: rocket 60s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
+  -webkit-animation: rocket 60s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
 }
 
 .celestial-body3 {
@@ -59,6 +89,7 @@
 .celestial-body3 .celestial-body-box3 {
   width: 100%;
   animation: rocket 80s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
+  -webkit-animation: rocket 80s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
 }
 
 .star1 {
@@ -72,6 +103,7 @@
 .star1 .star-box1 {
   width: 100%;
   animation: starOpacity 5s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
+  -webkit-animation: starOpacity 5s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
 }
 
 .star2 {
@@ -85,6 +117,7 @@
 .star2 .star-box2 {
   width: 100%;
   animation: starOpacity 8s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
+  -webkit-animation: starOpacity 8s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
 }
 
 .star3 {
@@ -98,6 +131,7 @@
 .star3 .star-box3 {
   width: 100%;
   animation: starOpacity 13s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
+  -webkit-animation: starOpacity 13s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
 }
 
 .star4 {
@@ -111,6 +145,7 @@
 .star4 .star-box4 {
   width: 100%;
   animation: starOpacity 3s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
+  -webkit-animation: starOpacity 3s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
 }
 
 .star5 {
@@ -184,9 +219,6 @@
   background-image: url("../assets/bg_light.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  animation: fadenum 3s infinite linear;
-  -webkit-animation: fadenum 3s infinite linear;
-  /* Safari 和 Chrome */
 }
 
 .draw .draw-box {
@@ -264,6 +296,7 @@
   top: 9vw;
   transform: rotate(10deg);
   animation: ufoLight 1.5s linear forwards;
+  -webkit-animation: ufoLight 1.5s linear forwards;
 }
 
 .set-btn {
@@ -416,8 +449,14 @@
   0% {
     opacity: 1;
   }
+  25% {
+    opacity: 0.3;
+  }
   50% {
-    opacity: 0;
+    opacity: 0.7;
+  }
+  75% {
+    opacity: 0.5;
   }
   100% {
     opacity: 1;

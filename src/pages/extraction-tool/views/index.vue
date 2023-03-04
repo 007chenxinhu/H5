@@ -367,8 +367,8 @@ export default {
                   ball.isMoveball = true
                   ball.x > 185 ? ball.x-- : ball.x
                   ball.x < 185 ? ball.x++ : ball.x > 185 ? ball.x : ball.x++
-                  ball.y > 22 ? ball.y-- : ball.y
-                  ball.y < 22 ? ball.y++ : ball.y > 22 ? ball.y : ball.y++
+                  ball.y > 38 ? ball.y-- : ball.y
+                  ball.y < 38 ? ball.y++ : ball.y > 38 ? ball.y : ball.y++
                 })
                 setTimeout(function () {
                   clearInterval(self.timer) //终止圆内球一直滚动
@@ -405,10 +405,10 @@ export default {
     isCir() {
       try {
         while (true) {
-          const x = Math.random() * (2 * 70) - 70
-          const y = Math.random() * (2 * 70) - 70
-          if (x * x + y * y <= 70 * 70) {
-            return [70 + x, 70 + y]
+          const x = Math.random() * (2 * 73) - 73
+          const y = Math.random() * (2 * 73) - 73
+          if (x * x + y * y <= 73 * 73) {
+            return [73 + x, 73 + y]
           }
         }
       } catch (error) {
@@ -453,9 +453,9 @@ export default {
      *  */
     pointInsideCircle(x, y) {
       try {
-        var dx = 70 - x
-        var dy = 70 - y
-        return dx * dx + dy * dy <= 70 * 70
+        var dx = 73 - x
+        var dy = 73 - y
+        return dx * dx + dy * dy <= 73 * 73
       } catch (error) {
         console.log(error)
       }
