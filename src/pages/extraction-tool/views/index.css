@@ -1,8 +1,29 @@
 @charset "UTF-8";
+.content {
+  position: relative;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  background-image: url("../assets/bg.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.video-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
 .buttom-bg {
   width: 100%;
   position: absolute;
   bottom: 0;
+  left: 0;
   animation: buttomBg 10s infinite linear;
   -webkit-animation: buttomBg 10s infinite linear;
   /* Safari 和 Chrome */
@@ -200,18 +221,6 @@
   animation: starOpacity 30s cubic-bezier(0.1, 0.25, 0.75, 0.25) infinite;
 }
 
-.content {
-  position: relative;
-  overflow: hidden;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  background-image: url("../assets/bg.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-}
-
 .draw {
   position: relative;
   width: 52vw;
@@ -219,6 +228,9 @@
   background-image: url("../assets/bg_light.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  animation: fadenum 3s infinite linear;
+  -webkit-animation: fadenum 3s infinite linear;
+  /* Safari 和 Chrome */
 }
 
 .draw .draw-box {
@@ -302,13 +314,14 @@
 .set-btn {
   position: absolute;
   font-size: 3vh;
-  top: 50%;
-  left: 0%;
-  transform: translate(50%, -50%);
-  padding: 2.3vh 3vw;
-  background: #09c196;
+  bottom: 2%;
+  left: 5%;
+  width: 6vw;
+  height: 6vw;
+  background-image: url("../assets/icon_set.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   border-radius: 50%;
-  padding: 25px 30px;
   color: #a6f885;
   font-size: 24px;
   text-transform: uppercase;
@@ -317,17 +330,12 @@
   cursor: pointer;
 }
 
-.set-btn:hover {
-  background-color: #4de41f;
-  color: #4de41f;
-  box-shadow: 0 0 5px #4de41f, 0 0 25px #4de41f, 0 0 50px #4de41f, 0 0 200px #4de41f;
-}
-
 .solid-limit {
   width: 70vw;
   padding: 5vh 5vw;
   position: absolute;
   top: 30%;
+  left: 10vw;
   text-align: center;
   background-color: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(1vw);
@@ -352,6 +360,7 @@
   align-items: center;
   font-size: 2vw;
   padding: 2vh 0;
+  margin-top: 2vh;
 }
 
 .change-quantity .quantity {
@@ -408,9 +417,10 @@
   flex-wrap: wrap;
   align-items: center;
   width: 70%;
-  padding: 5.5vh 5.5vw;
+  padding: 5.5vh 5vw;
   position: absolute;
   top: 30%;
+  left: 10vw;
   text-align: center;
   background-color: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(1vw);

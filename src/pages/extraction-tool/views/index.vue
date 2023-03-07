@@ -1,153 +1,163 @@
 <template>
   <div class="content">
-    <!-- 底部云 -->
-    <div class="buttom-bg">
-      <img class="buttom-box" src="../assets/bg_cloud.png" />
-    </div>
-    <!-- 火箭 -->
-    <div class="rocket">
-      <img class="rocket-box" src="../assets/galaxy_plane.png" />
-    </div>
-    <!-- 星球 -->
-    <div class="celestial-body1">
-      <img class="celestial-body-box1" src="../assets/galaxy_blue.png" />
-    </div>
-    <!-- 星球 -->
-    <div class="celestial-body2">
-      <img class="celestial-body-box2" src="../assets/galaxy_green.png" />
-    </div>
-    <!-- 星球 -->
-    <div class="celestial-body3">
-      <img class="celestial-body-box3" src="../assets/galaxy_red.png" />
-    </div>
-    <!-- 星星 -->
-    <div>
-      <div class="star1">
-        <img class="star-box1" src="../assets/galaxy_star_normal.png" />
+    <video
+      class="video-box"
+      v-if="isPlayVideo"
+      data-end="1"
+      muted
+      play-duration="10s"
+      poster="../assets/poster.jpg"
+      preload="auto"
+      autoplay
+      src="../assets/video/poster.mp4?t=1678161213890"
+    ></video>
+    <div v-if="!isPlayVideo">
+      <!-- 底部云 -->
+      <div class="buttom-bg">
+        <img class="buttom-box" src="../assets/bg_cloud.png" />
       </div>
-      <div class="star2">
-        <img class="star-box2" src="../assets/galaxy_star_normal.png" />
+      <!-- 火箭 -->
+      <div class="rocket">
+        <img class="rocket-box" src="../assets/galaxy_plane.png" />
       </div>
-      <div class="star3">
-        <img class="star-box3" src="../assets/galaxy_star_normal.png" />
+      <!-- 星球 -->
+      <div class="celestial-body1">
+        <img class="celestial-body-box1" src="../assets/galaxy_blue.png" />
       </div>
-      <div class="star4">
-        <img class="star-box4" src="../assets/galaxy_star_normal.png" />
+      <!-- 星球 -->
+      <div class="celestial-body2">
+        <img class="celestial-body-box2" src="../assets/galaxy_green.png" />
       </div>
-      <div class="star5">
-        <img class="star-box5" src="../assets/galaxy_star_normal.png" />
+      <!-- 星球 -->
+      <div class="celestial-body3">
+        <img class="celestial-body-box3" src="../assets/galaxy_red.png" />
       </div>
-      <div class="star6">
-        <img class="star-box6" src="../assets/galaxy_star_normal.png" />
+      <!-- 星星 -->
+      <div>
+        <div class="star1">
+          <img class="star-box1" src="../assets/galaxy_star_normal.png" />
+        </div>
+        <div class="star2">
+          <img class="star-box2" src="../assets/galaxy_star_normal.png" />
+        </div>
+        <div class="star3">
+          <img class="star-box3" src="../assets/galaxy_star_normal.png" />
+        </div>
+        <div class="star4">
+          <img class="star-box4" src="../assets/galaxy_star_normal.png" />
+        </div>
+        <div class="star5">
+          <img class="star-box5" src="../assets/galaxy_star_normal.png" />
+        </div>
+        <div class="star6">
+          <img class="star-box6" src="../assets/galaxy_star_normal.png" />
+        </div>
+        <div class="star7">
+          <img class="star-box7" src="../assets/galaxy_star_normal.png" />
+        </div>
+        <div class="star8">
+          <img class="star-box8" src="../assets/galaxy_star_normal.png" />
+        </div>
       </div>
-      <div class="star7">
-        <img class="star-box7" src="../assets/galaxy_star_normal.png" />
-      </div>
-      <div class="star8">
-        <img class="star-box8" src="../assets/galaxy_star_normal.png" />
-      </div>
-    </div>
 
-    <!-- 球载体 -->
-    <div class="draw">
-      <div class="draw-box">
-        <div id="circle">
-          <div v-for="(ball, key) in ballitems" :key="key">
+      <!-- 球载体 -->
+      <div class="draw">
+        <div class="draw-box">
+          <div id="circle">
+            <div v-for="(ball, key) in ballitems" :key="key">
+              <div
+                class="ball"
+                :style="{
+                  width: '2.5vw',
+                  height: '2.5vw',
+                  'border-radius': '50%',
+                  position: 'absolute',
+                  'background-color': ball.color,
+                  left: ball.x / 6 + 'vw',
+                  top: ball.y / 6 + 'vw',
+                }"
+                v-if="!ball.isMoveball"
+                @redirect="redirect(key)"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 飞船吸球 -->
+      <div class="main-img" id="serve-img-area" v-if="isShowUFO">
+        <div class="ufo fadeInLeftBig animated">
+          <img class="ufo-box" src="../assets/ufo.png" />
+          <img class="ufo-light-box" src="../assets/light.png" />
+        </div>
+      </div>
+      <!-- 飞船吸球过程 -->
+      <div class="draw-move-line">
+        <div class="draw-move-ball">
+          <div v-for="(ball, key) in arrResult" :key="key">
             <div
-              class="ball"
+              class="move-ball"
+              v-if="numberArr[key]"
               :style="{
-                'background-color': ball.color,
-                width: ball.width,
-                height: ball.height,
-                'border-radius': ball.borderRadius,
+                width: '2.5vw',
+                height: '2.5vw',
+                'border-radius': '50%',
+                'background-color': randomColor,
                 position: 'absolute',
                 left: ball.x / 6 + 'vw',
                 top: ball.y / 6 + 'vw',
-                border: '0.03vw solid #ccc',
               }"
-              v-if="!ball.isMoveball"
-              @redirect="redirect(key)"
             ></div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- 飞船吸球 -->
-    <div class="main-img" id="serve-img-area" v-if="isShowUFO">
-      <div class="ufo fadeInLeftBig animated">
-        <img class="ufo-box" src="../assets/ufo.png" />
-        <img class="ufo-light-box" src="../assets/light.png" />
-      </div>
-    </div>
-    <!-- 飞船吸球过程 -->
-    <div class="draw-move-line">
-      <div class="draw-move-ball">
-        <div v-for="(ball, key) in arrResult" :key="key">
+      <div class="set-btn" @click="setParam"></div>
+      <div :class="showPopupClass" v-show="showPopup">
+        <div class="closeWrapper" @click="closePopup">
+          <div class="close"></div>
+        </div>
+        <div class="value">{{ showValue }}</div>
+        <van-slider v-model="value" range @change="onChange" />
+        <div class="change-quantity">
+          选择抽取号码数量:
           <div
-            class="move-ball"
-            v-if="numberArr[key]"
-            :style="{
-              'background-color': ball.color,
-              width: ball.width,
-              height: ball.height,
-              'border-radius': ball.borderRadius,
-              position: 'absolute',
-              left: ball.x / 6 + 'vw',
-              top: ball.y / 6 + 'vw',
-              border: '0.03vw solid #ccc',
-            }"
-          ></div>
+            :class="changeQuantity === item ? 'quantity live' : 'quantity'"
+            v-for="(item, index) in quantityArr"
+            :key="index"
+            @click="liveQuantity(item)"
+          >
+            {{ item }}
+          </div>
         </div>
+        <button @click="submit" class="submit">确定</button>
       </div>
-    </div>
-    <div class="set-btn" @click="setParam">设置</div>
-    <div :class="showPopupClass" v-show="showPopup">
-      <div class="closeWrapper" @click="closePopup">
-        <div class="close"></div>
-      </div>
-      <div class="value">{{ showValue }}</div>
-      <van-slider v-model="value" range @change="onChange" />
-      <div class="change-quantity">
-        选择抽取号码数量:
+      <!-- 结果展示款 -->
+      <div :class="showResultPopupClass" v-show="isShowResultPopup">
+        <div class="closeWrapper" @click="closeResultPopup">
+          <div class="close"></div>
+        </div>
         <div
-          :class="changeQuantity === item ? 'quantity live' : 'quantity'"
-          v-for="(item, index) in quantityArr"
+          class="result-ball"
+          v-for="(item, index) in arrResult"
           :key="index"
-          @click="liveQuantity(item)"
+          :style="{
+            'background-color': item.color,
+          }"
         >
-          {{ item }}
+          {{ numberArr[index] }}
         </div>
       </div>
-      <button @click="submit" class="submit">确定</button>
+      <audio id="audio" ref="audio" src="../assets/audio/btn.mp3" preload>
+        对不起，您的浏览器不支持HTML5音频播放。
+      </audio>
+      <audio id="audio1" ref="audio1" src="../assets/audio/ju.wav" preload>
+        对不起，您的浏览器不支持HTML5音频播放。
+      </audio>
     </div>
-    <!-- 结果展示款 -->
-    <div :class="showResultPopupClass" v-show="isShowResultPopup">
-      <div class="closeWrapper" @click="closeResultPopup">
-        <div class="close"></div>
-      </div>
-      <div
-        class="result-ball"
-        v-for="item in numberArr"
-        :key="item"
-        :style="{
-          'background-color': randomColor,
-        }"
-      >
-        {{ item }}
-      </div>
-    </div>
-    <audio id="audio" ref="audio" src="../assets/audio/btn.mp3" preload>
-      对不起，您的浏览器不支持HTML5音频播放。
-    </audio>
-    <audio id="audio1" ref="audio1" src="../assets/audio/ju.wav" preload>
-      对不起，您的浏览器不支持HTML5音频播放。
-    </audio>
   </div>
 </template>
 
 <script>
 import { debounce } from 'lodash'
-
 export default {
   props: [],
   data() {
@@ -171,6 +181,7 @@ export default {
       showDrawMove: false, //初始化是否全部显示，除了选中的球
       isShowUFO: false,
       isShowResultPopup: false,
+      isPlayVideo: true,
       randomColor: `#${Math.floor(Math.random() * 0xffffff).toString(16)}`,
     }
   },
@@ -179,6 +190,12 @@ export default {
     setTimeout(function () {
       self.showPopup = true
     }, 500)
+  },
+  mounted: function () {
+    let self = this
+    setTimeout(() => {
+      self.isPlayVideo = false
+    }, 7000)
   },
   methods: {
     playAudioBtn() {
@@ -210,9 +227,6 @@ export default {
           // let cirWidth = parseInt(Math.random() * 20 + 20) //产生20到40的数
           this.ballitems.push({
             color: '#' + co,
-            width: '2.5vw',
-            height: '2.5vw',
-            borderRadius: '50%',
             x: x,
             y: y,
             //随机生成x和y轴移动速度
@@ -349,7 +363,7 @@ export default {
           }, 3000)
         } else {
           while (this.numberArr.length < num) {
-            randomNumber = this.randomFrom(this.value[0], this.value[1])
+            randomNumber = Number(this.randomFrom(this.value[0], this.value[1]))
             if (this.numberArr.indexOf(randomNumber) == -1) {
               this.numberArr.push(randomNumber)
             } else {
