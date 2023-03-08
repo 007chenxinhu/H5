@@ -301,8 +301,8 @@
   bottom: 2%;
   left: 5%;
   // transform: translate(50%, -50%);
-  @include wh(6vw, 6vw); // background: rgba(224, 0, 0, 0.363);
-  @include bg('../assets/icon_set.png');
+  @include wh(7vw, 7vw); // background: rgba(224, 0, 0, 0.363);
+  @include bg('../assets/icon-setting.png');
   border-radius: 50%;
   // width: fit-content;
   color: #a6f885;
@@ -311,6 +311,7 @@
   transition: 0.5s;
   letter-spacing: 4px;
   cursor: pointer;
+  transform: rotate3d(360deg);
 }
 
 .solid-limit {

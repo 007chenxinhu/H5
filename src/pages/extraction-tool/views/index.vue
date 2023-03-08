@@ -115,10 +115,10 @@
         <div class="closeWrapper" @click="closePopup">
           <div class="close"></div>
         </div>
-        <div class="value">{{ showValue }}</div>
+        <div class="value">{{ value }}</div>
         <van-slider v-model="value" range @change="onChange" />
         <div class="change-quantity">
-          选择抽取号码数量:
+          抽几个号码?:
           <div
             :class="changeQuantity === item ? 'quantity live' : 'quantity'"
             v-for="(item, index) in quantityArr"
@@ -166,7 +166,7 @@ export default {
       ballitems: [],
       coordinate: [],
       //定义随机颜色
-      color: '0123456789abcdef',
+      color: '3456789abcdef',
       ballItem: document.getElementsByClassName('ball'),
       timer: null,
       getResultTimer: null,
@@ -280,7 +280,7 @@ export default {
         console.log(error)
       }
     },
-    onChange(value) {
+    onChange() {
       try {
         this.showValue = '【' + this.value[0] + ' - ' + this.value[1] + '】'
       } catch (error) {
@@ -289,12 +289,15 @@ export default {
     },
     setParam: debounce(function () {
       try {
+        if (this.isShowResultPopup) {
+          return
+        }
         this.showPopup = true
         this.playAudioBtn()
       } catch (error) {
         console.log(error)
       }
-    }, 1000),
+    }, 600),
     submit: debounce(function () {
       try {
         let self = this
@@ -315,14 +318,14 @@ export default {
         setTimeout(() => {
           self.showPopup = false
           self.showPopupClass = 'solid-limit bounceInDown animated' //重置弹窗出现显示动画
-        }, 2000)
+        }, 1000)
         setTimeout(() => {
           self.getResult()
         }, 3000)
       } catch (error) {
         console.log(error)
       }
-    }, 500),
+    }, 1000),
 
     getResult() {
       try {
@@ -335,6 +338,13 @@ export default {
     },
     chooseMoveBall(e) {
       try {
+        //   // 取值区间球数
+        // let limitNumber = this.value[1] - this.value[0]
+        // if (this.changeQuantity === limitNumber) {
+
+        // } else if (this.changeQuantity > limitNumber) {
+        // } else {
+        // }
         let self = this
         let num = Number(e)
         let chooseBall
@@ -374,6 +384,7 @@ export default {
 
             chooseBall =
               this.ballitems[this.numberArr[this.numberArr.length - 1]]
+            console.log(chooseBall, '空了')
             this.arrResult.push(chooseBall)
             if (this.arrResult.length === num) {
               this.getResultTimer = setInterval(() => {
