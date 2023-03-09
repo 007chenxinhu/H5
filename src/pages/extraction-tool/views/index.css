@@ -349,7 +349,7 @@
 
 .value {
   font-size: 2vw;
-  margin-bottom: 2vh;
+  margin-bottom: 4vh;
 }
 
 .submit {
@@ -364,7 +364,7 @@
   align-items: center;
   font-size: 2vw;
   padding: 2vh 0;
-  margin-top: 2vh;
+  margin-top: 3vh;
 }
 
 .change-quantity .quantity {
