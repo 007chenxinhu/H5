@@ -163,13 +163,7 @@ export default {
       ballitems: [],
       coordinate: [],
       ballNumber: 20,
-      backgroundImage: [
-        '../assets/top_sphere1.png',
-        '../assets/top_sphere2.png',
-        '../assets/top_sphere3.png',
-        '../assets/top_sphere4.png',
-        '../assets/top_sphere5.png',
-      ],
+      isSubmit: false,
       //定义随机颜色
       color: '3456789abcdef',
       ballItem: document.getElementsByClassName('ball'),
@@ -297,37 +291,41 @@ export default {
         if (this.isShowResultPopup) {
           return
         }
+        if (this.isSubmit) this.isSubmit = false
         this.showPopup = true
         this.playAudioBtn()
       } catch (error) {
         console.log(error)
       }
-    }, 600),
+    }, 500),
     submit: debounce(function () {
       try {
-        let self = this
+        if (!this.isSubmit) {
+          this.isSubmit = true
+          let self = this
 
-        this.isShowUFO = false
-        this.showPopupClass = 'solid-limit bounceOutRight animated' //修改弹窗出现显示动画
-        this.playAudioBtn() //播放按钮声音
-        this.ballNumber = this.value[1] - this.value[0] + 1 //生成球的数量
-        this.createBall() //创造球
-        this.move() //移动球
-        this.numberArr = []
-        setTimeout(() => {
-          this.isShowUFO = true //重置ufo消失
-        }, 0)
-        setTimeout(() => {
-          self.playAudioUFO() //播放飞船声音
-        }, 1000)
-        setTimeout(() => {
-          self.showPopup = false
-          self.showPopupClass = 'solid-limit bounceInDown animated' //重置弹窗出现显示动画
-        }, 1000)
-        setTimeout(() => {
-          //获取结果
-          self.chooseMoveBall(this.changeQuantity)
-        }, 3000)
+          this.isShowUFO = false
+          this.showPopupClass = 'solid-limit bounceOutRight animated' //修改弹窗出现显示动画
+          this.playAudioBtn() //播放按钮声音
+          this.ballNumber = this.value[1] - this.value[0] + 1 //生成球的数量
+          this.createBall() //创造球
+          this.move() //移动球
+          this.numberArr = []
+          setTimeout(() => {
+            this.isShowUFO = true //重置ufo消失
+          }, 0)
+          setTimeout(() => {
+            self.playAudioUFO() //播放飞船声音
+          }, 1000)
+          setTimeout(() => {
+            self.showPopup = false
+            self.showPopupClass = 'solid-limit bounceInDown animated' //重置弹窗出现显示动画
+          }, 1000)
+          setTimeout(() => {
+            //获取结果
+            self.chooseMoveBall(this.changeQuantity)
+          }, 3000)
+        }
       } catch (error) {
         console.log(error)
       }
