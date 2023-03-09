@@ -328,7 +328,10 @@
   transition: 0.5s;
   letter-spacing: 4px;
   cursor: pointer;
-  transform: rotate3d(360deg);
+}
+
+.set-btn:hover {
+  box-shadow: #555151;
 }
 
 .solid-limit {
@@ -436,6 +439,36 @@
   line-height: 8.3vw;
   font-size: 3vw;
   margin: 2vw;
+}
+
+.result-bg1 {
+  background-image: url("../assets/top_sphere1.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.result-bg2 {
+  background-image: url("../assets/top_sphere2.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.result-bg3 {
+  background-image: url("../assets/top_sphere3.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.result-bg4 {
+  background-image: url("../assets/top_sphere4.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.result-bg5 {
+  background-image: url("../assets/top_sphere5.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 
 @keyframes starOpacity {

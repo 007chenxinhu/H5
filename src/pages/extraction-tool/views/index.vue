@@ -136,14 +136,11 @@
           <div class="close"></div>
         </div>
         <div
-          class="result-ball"
-          v-for="(item, index) in arrResult"
+          v-for="(item, index) in numberArr"
           :key="index"
-          :style="{
-            'background-color': item.color,
-          }"
+          :class="`result-ball result-bg${index + 1}`"
         >
-          {{ numberArr[index] }}
+          {{ item }}
         </div>
       </div>
       <audio id="audio" ref="audio" src="../assets/audio/btn.mp3" preload>
@@ -165,6 +162,14 @@ export default {
       numberArr: [],
       ballitems: [],
       coordinate: [],
+      ballNumber: 20,
+      backgroundImage: [
+        '../assets/top_sphere1.png',
+        '../assets/top_sphere2.png',
+        '../assets/top_sphere3.png',
+        '../assets/top_sphere4.png',
+        '../assets/top_sphere5.png',
+      ],
       //定义随机颜色
       color: '3456789abcdef',
       ballItem: document.getElementsByClassName('ball'),
@@ -215,7 +220,7 @@ export default {
       try {
         this.ballitems = []
         // 生成20个球，给球安排初始位置
-        for (let i = 0; i < this.ballNumber + 1; i++) {
+        for (let i = 0; i < this.ballNumber; i++) {
           let xy = this.isCir()
           let x = xy[0]
           let y = xy[1]
@@ -305,7 +310,7 @@ export default {
         this.isShowUFO = false
         this.showPopupClass = 'solid-limit bounceOutRight animated' //修改弹窗出现显示动画
         this.playAudioBtn() //播放按钮声音
-        this.ballNumber = this.value[1] - this.value[0] //生成球的数量
+        this.ballNumber = this.value[1] - this.value[0] + 1 //生成球的数量
         this.createBall() //创造球
         this.move() //移动球
         this.numberArr = []
@@ -320,41 +325,62 @@ export default {
           self.showPopupClass = 'solid-limit bounceInDown animated' //重置弹窗出现显示动画
         }, 1000)
         setTimeout(() => {
-          self.getResult()
+          //获取结果
+          self.chooseMoveBall(this.changeQuantity)
         }, 3000)
       } catch (error) {
         console.log(error)
       }
     }, 1000),
-
-    getResult() {
+    chooseMoveBall(e) {
       try {
         this.numberArr = []
         this.arrResult = []
-        this.chooseMoveBall(this.changeQuantity)
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    chooseMoveBall(e) {
-      try {
-        //   // 取值区间球数
-        // let limitNumber = this.value[1] - this.value[0]
-        // if (this.changeQuantity === limitNumber) {
-
-        // } else if (this.changeQuantity > limitNumber) {
-        // } else {
-        // }
         let self = this
-        let num = Number(e)
-        let chooseBall
-        let randomNumber
-        if (num === 1) {
-          this.numberArr.push(
-            Number(this.randomFrom(this.value[0], this.value[1])),
-          )
-          chooseBall = this.ballitems[this.numberArr.length - 1]
-          this.arrResult.push(chooseBall)
+        let num = Number(e) //一次抽取几个球
+        let min = this.value[0]
+        let max = this.value[1]
+        let chooseBall //选中的球
+        let randomNumber //随机得到的数
+        //选出球数量等于限制区间的数量
+        if (num === this.ballNumber) {
+          while (this.numberArr.length < num) {
+            this.numberArr.push(min)
+            min = min + 1
+          }
+          self.arrResult = self.ballitems
+          this.getResultTimer = setInterval(() => {
+            self.arrResult.forEach((ball, i) => {
+              ball.isMoveball = true
+              ball.x > 185 ? ball.x-- : ball.x
+              ball.x < 185 ? ball.x++ : ball.x > 185 ? ball.x : ball.x++
+              ball.y > 38 ? ball.y-- : ball.y
+              ball.y < 38 ? ball.y++ : ball.y > 38 ? ball.y : ball.y++
+            }, 1)
+            setTimeout(function () {
+              clearInterval(self.timer) //终止圆内球一直滚动
+              self.isShowResultPopup = true
+            }, 800)
+          })
+          setTimeout(function () {
+            // if (self.timer) {
+            //   clearInterval(self.timer) //终止圆内球一直滚动
+            // }
+            clearInterval(self.getResultTimer)
+          }, 3000)
+          //选出球数量大于限制区间的数量
+        } else if (num > this.ballNumber) {
+          while (this.numberArr.length < num) {
+            if (min < max) {
+              this.numberArr.push(min)
+            } else {
+              this.numberArr.push(
+                Number(this.randomFrom(this.value[0], this.value[1])),
+              )
+            }
+            min = min + 1
+          }
+          self.arrResult = self.ballitems
           this.getResultTimer = setInterval(() => {
             self.arrResult.forEach((ball, i) => {
               ball.isMoveball = true
@@ -371,41 +397,43 @@ export default {
           setTimeout(function () {
             clearInterval(self.getResultTimer)
           }, 3000)
+          //选出球数量小于限制区间的数量
         } else {
+          let long = 0
           while (this.numberArr.length < num) {
             randomNumber = Number(this.randomFrom(this.value[0], this.value[1]))
-            if (this.numberArr.indexOf(randomNumber) == -1) {
-              this.numberArr.push(randomNumber)
-            } else {
-              this.numberArr.push(
-                Number(this.randomFrom(this.value[0], this.value[1])),
+            while (this.numberArr.indexOf(randomNumber) != -1) {
+              randomNumber = Number(
+                this.randomFrom(this.value[0], this.value[1]),
               )
             }
-
-            chooseBall =
-              this.ballitems[this.numberArr[this.numberArr.length - 1]]
-            console.log(chooseBall, '空了')
+            this.numberArr.push(randomNumber)
+          }
+          while (this.arrResult.length < num) {
+            chooseBall = this.ballitems[this.numberArr[long] - this.value[0]]
             this.arrResult.push(chooseBall)
-            if (this.arrResult.length === num) {
-              this.getResultTimer = setInterval(() => {
-                self.arrResult.forEach((ball, i) => {
-                  ball.isMoveball = true
-                  ball.x > 185 ? ball.x-- : ball.x
-                  ball.x < 185 ? ball.x++ : ball.x > 185 ? ball.x : ball.x++
-                  ball.y > 38 ? ball.y-- : ball.y
-                  ball.y < 38 ? ball.y++ : ball.y > 38 ? ball.y : ball.y++
-                })
-                setTimeout(function () {
-                  clearInterval(self.timer) //终止圆内球一直滚动
-                  self.isShowResultPopup = true
-                }, 800)
-              }, 10)
+            long = long + 1
+          }
+          if (this.arrResult.length === num) {
+            this.getResultTimer = setInterval(() => {
+              self.arrResult.forEach((ball, i) => {
+                ball.isMoveball = true
+                ball.x > 185 ? ball.x-- : ball.x
+                ball.x < 185 ? ball.x++ : ball.x > 185 ? ball.x : ball.x++
+                ball.y > 38 ? ball.y-- : ball.y
+                ball.y < 38 ? ball.y++ : ball.y > 38 ? ball.y : ball.y++
+              }, 1)
               setTimeout(function () {
-                clearInterval(self.getResultTimer)
-              }, 3000)
-            }
+                clearInterval(self.timer) //终止圆内球一直滚动
+                self.isShowResultPopup = true
+              }, 800)
+            })
+            setTimeout(function () {
+              clearInterval(self.getResultTimer)
+            }, 3000)
           }
         }
+        console.log(this.numberArr, this.arrResult, '出错了!!====')
         this.ballitems.forEach((ball, i) => {
           this.numberArr.forEach((item, index) => {
             if (i + 1 === item) {
@@ -417,6 +445,7 @@ export default {
         console.log(error)
       }
     },
+    //获取区间随机数
     randomFrom(lowerValue, upperValue) {
       try {
         return Math.floor(
@@ -471,9 +500,6 @@ export default {
     },
     /**
      *  判断一个点是否在圆的内部
-     *  @param point  测试点坐标
-     *  @param circle 圆心坐标
-     *  @param r 圆半径
      *  返回true为真，false为假
      *  */
     pointInsideCircle(x, y) {

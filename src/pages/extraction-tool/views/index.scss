@@ -311,7 +311,9 @@
   transition: 0.5s;
   letter-spacing: 4px;
   cursor: pointer;
-  transform: rotate3d(360deg);
+}
+.set-btn:hover {
+  box-shadow: #555151;
 }
 
 .solid-limit {
@@ -414,6 +416,21 @@
   line-height: 8.3vw;
   font-size: 3vw;
   margin: 2vw;
+}
+.result-bg1 {
+  @include bg('../assets/top_sphere1.png');
+}
+.result-bg2 {
+  @include bg('../assets/top_sphere2.png');
+}
+.result-bg3 {
+  @include bg('../assets/top_sphere3.png');
+}
+.result-bg4 {
+  @include bg('../assets/top_sphere4.png');
+}
+.result-bg5 {
+  @include bg('../assets/top_sphere5.png');
 }
 @keyframes starOpacity {
   0% {
