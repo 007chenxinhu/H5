@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div :class="isPlayVideo ? 'content' : 'content content-background'">
     <video
       class="video-box"
       v-if="isPlayVideo"
