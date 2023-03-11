@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div :class="isPlayVideo ? 'content' : 'content content-background'">
     <video
       class="video-box"
       v-if="isPlayVideo"
@@ -59,8 +59,11 @@
           <img class="star-box8" src="../assets/galaxy_star_normal.png" />
         </div>
       </div>
-      <!-- <div class="goGroup-btn">分组</div> -->
-      <Random></Random>
+      <div class="goGroup-btn" @click="goGroup">
+        {{ isCheckoutComponents ? '选号' : '分组' }}
+      </div>
+      <Random v-if="!isCheckoutComponents"></Random>
+      <GetGroup v-else></GetGroup>
       <audio id="audio" ref="audio" src="../assets/audio/btn.mp3" preload>
         对不起，您的浏览器不支持HTML5音频播放。
       </audio>
@@ -70,15 +73,18 @@
 
 <script>
 import Random from './random.vue'
+import GetGroup from './get-group.vue'
 export default {
   name: 'Index',
   props: [],
   components: {
     Random,
+    GetGroup,
   },
   data() {
     return {
       isPlayVideo: true,
+      isCheckoutComponents: false,
     }
   },
   mounted: function () {
@@ -93,6 +99,9 @@ export default {
       music1 = require('../assets/audio/btn.mp3') //通过require引入音频
       this.$refs.audio.src = music1 //此处的audio为代码ref="audio"中的audio
       this.$refs.audio.play() //play()为播放函数
+    },
+    goGroup() {
+      this.isCheckoutComponents = !this.isCheckoutComponents
     },
   },
 }

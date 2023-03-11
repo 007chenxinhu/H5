@@ -1,0 +1,24 @@
+@mixin wh($width, $height) {
+  width: $width;
+  height: $height;
+}
+@mixin font($size, $weight, $color) {
+  font-size: $size;
+  color: $color;
+  font-weight: $weight;
+}
+@mixin bg($url) {
+  background-image: url($url);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.get-group {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  .bodyyyy {
+    font-size: 15vw;
+    color: #00ff15;
+  }
+}
