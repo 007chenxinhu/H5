@@ -53,7 +53,7 @@
     <div class="set-btn" @click="setParam"></div>
     <div :class="showPopupClass" v-show="showPopup">
       <div class="closeWrapper" @click="closePopup">
-        <div class="close"></div>
+        <van-icon name="cross" />
       </div>
       <div class="value">{{ value }}</div>
       <van-slider v-model="value" range @change="onChange" />
@@ -73,12 +73,12 @@
     <!-- 结果展示款 -->
     <div :class="showResultPopupClass" v-show="isShowResultPopup">
       <div class="closeWrapper" @click="closeResultPopup">
-        <div class="close"></div>
+        <van-icon name="cross" />
       </div>
       <div
         v-for="(item, index) in numberArr"
         :key="index"
-        :class="`result-ball result-bg${index + 1}`"
+        :class="`result-ball result-bg${index > 4 ? index - 4 : index + 1}`"
       >
         {{ item }}
       </div>
@@ -114,7 +114,7 @@ export default {
       showPopupClass: 'solid-limit bounceInDown animated',
       showResultPopupClass: 'result-popup zoomIn animated',
       showValue: '【1-20】',
-      quantityArr: ['01', '02', '03', '05'],
+      quantityArr: ['01', '02', '03', '04', '05', '10'],
       changeQuantity: '01',
       arrResult: [],
       showDrawMove: false, //初始化是否全部显示，除了选中的球
