@@ -6,11 +6,7 @@
   height: 100vh;
   display: flex;
   justify-content: center;
-<<<<<<< HEAD:src/pages/extraction-tool/views/index.css
-  background-color: #26262c;
-=======
   background-color: #1f1f23;
->>>>>>> cxh-1210:src/pages/randomNumber/views/index.css
 }
 
 .content-background {
@@ -21,7 +17,6 @@
 
 .video-box {
   position: absolute;
-  width: 100%;
   height: 100%;
   top: 0;
   left: 0;
