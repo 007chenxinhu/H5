@@ -78,7 +78,7 @@
       <div
         v-for="(item, index) in numberArr"
         :key="index"
-        :class="`result-ball result-bg${index + 1}`"
+        :class="`result-ball result-bg${index > 4 ? index - 4 : index + 1}`"
       >
         {{ item }}
       </div>
