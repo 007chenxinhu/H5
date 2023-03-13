@@ -19,7 +19,11 @@
   height: 100vh;
   display: flex;
   justify-content: center;
+<<<<<<< HEAD:src/pages/extraction-tool/views/index.scss
   background-color: rgb(38, 38, 44);
+=======
+  background-color: rgb(31, 31, 35);
+>>>>>>> cxh-1210:src/pages/randomNumber/views/index.scss
 }
 .content-background {
   @include bg('../assets/bg.png');

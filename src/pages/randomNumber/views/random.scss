@@ -176,38 +176,17 @@
 }
 .closeWrapper {
   position: absolute;
-  width: 5vw;
-  height: 5vw;
+  width: 2vw;
+  height: 2vw;
+  text-align: center;
+  line-height: 2vw;
   top: 2vw;
-  right: 0.4vw;
-}
-
-.close {
-  position: absolute;
-  width: 1.5vw;
-  height: 1.5vw;
-  border: 0.1vh solid;
+  right: 2vw;
+  border: 0.1vw solid #000;
   border-radius: 50%;
-}
-
-.close::before,
-.close::after {
-  position: absolute;
-  content: '';
-  background-color: #cccccc;
-  width: 0px;
-  height: 1vw;
-  border: 0.1vh solid;
-  left: 50%;
-  top: 10%;
-}
-
-.close::before {
-  transform: rotate(45deg);
-}
-
-.close::after {
-  transform: rotate(-45deg);
+  /deep/.van-icon {
+    font-size: 2vw;
+  }
 }
 .result-popup {
   display: flex;
