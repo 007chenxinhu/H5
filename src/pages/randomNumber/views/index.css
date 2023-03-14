@@ -6,11 +6,18 @@
   height: 100vh;
   display: flex;
   justify-content: center;
+  text-align: center;
   background-color: #1f1f23;
 }
 
-.content-background {
+.random-background {
   background-image: url("../assets/bg.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.group-background {
+  background-image: url("../assets/group_bg.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
@@ -19,7 +26,8 @@
   position: absolute;
   height: 100%;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 
 .buttom-bg {

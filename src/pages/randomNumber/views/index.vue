@@ -1,5 +1,13 @@
 <template>
-  <div :class="isPlayVideo ? 'content' : 'content content-background'">
+  <div
+    :class="
+      isPlayVideo
+        ? 'content'
+        : isCheckoutComponents
+        ? 'content group-background'
+        : 'content random-background'
+    "
+  >
     <video
       class="video-box"
       v-if="isPlayVideo"
