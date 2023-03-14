@@ -50,8 +50,11 @@
         </div>
       </div>
     </div>
+
     <div class="set-btn" @click="setParam"></div>
+    <div class="goGroup-btn">分组</div>
     <div :class="showPopupClass" v-show="showPopup">
+      <div class="random-title">随机数</div>
       <div class="closeWrapper" @click="closePopup">
         <van-icon name="cross" />
       </div>

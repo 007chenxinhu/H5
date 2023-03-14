@@ -125,6 +125,13 @@
   z-index: 1;
 }
 
+.random-title {
+  position: absolute;
+  font-size: 2vw;
+  top: 2vw;
+  left: 2vw;
+}
+
 .value {
   font-size: 2vw;
   margin-bottom: 4vh;
@@ -197,6 +204,7 @@
   line-height: 8.3vw;
   font-size: 3vw;
   margin: 2vw;
+  color: #eeebeb;
 }
 
 .result-bg1 {
