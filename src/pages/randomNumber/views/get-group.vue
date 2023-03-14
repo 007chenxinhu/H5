@@ -1,6 +1,6 @@
 <template>
   <div class="get-group">
-    <div class="bodyyyy">分组</div>
+    <!-- <div class="bodyyyy">随机分组</div> -->
     <audio id="audio" ref="audio" src="../assets/audio/btn.mp3" preload>
       对不起，您的浏览器不支持HTML5音频播放。
     </audio>
@@ -17,12 +17,7 @@ export default {
       isPlayVideo: true,
     }
   },
-  mounted: function () {
-    let self = this
-    setTimeout(() => {
-      self.isPlayVideo = false
-    }, 5000)
-  },
+  mounted: function () {},
   methods: {
     playAudioBtn() {
       let music1 = new Audio() //建立一个music1对象
