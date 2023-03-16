@@ -121,8 +121,6 @@
   border-radius: 50%;
   // width: fit-content;
   color: #a6f885;
-  font-size: 24px;
-  text-transform: uppercase;
   transition: 0.5s;
   letter-spacing: 4px;
   cursor: pointer;
@@ -131,6 +129,22 @@
   box-shadow: #555151;
 }
 
+.goGroup-btn {
+  position: absolute;
+  bottom: 16%;
+  left: 5%;
+  @include wh(7vw, 7vw);
+  border-radius: 50%;
+  background: rgb(248, 191, 3);
+  color: #fff;
+  font-size: 2vw;
+  text-align: center;
+  line-height: 7vw;
+  cursor: pointer;
+}
+.goGroup-btn:hover {
+  box-shadow: #555151;
+}
 .solid-limit {
   width: 70vw;
   padding: 5vh 5vw;
@@ -161,6 +175,25 @@
   border-radius: 1vw;
 }
 
+.selectAllNumber {
+  // display: flex;
+  // flex-wrap: nowrap;
+  margin-bottom: 3vh;
+}
+.title-number {
+  font-size: 2vw;
+  margin: 3vh 0;
+}
+.custom-button {
+  width: 4vw;
+  height: 4vw;
+  color: #070606;
+  font-size: 2vw;
+  line-height: 4vw;
+  text-align: center;
+  background-color: #f1f1f5;
+  border-radius: 50%;
+}
 .change-quantity {
   display: flex;
   justify-content: center;
@@ -232,6 +265,13 @@
 }
 .result-bg5 {
   @include bg('../assets/top_sphere5.png');
+}
+.number-array {
+  @include wh(17.36vw, 11.76vw);
+  text-align: center;
+  line-height: 14.76vw;
+  margin: 1vw 2vw;
+  @include bg('../assets/cloud-background.jpg');
 }
 @keyframes starOpacity {
   0% {

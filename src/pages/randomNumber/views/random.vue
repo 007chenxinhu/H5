@@ -50,41 +50,82 @@
         </div>
       </div>
     </div>
-
-    <div class="set-btn" @click="setParam"></div>
-    <div class="goGroup-btn">分组</div>
+    <div class="set-btn" @click="setParam(true)"></div>
+    <div class="goGroup-btn" @click="setParam(false)">分组</div>
     <div :class="showPopupClass" v-show="showPopup">
-      <div class="random-title">随机数</div>
-      <div class="closeWrapper" @click="closePopup">
-        <van-icon name="cross" />
-      </div>
-      <div class="value">{{ value }}</div>
-      <van-slider v-model="value" range @change="onChange" />
-      <div class="change-quantity">
-        抽几个号码?:
-        <div
-          :class="changeQuantity === item ? 'quantity live' : 'quantity'"
-          v-for="(item, index) in quantityArr"
-          :key="index"
-          @click="liveQuantity(item)"
-        >
-          {{ item }}
+      <template v-if="isRandom">
+        <div class="random-title">随机数</div>
+        <div class="closeWrapper" @click="closePopup">
+          <van-icon name="cross" />
         </div>
-      </div>
-      <button @click="submit" class="submit">确定</button>
+        <div class="value">{{ value }}</div>
+        <van-slider
+          v-model="value"
+          range
+          :min="1"
+          :max="100"
+          @change="onChange"
+        />
+        <div class="change-quantity">
+          抽几个号码?:
+          <div
+            :class="changeQuantity === item ? 'quantity live' : 'quantity'"
+            v-for="(item, index) in quantityArr"
+            :key="index"
+            @click="liveQuantity(item)"
+          >
+            {{ item }}
+          </div>
+        </div>
+        <button @click="submit(true)" class="submit">确定</button>
+      </template>
+      <template v-else>
+        <div class="random-title">分组</div>
+        <div class="closeWrapper" @click="closePopup">
+          <van-icon name="cross" />
+        </div>
+        <div class="selectAllNumber">
+          <div class="title-number">总人数：</div>
+          <van-slider v-model="value1" :min="3" @change="onChange">
+            <template #button>
+              <div class="custom-button">{{ value1 }}</div>
+            </template>
+          </van-slider>
+        </div>
+        <div class="selectAllNumber">
+          <div class="title-number">分为几组:</div>
+          <van-slider v-model="value2" :min="2" :max="50" @change="onChange">
+            <template #button>
+              <div class="custom-button">{{ value2 }}</div>
+            </template>
+          </van-slider>
+        </div>
+        <button @click="submit(false)" class="submit">确定</button>
+      </template>
     </div>
     <!-- 结果展示款 -->
     <div :class="showResultPopupClass" v-show="isShowResultPopup">
       <div class="closeWrapper" @click="closeResultPopup">
         <van-icon name="cross" />
       </div>
-      <div
-        v-for="(item, index) in numberArr"
-        :key="index"
-        :class="`result-ball result-bg${index > 4 ? index - 4 : index + 1}`"
-      >
-        {{ item }}
-      </div>
+      <template v-if="isRandom">
+        <div
+          v-for="(item, index) in numberArr"
+          :key="index"
+          :class="`result-ball result-bg${index > 4 ? index - 4 : index + 1}`"
+        >
+          {{ item }}
+        </div>
+      </template>
+      <template v-if="!isRandom">
+        <div
+          class="number-array"
+          v-for="(item, index) in groupArr"
+          :key="index"
+        >
+          {{ item }}
+        </div>
+      </template>
     </div>
     <audio id="audio" ref="audio" src="../assets/audio/btn.mp3" preload>
       对不起，您的浏览器不支持HTML5音频播放。
@@ -103,6 +144,7 @@ export default {
   data() {
     return {
       numberArr: [],
+      groupArr: [],
       ballitems: [],
       coordinate: [],
       ballNumber: 20,
@@ -113,7 +155,10 @@ export default {
       timer: null,
       getResultTimer: null,
       showPopup: false,
+      isRandom: false,
       value: [1, 20],
+      value1: 20,
+      value2: 5,
       showPopupClass: 'solid-limit bounceInDown animated',
       showResultPopupClass: 'result-popup zoomIn animated',
       showValue: '【1-20】',
@@ -222,45 +267,88 @@ export default {
         console.log(error)
       }
     },
-    setParam: debounce(function () {
+    setParam: debounce(function (flag) {
       try {
-        if (this.isShowResultPopup) {
-          return
+        this.isRandom = flag
+        if (flag) {
+          if (this.isShowResultPopup) {
+            return
+          }
+          if (this.isSubmit) this.isSubmit = false
+          this.showPopup = true
+          this.playAudioBtn()
+        } else {
+          if (this.isShowResultPopup) {
+            return
+          }
+          if (this.isSubmit) this.isSubmit = false
+          this.showPopup = true
+          this.playAudioBtn()
         }
-        if (this.isSubmit) this.isSubmit = false
-        this.showPopup = true
-        this.playAudioBtn()
       } catch (error) {
         console.log(error)
       }
     }, 500),
-    submit: debounce(function () {
+    submit: debounce(function (flag) {
       try {
-        if (!this.isSubmit) {
-          this.isSubmit = true
-          let self = this
+        if (flag) {
+          if (!this.isSubmit) {
+            this.isSubmit = true
+            let self = this
 
-          this.isShowUFO = false
-          this.showPopupClass = 'solid-limit bounceOutRight animated' //修改弹窗出现显示动画
-          this.playAudioBtn() //播放按钮声音
-          this.ballNumber = this.value[1] - this.value[0] + 1 //生成球的数量
-          this.createBall() //创造球
-          this.move() //移动球
-          this.numberArr = []
-          setTimeout(() => {
-            this.isShowUFO = true //重置ufo消失
-          }, 0)
-          setTimeout(() => {
-            self.playAudioUFO() //播放飞船声音
-          }, 1000)
-          setTimeout(() => {
-            self.showPopup = false
-            self.showPopupClass = 'solid-limit bounceInDown animated' //重置弹窗出现显示动画
-          }, 1000)
-          setTimeout(() => {
-            //获取结果
-            self.chooseMoveBall(this.changeQuantity)
-          }, 3000)
+            this.isShowUFO = false
+            this.showPopupClass = 'solid-limit bounceOutRight animated' //修改弹窗出现显示动画
+            this.playAudioBtn() //播放按钮声音
+            this.ballNumber = this.value[1] - this.value[0] + 1 //生成球的数量
+            this.createBall() //创造球
+            this.move() //移动球
+            this.numberArr = []
+            setTimeout(() => {
+              this.isShowUFO = true //重置ufo消失
+            }, 0)
+            setTimeout(() => {
+              self.playAudioUFO() //播放飞船声音
+            }, 1000)
+            setTimeout(() => {
+              self.showPopup = false
+              self.showPopupClass = 'solid-limit bounceInDown animated' //重置弹窗出现显示动画
+            }, 1000)
+            setTimeout(() => {
+              //获取结果
+              self.chooseMoveBall(flag)
+            }, 3000)
+          }
+        } else {
+          if (this.value1 <= this.value2) {
+            this.$toast('总人数必须大于分组数...')
+            return
+          }
+          if (!this.isSubmit) {
+            this.isSubmit = true
+            let self = this
+
+            this.isShowUFO = false
+            this.showPopupClass = 'solid-limit bounceOutRight animated' //修改弹窗出现显示动画
+            this.playAudioBtn() //播放按钮声音
+            this.ballNumber = this.value1 //生成球的数量
+            this.createBall() //创造球
+            this.move() //移动球
+            this.numberArr = []
+            setTimeout(() => {
+              this.isShowUFO = true //重置ufo消失
+            }, 0)
+            setTimeout(() => {
+              self.playAudioUFO() //播放飞船声音
+            }, 1000)
+            setTimeout(() => {
+              self.showPopup = false
+              self.showPopupClass = 'solid-limit bounceInDown animated' //重置弹窗出现显示动画
+            }, 1000)
+            setTimeout(() => {
+              //获取结果
+              self.chooseMoveBall(flag)
+            }, 3000)
+          }
         }
       } catch (error) {
         console.log(error)
@@ -271,84 +359,53 @@ export default {
         this.numberArr = []
         this.arrResult = []
         let self = this
-        let num = Number(e) //一次抽取几个球
+        let num = Number(this.changeQuantity) //一次抽取几个球
         let min = this.value[0]
         let max = this.value[1]
         let chooseBall //选中的球
         let randomNumber //随机得到的数
-        //选出球数量等于限制区间的数量
-        if (num === this.ballNumber) {
-          while (this.numberArr.length < num) {
-            this.numberArr.push(min)
-            min = min + 1
-          }
-          self.arrResult = self.ballitems
-          this.getResultTimer = setInterval(() => {
-            self.arrResult.forEach((ball, i) => {
-              ball.isMoveball = true
-              ball.x > 185 ? ball.x-- : ball.x
-              ball.x < 185 ? ball.x++ : ball.x > 185 ? ball.x : ball.x++
-              ball.y > 38 ? ball.y-- : ball.y
-              ball.y < 38 ? ball.y++ : ball.y > 38 ? ball.y : ball.y++
-            }, 1)
-            setTimeout(function () {
-              clearInterval(self.timer) //终止圆内球一直滚动
-              self.isShowResultPopup = true
-            }, 800)
-          })
-          setTimeout(function () {
-            // if (self.timer) {
-            //   clearInterval(self.timer) //终止圆内球一直滚动
-            // }
-            clearInterval(self.getResultTimer)
-          }, 3000)
-          //选出球数量大于限制区间的数量
-        } else if (num > this.ballNumber) {
-          while (this.numberArr.length < num) {
-            if (min < max) {
+
+        //随机数
+        if (e) {
+          //选出球数量等于限制区间的数量
+          if (num === this.ballNumber) {
+            while (this.numberArr.length < num) {
               this.numberArr.push(min)
-            } else {
-              this.numberArr.push(
-                Number(this.randomFrom(this.value[0], this.value[1])),
-              )
+              min = min + 1
             }
-            min = min + 1
-          }
-          self.arrResult = self.ballitems
-          this.getResultTimer = setInterval(() => {
-            self.arrResult.forEach((ball, i) => {
-              ball.isMoveball = true
-              ball.x > 185 ? ball.x-- : ball.x
-              ball.x < 185 ? ball.x++ : ball.x > 185 ? ball.x : ball.x++
-              ball.y > 38 ? ball.y-- : ball.y
-              ball.y < 38 ? ball.y++ : ball.y > 38 ? ball.y : ball.y++
-            }, 1)
+            self.arrResult = self.ballitems
+            this.getResultTimer = setInterval(() => {
+              self.arrResult.forEach((ball, i) => {
+                ball.isMoveball = true
+                ball.x > 185 ? ball.x-- : ball.x
+                ball.x < 185 ? ball.x++ : ball.x > 185 ? ball.x : ball.x++
+                ball.y > 38 ? ball.y-- : ball.y
+                ball.y < 38 ? ball.y++ : ball.y > 38 ? ball.y : ball.y++
+              }, 1)
+              setTimeout(function () {
+                clearInterval(self.timer) //终止圆内球一直滚动
+                self.isShowResultPopup = true
+              }, 800)
+            })
             setTimeout(function () {
-              clearInterval(self.timer) //终止圆内球一直滚动
-              self.isShowResultPopup = true
-            }, 800)
-          })
-          setTimeout(function () {
-            clearInterval(self.getResultTimer)
-          }, 3000)
-          //选出球数量小于限制区间的数量
-        } else {
-          let long = 0
-          while (this.numberArr.length < num) {
-            randomNumber = Number(this.randomFrom(this.value[0], this.value[1]))
-            while (this.numberArr.indexOf(randomNumber) != -1) {
-              randomNumber = Number(
-                this.randomFrom(this.value[0], this.value[1]),
-              )
+              // if (self.timer) {
+              //   clearInterval(self.timer) //终止圆内球一直滚动
+              // }
+              clearInterval(self.getResultTimer)
+            }, 3000)
+            //选出球数量大于限制区间的数量
+          } else if (num > this.ballNumber) {
+            while (this.numberArr.length < num) {
+              if (min < max) {
+                this.numberArr.push(min)
+              } else {
+                this.numberArr.push(
+                  Number(this.randomFrom(this.value[0], this.value[1])),
+                )
+              }
+              min = min + 1
             }
-            this.numberArr.push(randomNumber)
-          }
-          while (this.arrResult.length < num) {
-            chooseBall = this.ballitems[this.numberArr[long] - this.value[0]]
-            this.arrResult.push(chooseBall)
-            long = long + 1
-          }
-          if (this.arrResult.length === num) {
+            self.arrResult = self.ballitems
             this.getResultTimer = setInterval(() => {
               self.arrResult.forEach((ball, i) => {
                 ball.isMoveball = true
@@ -365,9 +422,71 @@ export default {
             setTimeout(function () {
               clearInterval(self.getResultTimer)
             }, 3000)
+            //选出球数量小于限制区间的数量
+          } else {
+            let long = 0
+            while (this.numberArr.length < num) {
+              randomNumber = Number(
+                this.randomFrom(this.value[0], this.value[1]),
+              )
+              //去重
+              while (this.numberArr.indexOf(randomNumber) != -1) {
+                randomNumber = Number(
+                  this.randomFrom(this.value[0], this.value[1]),
+                )
+              }
+              this.numberArr.push(randomNumber)
+            }
+            while (this.arrResult.length < num) {
+              chooseBall = this.ballitems[this.numberArr[long] - this.value[0]]
+              this.arrResult.push(chooseBall)
+              long = long + 1
+            }
+            if (this.arrResult.length === num) {
+              this.getResultTimer = setInterval(() => {
+                self.arrResult.forEach((ball, i) => {
+                  ball.isMoveball = true
+                  ball.x > 185 ? ball.x-- : ball.x
+                  ball.x < 185 ? ball.x++ : ball.x > 185 ? ball.x : ball.x++
+                  ball.y > 38 ? ball.y-- : ball.y
+                  ball.y < 38 ? ball.y++ : ball.y > 38 ? ball.y : ball.y++
+                }, 1)
+                setTimeout(function () {
+                  clearInterval(self.timer) //终止圆内球一直滚动
+                  self.isShowResultPopup = true
+                }, 800)
+              })
+              setTimeout(function () {
+                clearInterval(self.getResultTimer)
+              }, 3000)
+            }
           }
+        } else {
+          //分组
+          // 让球运动
+          this.numberArr.push(Number(this.randomFrom(1, this.value1)))
+          chooseBall = this.ballitems[this.numberArr[0]]
+          this.arrResult.push(chooseBall)
+          this.getResultTimer = setInterval(() => {
+            self.arrResult.forEach((ball, i) => {
+              ball.isMoveball = true
+              ball.x > 185 ? ball.x-- : ball.x
+              ball.x < 185 ? ball.x++ : ball.x > 185 ? ball.x : ball.x++
+              ball.y > 38 ? ball.y-- : ball.y
+              ball.y < 38 ? ball.y++ : ball.y > 38 ? ball.y : ball.y++
+            }, 1)
+            setTimeout(function () {
+              clearInterval(self.timer) //终止圆内球一直滚动
+              self.isShowResultPopup = true
+            }, 800)
+          })
+          setTimeout(function () {
+            clearInterval(self.getResultTimer)
+          }, 3000)
+          //获取随机数组
+          this.getGrouop()
         }
-        console.log(this.numberArr, this.arrResult, '出错了!!====')
+        //抽取过程中运动层面的球显示
         this.ballitems.forEach((ball, i) => {
           this.numberArr.forEach((item, index) => {
             if (i + 1 === item) {
@@ -378,6 +497,69 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    // 分组处理方法
+    getGrouop() {
+      let totalNumber = [] //生成的随机数组
+      let num = null //每组有多少个数
+      let arr = [] //切割完成的数组
+      totalNumber = this.randomArray(this.value1)
+      console.log(totalNumber)
+      num = Math.floor(this.value1 / this.value2)
+      arr = this.splitGroup(totalNumber, num)
+      console.log(num, arr)
+
+      this.groupArr = arr
+      if (this.value1 % this.value2 !== 0) {
+        arr[this.value2].forEach((r, i) => {
+          // r.push(arr[num][i])
+          this.groupArr[i].push(r)
+          this.groupArr.length = this.value2
+        })
+      }
+    },
+    //随机生成乱序数组
+    // 输入长度
+    randomArray(length) {
+      let i = 0
+      let index = 0
+      let temp = null
+      let arr = [length]
+      length = typeof length === 'undefined' ? 9 : length
+      for (i = 1; i <= length; i++) {
+        arr[i - 1] = i
+      }
+      for (i = 1; i <= length; i++) {
+        index = window.parseInt(Math.random() * (length - i)) + i
+        if (index != i) {
+          temp = arr[i - 1]
+          arr[i - 1] = arr[index - 1]
+          arr[index - 1] = temp
+        }
+      }
+      return arr
+    },
+    //切割数组
+    splitGroup(array, size) {
+      let result = []
+      let group = arr => {
+        let list = arr.slice(0, size)
+        let rest = arr.slice(size, arr.length)
+        result.push(list)
+        if (arr.length <= size) {
+          return result
+        } else {
+          return group(rest)
+        }
+      }
+      return group(array)
+      // let newArray = []
+      // for (let i = 0; i < Math.ceil(array.length / size); i++) {
+      //   let start = i * size
+      //   let end = start + size
+      //   newArray.push(array.slice(start, end))
+      // }
+      // return newArray
     },
     //获取区间随机数
     randomFrom(lowerValue, upperValue) {

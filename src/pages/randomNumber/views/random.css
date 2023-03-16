@@ -101,14 +101,31 @@
   background-size: 100% 100%;
   border-radius: 50%;
   color: #a6f885;
-  font-size: 24px;
-  text-transform: uppercase;
   transition: 0.5s;
   letter-spacing: 4px;
   cursor: pointer;
 }
 
 .set-btn:hover {
+  box-shadow: #555151;
+}
+
+.goGroup-btn {
+  position: absolute;
+  bottom: 16%;
+  left: 5%;
+  width: 7vw;
+  height: 7vw;
+  border-radius: 50%;
+  background: #f8bf03;
+  color: #fff;
+  font-size: 2vw;
+  text-align: center;
+  line-height: 7vw;
+  cursor: pointer;
+}
+
+.goGroup-btn:hover {
   box-shadow: #555151;
 }
 
@@ -141,6 +158,26 @@
   font-size: 1.6vw;
   padding: 1vh 2vw;
   border-radius: 1vw;
+}
+
+.selectAllNumber {
+  margin-bottom: 3vh;
+}
+
+.title-number {
+  font-size: 2vw;
+  margin: 3vh 0;
+}
+
+.custom-button {
+  width: 4vw;
+  height: 4vw;
+  color: #070606;
+  font-size: 2vw;
+  line-height: 4vw;
+  text-align: center;
+  background-color: #f1f1f5;
+  border-radius: 50%;
 }
 
 .change-quantity {
@@ -233,6 +270,17 @@
 
 .result-bg5 {
   background-image: url("../assets/top_sphere5.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.number-array {
+  width: 17.36vw;
+  height: 11.76vw;
+  text-align: center;
+  line-height: 14.76vw;
+  margin: 1vw 2vw;
+  background-image: url("../assets/cloud-background.jpg");
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
