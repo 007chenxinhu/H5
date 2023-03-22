@@ -145,6 +145,36 @@
 .goGroup-btn:hover {
   box-shadow: #555151;
 }
+.randomNumber-btn {
+  position: absolute;
+  bottom: 3%;
+  left: 30%;
+  @include wh(14.33vw, 5vw);
+  @include bg('../assets/btn_normal.png');
+  color: #fff;
+  font-size: 2vw;
+  text-align: center;
+  line-height: 5vw;
+  cursor: pointer;
+}
+.randomNumber-btn:hover {
+  box-shadow: #555151;
+}
+.randomGroup-btn {
+  position: absolute;
+  bottom: 3%;
+  left: 57%;
+  @include wh(14.33vw, 5vw);
+  @include bg('../assets/btn_selected.png');
+  color: #fff;
+  font-size: 2vw;
+  text-align: center;
+  line-height: 5vw;
+  cursor: pointer;
+}
+.randomGroup-btn:hover {
+  box-shadow: #555151;
+}
 .solid-limit {
   width: 70vw;
   padding: 5vh 5vw;
@@ -182,7 +212,7 @@
 }
 .title-number {
   font-size: 2vw;
-  margin: 3vh 0;
+  margin: 4vh 0;
 }
 .custom-button {
   width: 4vw;
@@ -213,8 +243,42 @@
     background-color: #1e80ff;
   }
 }
-.closeWrapper {
+
+.result-popup {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  overflow: auto;
+  max-height: 80%;
+  width: 80%;
+  // padding: 5.5vh 5vw;
   position: absolute;
+  top: 50%;
+  left: 10vw;
+  transform: translate(0, -50%);
+  text-align: center;
+  background-color: hsla(0, 0%, 100%, 0.5);
+  backdrop-filter: blur(1vw);
+  border-radius: 2.8vw;
+  z-index: 1;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(20, 20, 20, 0.2);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+// -webkit-scrollbar-thumb：设置滚动条里面的滑块样式
+// -webkit-scrollbar-track：设置滚动条的轨道背景样式
+.closeWrapper {
+  position: fixed;
   width: 2vw;
   height: 2vw;
   text-align: center;
@@ -226,22 +290,6 @@
   /deep/.van-icon {
     font-size: 2vw;
   }
-}
-.result-popup {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  align-items: center;
-  width: 70%;
-  padding: 5.5vh 5vw;
-  position: absolute;
-  top: 30%;
-  left: 10vw;
-  text-align: center;
-  background-color: hsla(0, 0%, 100%, 0.5);
-  backdrop-filter: blur(1vw);
-  border-radius: 2.8vw;
-  z-index: 1;
 }
 .result-ball {
   @include wh(8.3vw, 8.3vw);
@@ -267,11 +315,43 @@
   @include bg('../assets/top_sphere5.png');
 }
 .number-array {
-  @include wh(17.36vw, 11.76vw);
-  text-align: center;
-  line-height: 14.76vw;
-  margin: 1vw 2vw;
-  @include bg('../assets/cloud-background.jpg');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  min-width: 15.8vw;
+  min-height: 8.83vw;
+  max-width: 30vw;
+  line-height: 2.3vw;
+  padding: 2vw;
+  margin: 1vw 1vw;
+  border-radius: 2vw;
+  @include bg('../assets/cloud-background.png');
+  .number-text1 {
+    @include wh(2.3vw, 2.3vw);
+    font-size: 1vw;
+    @include bg('../assets/ball_bg1.png');
+  }
+  .number-text2 {
+    @include wh(2.3vw, 2.3vw);
+    font-size: 1vw;
+    @include bg('../assets/ball_bg2.png');
+  }
+  .number-text3 {
+    @include wh(2.3vw, 2.3vw);
+    font-size: 1vw;
+    @include bg('../assets/ball_bg3.png');
+  }
+  .number-text4 {
+    @include wh(2.3vw, 2.3vw);
+    font-size: 1vw;
+    @include bg('../assets/ball_bg4.png');
+  }
+  .number-text5 {
+    @include wh(2.3vw, 2.3vw);
+    font-size: 1vw;
+    @include bg('../assets/ball_bg5.png');
+  }
 }
 @keyframes starOpacity {
   0% {

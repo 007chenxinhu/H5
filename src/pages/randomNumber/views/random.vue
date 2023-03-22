@@ -51,10 +51,18 @@
       </div>
     </div>
     <div class="set-btn" @click="setParam(true)"></div>
-    <div class="goGroup-btn" @click="setParam(false)">分组</div>
+    <div class="goGroup-btn" @click="setParam(false)">
+      {{ $t('text.randomGroupBtn') }}
+    </div>
+    <div class="randomNumber-btn" @click="setParam(true)">
+      {{ $t('text.randomNumber') }}
+    </div>
+    <div class="randomGroup-btn" @click="setParam(false)">
+      {{ $t('text.randomGrouping') }}
+    </div>
     <div :class="showPopupClass" v-show="showPopup">
       <template v-if="isRandom">
-        <div class="random-title">随机数</div>
+        <div class="random-title">{{ $t('text.randomNumber') }}</div>
         <div class="closeWrapper" @click="closePopup">
           <van-icon name="cross" />
         </div>
@@ -67,7 +75,7 @@
           @change="onChange"
         />
         <div class="change-quantity">
-          抽几个号码?:
+          {{ $t('text.selectNumber') }}?:
           <div
             :class="changeQuantity === item ? 'quantity live' : 'quantity'"
             v-for="(item, index) in quantityArr"
@@ -77,15 +85,17 @@
             {{ item }}
           </div>
         </div>
-        <button @click="submit(true)" class="submit">确定</button>
+        <button @click="submit(true)" class="submit">
+          {{ $t('text.submitButton') }}
+        </button>
       </template>
       <template v-else>
-        <div class="random-title">分组</div>
+        <div class="random-title">{{ $t('text.randomGroupBtn') }}</div>
         <div class="closeWrapper" @click="closePopup">
           <van-icon name="cross" />
         </div>
         <div class="selectAllNumber">
-          <div class="title-number">总人数：</div>
+          <div class="title-number">{{ $t('text.TotalNumberOfPeople') }}：</div>
           <van-slider v-model="value1" :min="3" @change="onChange">
             <template #button>
               <div class="custom-button">{{ value1 }}</div>
@@ -93,14 +103,16 @@
           </van-slider>
         </div>
         <div class="selectAllNumber">
-          <div class="title-number">分为几组:</div>
+          <div class="title-number">{{ $t('text.HowManyGroups') }}:</div>
           <van-slider v-model="value2" :min="2" :max="50" @change="onChange">
             <template #button>
               <div class="custom-button">{{ value2 }}</div>
             </template>
           </van-slider>
         </div>
-        <button @click="submit(false)" class="submit">确定</button>
+        <button @click="submit(false)" class="submit">
+          {{ $t('text.submitButton') }}
+        </button>
       </template>
     </div>
     <!-- 结果展示款 -->
@@ -123,7 +135,13 @@
           v-for="(item, index) in groupArr"
           :key="index"
         >
-          {{ item }}
+          <div
+            :class="`number-text${parseInt(Math.random() * 5 + 1)}`"
+            v-for="(number, label) in item"
+            :key="label"
+          >
+            {{ number }}
+          </div>
         </div>
       </template>
     </div>
@@ -465,7 +483,7 @@ export default {
           //分组
           // 让球运动
           this.numberArr.push(Number(this.randomFrom(1, this.value1)))
-          chooseBall = this.ballitems[this.numberArr[0]]
+          chooseBall = this.ballitems[0]
           this.arrResult.push(chooseBall)
           this.getResultTimer = setInterval(() => {
             self.arrResult.forEach((ball, i) => {
@@ -504,19 +522,17 @@ export default {
       let num = null //每组有多少个数
       let arr = [] //切割完成的数组
       totalNumber = this.randomArray(this.value1)
-      console.log(totalNumber)
       num = Math.floor(this.value1 / this.value2)
       arr = this.splitGroup(totalNumber, num)
       console.log(num, arr)
-
       this.groupArr = arr
-      if (this.value1 % this.value2 !== 0) {
-        arr[this.value2].forEach((r, i) => {
-          // r.push(arr[num][i])
-          this.groupArr[i].push(r)
-          this.groupArr.length = this.value2
-        })
-      }
+      // if (this.value1 % this.value2 !== 0) {
+      //   arr[this.value2].forEach((r, i) => {
+      //     // r.push(arr[num][i])
+      //     this.groupArr[i].push(r)
+      //     this.groupArr.length = this.value2
+      //   })
+      // }
     },
     //随机生成乱序数组
     // 输入长度
@@ -540,13 +556,18 @@ export default {
       return arr
     },
     //切割数组
+    // array:切割的数组
+    // size:每组最少有多少个
     splitGroup(array, size) {
       let result = []
       let group = arr => {
         let list = arr.slice(0, size)
-        let rest = arr.slice(size, arr.length)
+        let rest = arr.slice(size, arr.length) //下一个的长度
         result.push(list)
-        if (arr.length <= size) {
+        if (result.length + 1 > this.value2) {
+          rest.forEach((e, i) => {
+            result[i].push(e)
+          })
           return result
         } else {
           return group(rest)

@@ -3,6 +3,7 @@ import App from './App.vue'
 import VueI18n from 'vue-i18n'
 import 'lib-flexible/flexible'
 import VueRouter from 'vue-router'
+import { getParameter } from './utils/indexExtends'
 import router from './router'
 import {
   Toast,
@@ -22,8 +23,6 @@ import {
 } from 'vant'
 import './style/common.scss'
 import 'vant/lib/index.css'
-import Fingerprint from 'fingerprintjs'
-window.localStorage.setItem('deviceId', new Fingerprint().get())
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
@@ -62,10 +61,14 @@ const { context, messages } = loadMessages()
 console.log(messages, context, ',====);')
 // VueI18n 实例
 Vue.use(VueI18n)
-
+const langTypeMap = {
+  zh: 'zh-CN',
+  en: 'en-US',
+}
+const lang = getParameter('language') || 'en'
 const i18n = new VueI18n({
   // locale: 'zh-CN',
-  locale: navigator.language, // 根据浏览器环境设置网站语言
+  locale: langTypeMap[lang], // 根据浏览器环境设置网站语言
   messages,
 })
 new Vue({
