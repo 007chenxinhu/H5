@@ -101,14 +101,79 @@
   background-size: 100% 100%;
   border-radius: 50%;
   color: #a6f885;
-  font-size: 24px;
-  text-transform: uppercase;
   transition: 0.5s;
   letter-spacing: 4px;
   cursor: pointer;
 }
 
 .set-btn:hover {
+  box-shadow: #555151;
+}
+
+.goGroup-btn {
+  position: absolute;
+  bottom: 16%;
+  left: 5%;
+  width: 7vw;
+  height: 7vw;
+  border-radius: 50%;
+  background: #f8bf03;
+  color: #fff;
+  font-size: 2vw;
+  text-align: center;
+  line-height: 7vw;
+  cursor: pointer;
+}
+
+.goGroup-btn:hover {
+  box-shadow: #555151;
+}
+
+.random-btn-absolute1 {
+  position: absolute;
+  bottom: 3%;
+  left: 30%;
+  padding: 0 2vw;
+}
+
+.random-btn-absolute2 {
+  position: absolute;
+  bottom: 3%;
+  left: 57%;
+  padding: 0 2vw;
+}
+
+.randomNumber-btn {
+  min-width: 14.33vw;
+  height: 5vw;
+  background-image: url("../assets/btn_normal.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: #000;
+  font-size: 2vw;
+  text-align: center;
+  line-height: 5vw;
+  cursor: pointer;
+}
+
+.randomNumber-btn:hover {
+  box-shadow: #555151;
+}
+
+.randomGroup-btn {
+  min-width: 14.33vw;
+  height: 5vw;
+  background-image: url("../assets/btn_selected.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: #fff;
+  font-size: 2vw;
+  text-align: center;
+  line-height: 5vw;
+  cursor: pointer;
+}
+
+.randomGroup-btn:hover {
   box-shadow: #555151;
 }
 
@@ -125,6 +190,13 @@
   z-index: 1;
 }
 
+.random-title {
+  position: absolute;
+  font-size: 2vw;
+  top: 2vw;
+  left: 2vw;
+}
+
 .value {
   font-size: 2vw;
   margin-bottom: 4vh;
@@ -134,6 +206,26 @@
   font-size: 1.6vw;
   padding: 1vh 2vw;
   border-radius: 1vw;
+}
+
+.selectAllNumber {
+  margin-bottom: 3vh;
+}
+
+.title-number {
+  font-size: 2vw;
+  margin: 4vh 0;
+}
+
+.custom-button {
+  width: 4vw;
+  height: 4vw;
+  color: #070606;
+  font-size: 2vw;
+  line-height: 4vw;
+  text-align: center;
+  background-color: #f1f1f5;
+  border-radius: 50%;
 }
 
 .change-quantity {
@@ -157,8 +249,40 @@
   background-color: #1e80ff;
 }
 
-.closeWrapper {
+.result-popup {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  overflow: auto;
+  max-height: 80%;
+  width: 80%;
   position: absolute;
+  top: 50%;
+  left: 10vw;
+  transform: translate(0, -50%);
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(1vw);
+  border-radius: 2.8vw;
+  z-index: 1;
+}
+
+.result-popup::-webkit-scrollbar {
+  width: 6px;
+}
+
+.result-popup::-webkit-scrollbar-thumb {
+  background: rgba(20, 20, 20, 0.2);
+  border-radius: 3px;
+}
+
+.result-popup::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.closeWrapper {
+  position: fixed;
   width: 2vw;
   height: 2vw;
   text-align: center;
@@ -173,23 +297,6 @@
   font-size: 2vw;
 }
 
-.result-popup {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  align-items: center;
-  width: 70%;
-  padding: 5.5vh 5vw;
-  position: absolute;
-  top: 30%;
-  left: 10vw;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(1vw);
-  border-radius: 2.8vw;
-  z-index: 1;
-}
-
 .result-ball {
   width: 8.3vw;
   height: 8.3vw;
@@ -198,6 +305,7 @@
   color: #f0e8e8;
   font-size: 3vw;
   margin: 2vw;
+  color: #eeebeb;
 }
 
 .result-bg1 {
@@ -226,6 +334,67 @@
 
 .result-bg5 {
   background-image: url("../assets/top_sphere5.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.number-array {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  min-width: 15.8vw;
+  min-height: 8.83vw;
+  max-width: 30vw;
+  line-height: 3vw;
+  padding: 1vw 2vw;
+  margin: 1vw 1vw;
+  background-image: url("../assets/cloud-background.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.number-array .number-text1 {
+  width: 3vw;
+  height: 3vw;
+  font-size: 2vw;
+  background-image: url("../assets/ball_bg1.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.number-array .number-text2 {
+  width: 3vw;
+  height: 3vw;
+  font-size: 2vw;
+  background-image: url("../assets/ball_bg2.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.number-array .number-text3 {
+  width: 3vw;
+  height: 3vw;
+  font-size: 2vw;
+  background-image: url("../assets/ball_bg3.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.number-array .number-text4 {
+  width: 3vw;
+  height: 3vw;
+  font-size: 2vw;
+  background-image: url("../assets/ball_bg4.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.number-array .number-text5 {
+  width: 3vw;
+  height: 3vw;
+  font-size: 2vw;
+  background-image: url("../assets/ball_bg5.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }

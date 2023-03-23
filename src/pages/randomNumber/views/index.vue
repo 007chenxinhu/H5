@@ -60,7 +60,7 @@
         </div>
       </div>
       <!-- <div class="goGroup-btn">分组</div> -->
-      <Random></Random>
+      <Random :lang="lang"></Random>
       <audio id="audio" ref="audio" src="../assets/audio/btn.mp3" preload>
         对不起，您的浏览器不支持HTML5音频播放。
       </audio>
@@ -70,6 +70,7 @@
 
 <script>
 import Random from './random.vue'
+import { getParameter } from '../utils/indexExtends'
 export default {
   name: 'Index',
   props: [],
@@ -79,7 +80,11 @@ export default {
   data() {
     return {
       isPlayVideo: true,
+      lang: 'en',
     }
+  },
+  created() {
+    this.lang = getParameter('language') || 'en'
   },
   mounted: function () {
     let self = this

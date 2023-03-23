@@ -1,8 +1,12 @@
-
 {
   "text": {
     "langType": 1,
-    "randomGrouping": "随机分组",
-    "randomNumber": "随机选号"
+    "randomGroupBtn": "分组",
+    "randomNumber": "随机数",
+    "selectNumber": "抽几个号码",
+    "submitButton": "确定",
+    "TotalNumberOfPeople": "总人数",
+    "HowManyGroups": "分为几组",
+    "randomGrouping": "随机分组"
   }
 }

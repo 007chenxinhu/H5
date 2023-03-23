@@ -1,7 +1,12 @@
 {
   "text": {
     "langType": 2,
-    "randomGrouping": "randomGrouping",
-    "randomNumber": "randomNumber"
+    "randomGroupBtn": "randomGrouping",
+    "randomNumber": "randomNumber",
+    "selectNumber": "How many number",
+    "submitButton": "submit",
+    "TotalNumberOfPeople": "How many people",
+    "HowManyGroups": "How Many Groups",
+    "randomGrouping": "randomGrouping"
   }
 }

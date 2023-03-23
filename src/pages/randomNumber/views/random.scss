@@ -121,8 +121,6 @@
   border-radius: 50%;
   // width: fit-content;
   color: #a6f885;
-  font-size: 24px;
-  text-transform: uppercase;
   transition: 0.5s;
   letter-spacing: 4px;
   cursor: pointer;
@@ -131,6 +129,60 @@
   box-shadow: #555151;
 }
 
+.goGroup-btn {
+  position: absolute;
+  bottom: 16%;
+  left: 5%;
+  @include wh(7vw, 7vw);
+  border-radius: 50%;
+  background: rgb(248, 191, 3);
+  color: #fff;
+  font-size: 2vw;
+  text-align: center;
+  line-height: 7vw;
+  cursor: pointer;
+}
+.goGroup-btn:hover {
+  box-shadow: #555151;
+}
+.random-btn-absolute1 {
+  position: absolute;
+  bottom: 3%;
+  left: 30%;
+  padding: 0 2vw;
+}
+.random-btn-absolute2 {
+  position: absolute;
+  bottom: 3%;
+  left: 57%;
+  padding: 0 2vw;
+}
+.randomNumber-btn {
+  min-width: 14.33vw;
+  height: 5vw;
+  @include bg('../assets/btn_normal.png');
+  color: #000;
+  font-size: 2vw;
+  text-align: center;
+  line-height: 5vw;
+  cursor: pointer;
+}
+.randomNumber-btn:hover {
+  box-shadow: #555151;
+}
+.randomGroup-btn {
+  min-width: 14.33vw;
+  height: 5vw;
+  @include bg('../assets/btn_selected.png');
+  color: #fff;
+  font-size: 2vw;
+  text-align: center;
+  line-height: 5vw;
+  cursor: pointer;
+}
+.randomGroup-btn:hover {
+  box-shadow: #555151;
+}
 .solid-limit {
   width: 70vw;
   padding: 5vh 5vw;
@@ -142,6 +194,12 @@
   backdrop-filter: blur(1vw);
   border-radius: 2.8vw;
   z-index: 1;
+}
+.random-title {
+  position: absolute;
+  font-size: 2vw;
+  top: 2vw;
+  left: 2vw;
 }
 
 .value {
@@ -155,6 +213,25 @@
   border-radius: 1vw;
 }
 
+.selectAllNumber {
+  // display: flex;
+  // flex-wrap: nowrap;
+  margin-bottom: 3vh;
+}
+.title-number {
+  font-size: 2vw;
+  margin: 4vh 0;
+}
+.custom-button {
+  width: 4vw;
+  height: 4vw;
+  color: #070606;
+  font-size: 2vw;
+  line-height: 4vw;
+  text-align: center;
+  background-color: #f1f1f5;
+  border-radius: 50%;
+}
 .change-quantity {
   display: flex;
   justify-content: center;
@@ -174,8 +251,42 @@
     background-color: #1e80ff;
   }
 }
-.closeWrapper {
+
+.result-popup {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  overflow: auto;
+  max-height: 80%;
+  width: 80%;
+  // padding: 5.5vh 5vw;
   position: absolute;
+  top: 50%;
+  left: 10vw;
+  transform: translate(0, -50%);
+  text-align: center;
+  background-color: hsla(0, 0%, 100%, 0.5);
+  backdrop-filter: blur(1vw);
+  border-radius: 2.8vw;
+  z-index: 1;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(20, 20, 20, 0.2);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+// -webkit-scrollbar-thumb：设置滚动条里面的滑块样式
+// -webkit-scrollbar-track：设置滚动条的轨道背景样式
+.closeWrapper {
+  position: fixed;
   width: 2vw;
   height: 2vw;
   text-align: center;
@@ -188,22 +299,6 @@
     font-size: 2vw;
   }
 }
-.result-popup {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  align-items: center;
-  width: 70%;
-  padding: 5.5vh 5vw;
-  position: absolute;
-  top: 30%;
-  left: 10vw;
-  text-align: center;
-  background-color: hsla(0, 0%, 100%, 0.5);
-  backdrop-filter: blur(1vw);
-  border-radius: 2.8vw;
-  z-index: 1;
-}
 .result-ball {
   @include wh(8.3vw, 8.3vw);
   border-radius: 50%;
@@ -211,6 +306,7 @@
   color: #f0e8e8;
   font-size: 3vw;
   margin: 2vw;
+  color: #eeebeb;
 }
 .result-bg1 {
   @include bg('../assets/top_sphere1.png');
@@ -226,6 +322,44 @@
 }
 .result-bg5 {
   @include bg('../assets/top_sphere5.png');
+}
+.number-array {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  min-width: 15.8vw;
+  min-height: 8.83vw;
+  max-width: 30vw;
+  line-height: 3vw;
+  padding: 1vw 2vw;
+  margin: 1vw 1vw;
+  @include bg('../assets/cloud-background.png');
+  .number-text1 {
+    @include wh(3vw, 3vw);
+    font-size: 2vw;
+    @include bg('../assets/ball_bg1.png');
+  }
+  .number-text2 {
+    @include wh(3vw, 3vw);
+    font-size: 2vw;
+    @include bg('../assets/ball_bg2.png');
+  }
+  .number-text3 {
+    @include wh(3vw, 3vw);
+    font-size: 2vw;
+    @include bg('../assets/ball_bg3.png');
+  }
+  .number-text4 {
+    @include wh(3vw, 3vw);
+    font-size: 2vw;
+    @include bg('../assets/ball_bg4.png');
+  }
+  .number-text5 {
+    @include wh(3vw, 3vw);
+    font-size: 2vw;
+    @include bg('../assets/ball_bg5.png');
+  }
 }
 @keyframes starOpacity {
   0% {
