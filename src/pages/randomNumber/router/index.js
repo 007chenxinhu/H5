@@ -11,7 +11,7 @@ const routes = [
   {
     path: '/random',
     name: 'random',
-    meta: { title: '随机数' },
+    meta: { title: '随机抽签' },
     component: () => import('../views/index.vue'),
   },
 

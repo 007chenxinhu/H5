@@ -78,13 +78,7 @@
           <van-icon name="cross" />
         </div>
         <div class="value">{{ value }}</div>
-        <van-slider
-          v-model="value"
-          range
-          :min="1"
-          :max="100"
-          @change="onChange"
-        />
+        <van-slider v-model="value" range :min="1" :max="100" />
         <div class="change-quantity">
           {{ $t('text.selectNumber') }}?:
           <div
@@ -107,7 +101,7 @@
         </div>
         <div class="selectAllNumber">
           <div class="title-number">{{ $t('text.TotalNumberOfPeople') }}：</div>
-          <van-slider v-model="value1" :min="3" @change="onChange">
+          <van-slider v-model="value1" :min="3">
             <template #button>
               <div class="custom-button">{{ value1 }}</div>
             </template>
@@ -115,7 +109,7 @@
         </div>
         <div class="selectAllNumber">
           <div class="title-number">{{ $t('text.HowManyGroups') }}:</div>
-          <van-slider v-model="value2" :min="2" :max="50" @change="onChange">
+          <van-slider v-model="value2" :min="2" :max="50">
             <template #button>
               <div class="custom-button">{{ value2 }}</div>
             </template>
@@ -195,11 +189,9 @@ export default {
       value2: 5,
       showPopupClass: 'solid-limit bounceInDown animated',
       showResultPopupClass: 'result-popup zoomIn animated',
-      showValue: '【1-20】',
       quantityArr: ['01', '02', '03', '04', '05', '10'],
       changeQuantity: '01',
       arrResult: [],
-      showDrawMove: false, //初始化是否全部显示，除了选中的球
       isShowUFO: false,
       isShowResultPopup: false,
       randomColor: `#${Math.floor(Math.random() * 0xffffff).toString(16)}`,
@@ -208,7 +200,7 @@ export default {
   },
   created: function () {
     let self = this
-    this.createrandomNumberBg()
+    this.createRandomNumberBg()
     setTimeout(function () {
       self.showPopup = true
     }, 500)
@@ -226,7 +218,7 @@ export default {
       this.$refs.audio1.src = music1 //此处的audio为代码ref="audio"中的audio
       this.$refs.audio1.play() //play()为播放函数
     },
-    createrandomNumberBg() {
+    createRandomNumberBg() {
       this.randomNumberBg = []
       for (let i = 0; i < 51; i++) {
         this.randomNumberBg.push(parseInt(Math.random() * 5 + 1))
@@ -302,31 +294,15 @@ export default {
         console.log(error)
       }
     },
-    onChange() {
-      try {
-        this.showValue = '【' + this.value[0] + ' - ' + this.value[1] + '】'
-      } catch (error) {
-        console.log(error)
-      }
-    },
     setParam: debounce(function (flag) {
       try {
         this.isRandom = flag
-        if (flag) {
-          if (this.isShowResultPopup) {
-            return
-          }
-          if (this.isSubmit) this.isSubmit = false
-          this.showPopup = true
-          this.playAudioBtn()
-        } else {
-          if (this.isShowResultPopup) {
-            return
-          }
-          if (this.isSubmit) this.isSubmit = false
-          this.showPopup = true
-          this.playAudioBtn()
+        if (this.isShowResultPopup) {
+          return
         }
+        if (this.isSubmit) this.isSubmit = false
+        this.showPopup = true
+        this.playAudioBtn()
       } catch (error) {
         console.log(error)
       }
@@ -365,7 +341,7 @@ export default {
             this.$toast('总人数必须大于分组数...')
             return
           }
-          this.createrandomNumberBg()
+          this.createRandomNumberBg()
           if (!this.isSubmit) {
             this.isSubmit = true
             let self = this
@@ -549,7 +525,6 @@ export default {
       totalNumber = this.randomArray(this.value1)
       num = Math.floor(this.value1 / this.value2)
       arr = this.splitGroup(totalNumber, num)
-      console.log(num, arr)
       this.groupArr = arr
       // if (this.value1 % this.value2 !== 0) {
       //   arr[this.value2].forEach((r, i) => {

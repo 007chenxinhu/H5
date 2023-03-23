@@ -84,8 +84,6 @@ export default {
     }
   },
   created() {
-    console.log(this.$t, this.$i18n, 111)
-    console.log(window.location, this.$t('text'), 'window.location')
     this.lang = getParameter('language') || 'en'
   },
   mounted: function () {
