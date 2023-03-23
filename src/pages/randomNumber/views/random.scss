@@ -145,13 +145,23 @@
 .goGroup-btn:hover {
   box-shadow: #555151;
 }
-.randomNumber-btn {
+.random-btn-absolute1 {
   position: absolute;
   bottom: 3%;
   left: 30%;
-  @include wh(14.33vw, 5vw);
+  padding: 0 2vw;
+}
+.random-btn-absolute2 {
+  position: absolute;
+  bottom: 3%;
+  left: 57%;
+  padding: 0 2vw;
+}
+.randomNumber-btn {
+  min-width: 14.33vw;
+  height: 5vw;
   @include bg('../assets/btn_normal.png');
-  color: #fff;
+  color: #000;
   font-size: 2vw;
   text-align: center;
   line-height: 5vw;
@@ -161,10 +171,8 @@
   box-shadow: #555151;
 }
 .randomGroup-btn {
-  position: absolute;
-  bottom: 3%;
-  left: 57%;
-  @include wh(14.33vw, 5vw);
+  min-width: 14.33vw;
+  height: 5vw;
   @include bg('../assets/btn_selected.png');
   color: #fff;
   font-size: 2vw;
@@ -322,34 +330,33 @@
   min-width: 15.8vw;
   min-height: 8.83vw;
   max-width: 30vw;
-  line-height: 2.3vw;
-  padding: 2vw;
+  line-height: 3vw;
+  padding: 1vw 2vw;
   margin: 1vw 1vw;
-  border-radius: 2vw;
   @include bg('../assets/cloud-background.png');
   .number-text1 {
-    @include wh(2.3vw, 2.3vw);
-    font-size: 1vw;
+    @include wh(3vw, 3vw);
+    font-size: 2vw;
     @include bg('../assets/ball_bg1.png');
   }
   .number-text2 {
-    @include wh(2.3vw, 2.3vw);
-    font-size: 1vw;
+    @include wh(3vw, 3vw);
+    font-size: 2vw;
     @include bg('../assets/ball_bg2.png');
   }
   .number-text3 {
-    @include wh(2.3vw, 2.3vw);
-    font-size: 1vw;
+    @include wh(3vw, 3vw);
+    font-size: 2vw;
     @include bg('../assets/ball_bg3.png');
   }
   .number-text4 {
-    @include wh(2.3vw, 2.3vw);
-    font-size: 1vw;
+    @include wh(3vw, 3vw);
+    font-size: 2vw;
     @include bg('../assets/ball_bg4.png');
   }
   .number-text5 {
-    @include wh(2.3vw, 2.3vw);
-    font-size: 1vw;
+    @include wh(3vw, 3vw);
+    font-size: 2vw;
     @include bg('../assets/ball_bg5.png');
   }
 }

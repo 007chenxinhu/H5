@@ -50,14 +50,25 @@
         </div>
       </div>
     </div>
-    <div class="set-btn" @click="setParam(true)"></div>
-    <div class="goGroup-btn" @click="setParam(false)">
-      {{ $t('text.randomGroupBtn') }}
-    </div>
-    <div class="randomNumber-btn" @click="setParam(true)">
+    <div class="set-btn" @click="setParam(isRandom)"></div>
+    <div
+      @click="setParam(true)"
+      :class="
+        isRandom
+          ? 'random-btn-absolute1 randomNumber-btn'
+          : 'random-btn-absolute1 randomGroup-btn'
+      "
+    >
       {{ $t('text.randomNumber') }}
     </div>
-    <div class="randomGroup-btn" @click="setParam(false)">
+    <div
+      @click="setParam(false)"
+      :class="
+        !isRandom
+          ? 'random-btn-absolute2 randomNumber-btn'
+          : 'random-btn-absolute2 randomGroup-btn'
+      "
+    >
       {{ $t('text.randomGrouping') }}
     </div>
     <div :class="showPopupClass" v-show="showPopup">
@@ -136,7 +147,7 @@
           :key="index"
         >
           <div
-            :class="`number-text${parseInt(Math.random() * 5 + 1)}`"
+            :class="`number-text${randomNumberBg[label]}`"
             v-for="(number, label) in item"
             :key="label"
           >
@@ -158,7 +169,12 @@
 import { debounce } from 'lodash'
 export default {
   name: 'Random',
-  props: [],
+  props: {
+    lang: {
+      type: String,
+      default: 'en',
+    },
+  },
   data() {
     return {
       numberArr: [],
@@ -173,7 +189,7 @@ export default {
       timer: null,
       getResultTimer: null,
       showPopup: false,
-      isRandom: false,
+      isRandom: true,
       value: [1, 20],
       value1: 20,
       value2: 5,
@@ -187,10 +203,12 @@ export default {
       isShowUFO: false,
       isShowResultPopup: false,
       randomColor: `#${Math.floor(Math.random() * 0xffffff).toString(16)}`,
+      randomNumberBg: [],
     }
   },
   created: function () {
     let self = this
+    this.createrandomNumberBg()
     setTimeout(function () {
       self.showPopup = true
     }, 500)
@@ -207,6 +225,12 @@ export default {
       music1 = require('../assets/audio/ju.wav') //通过require引入音频
       this.$refs.audio1.src = music1 //此处的audio为代码ref="audio"中的audio
       this.$refs.audio1.play() //play()为播放函数
+    },
+    createrandomNumberBg() {
+      this.randomNumberBg = []
+      for (let i = 0; i < 51; i++) {
+        this.randomNumberBg.push(parseInt(Math.random() * 5 + 1))
+      }
     },
     //createball创造页面内的球
     createBall() {
@@ -341,6 +365,7 @@ export default {
             this.$toast('总人数必须大于分组数...')
             return
           }
+          this.createrandomNumberBg()
           if (!this.isSubmit) {
             this.isSubmit = true
             let self = this

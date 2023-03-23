@@ -129,16 +129,27 @@
   box-shadow: #555151;
 }
 
-.randomNumber-btn {
+.random-btn-absolute1 {
   position: absolute;
   bottom: 3%;
   left: 30%;
-  width: 14.33vw;
+  padding: 0 2vw;
+}
+
+.random-btn-absolute2 {
+  position: absolute;
+  bottom: 3%;
+  left: 57%;
+  padding: 0 2vw;
+}
+
+.randomNumber-btn {
+  min-width: 14.33vw;
   height: 5vw;
   background-image: url("../assets/btn_normal.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  color: #fff;
+  color: #000;
   font-size: 2vw;
   text-align: center;
   line-height: 5vw;
@@ -150,10 +161,7 @@
 }
 
 .randomGroup-btn {
-  position: absolute;
-  bottom: 3%;
-  left: 57%;
-  width: 14.33vw;
+  min-width: 14.33vw;
   height: 5vw;
   background-image: url("../assets/btn_selected.png");
   background-repeat: no-repeat;
@@ -337,55 +345,54 @@
   min-width: 15.8vw;
   min-height: 8.83vw;
   max-width: 30vw;
-  line-height: 2.3vw;
-  padding: 2vw;
+  line-height: 3vw;
+  padding: 1vw 2vw;
   margin: 1vw 1vw;
-  border-radius: 2vw;
   background-image: url("../assets/cloud-background.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
 
 .number-array .number-text1 {
-  width: 2.3vw;
-  height: 2.3vw;
-  font-size: 1vw;
+  width: 3vw;
+  height: 3vw;
+  font-size: 2vw;
   background-image: url("../assets/ball_bg1.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
 
 .number-array .number-text2 {
-  width: 2.3vw;
-  height: 2.3vw;
-  font-size: 1vw;
+  width: 3vw;
+  height: 3vw;
+  font-size: 2vw;
   background-image: url("../assets/ball_bg2.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
 
 .number-array .number-text3 {
-  width: 2.3vw;
-  height: 2.3vw;
-  font-size: 1vw;
+  width: 3vw;
+  height: 3vw;
+  font-size: 2vw;
   background-image: url("../assets/ball_bg3.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
 
 .number-array .number-text4 {
-  width: 2.3vw;
-  height: 2.3vw;
-  font-size: 1vw;
+  width: 3vw;
+  height: 3vw;
+  font-size: 2vw;
   background-image: url("../assets/ball_bg4.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
 
 .number-array .number-text5 {
-  width: 2.3vw;
-  height: 2.3vw;
-  font-size: 1vw;
+  width: 3vw;
+  height: 3vw;
+  font-size: 2vw;
   background-image: url("../assets/ball_bg5.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
