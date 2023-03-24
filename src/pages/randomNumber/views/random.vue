@@ -73,7 +73,7 @@
     </div>
     <div :class="showPopupClass" v-show="showPopup">
       <template v-if="isRandom">
-        <div class="random-title">{{ $t('text.randomNumber') }}</div>
+        <div class="random-title">{{ $t('text.title') }}</div>
         <div class="closeWrapper" @click="closePopup">
           <van-icon name="cross" />
         </div>
