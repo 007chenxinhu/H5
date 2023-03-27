@@ -100,7 +100,7 @@
           <van-icon name="cross" />
         </div>
         <div class="selectAllNumber">
-          <div class="title-number">{{ $t('text.TotalNumberOfPeople') }}：</div>
+          <div class="title-number">{{ $t('text.TotalNumberOfPeople') }}:</div>
           <van-slider v-model="value1" :min="3">
             <template #button>
               <div class="custom-button">{{ value1 }}</div>
