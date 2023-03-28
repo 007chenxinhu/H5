@@ -6,12 +6,13 @@ const routes = [
   {
     path: '*',
     name: '',
-    redirect: '/home',
+    redirect: '/index',
   },
   {
-    path: '/home',
-    name: 'home',
-    component: () => import('../views/home/index.vue'),
+    path: '/index',
+    name: 'index',
+    component: () => import('../views/index.vue'),
+    meta: { title: '世界之最知识竞赛' },
   },
 ]
 
