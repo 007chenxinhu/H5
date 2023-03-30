@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" :style="backgroundDiv">
     <!-- <div class="title">知识答题竞赛</div> -->
     <div class="container">
       <p class="a">The world's best</p>
@@ -47,6 +47,15 @@ export default {
   name: 'Home',
   data() {
     return {
+      randomNumberBg: require('../assets/bg' +
+        parseInt(Math.random() * 13 + 1) +
+        '.png'),
+      backgroundDiv: {
+        backgroundImage:
+          'url(' +
+          require(`../assets/bg${parseInt(Math.random() * 13 + 1)}.png`),
+      },
+
       showHintPopup: false,
       showHintPopupClass: 'hint-popup bounceInDown animated',
     }

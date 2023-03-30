@@ -15,7 +15,9 @@
 .home {
   position: relative;
   @include wh(100vw, 100vh);
-  @include bg('../assets/bg.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  // @include bg('../assets/bg1.png');
   /* 火狐 */
   -moz-user-select: none;
   /* Safari 和 欧朋 */
