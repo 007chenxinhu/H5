@@ -48,7 +48,7 @@ p {
   text-align: center;
   display: block;
   font-size: 10vh;
-  margin-top: 1vh;
+  margin: 1vw 0;
   letter-spacing: 0.1em;
   max-height: 6vh;
   white-space: nowrap;
@@ -172,14 +172,14 @@ p {
 }
 
 .hint-popup {
+  opacity: 0.97;
   padding: 2vw 3vw;
   max-height: 80%;
   width: 80%;
   height: 80%;
   position: absolute;
   top: 8vh;
-  left: 10vw;
-  transform: translate(0, -50%);
+  left: 7vw;
   backdrop-filter: blur(0.5vw);
   border-radius: 2.8vw;
   background: #b4a078 radial-gradient(at 30% 30%, #f7f5f1, #b4a078);
@@ -207,23 +207,99 @@ p {
   font-size: 2vw;
 }
 
-@keyframes bounce {
-  40%,
-  60%,
-  80%,
-  to {
-    transform: translateY(2.5vh);
-    animation-timing-function: ease-in;
-  }
-  50% {
-    transform: translateY(5.5vh);
-  }
-  70% {
-    transform: translateY(8vh);
-  }
-  90% {
-    transform: translateY(12vh);
-  }
+.setting-title {
+  width: 100%;
+  height: 10vh;
+  text-align: center;
+  line-height: 10vh;
+  font-size: 3.8vw;
+  font-weight: 500;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  border-bottom: 0.1vh solid #ccc;
+}
+
+.setting-intro {
+  width: 100%;
+  height: 10vh;
+  text-align: center;
+  line-height: 10vh;
+  font-size: 2vw;
+  color: #252529;
+  font-weight: 500;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.setting-TopicType {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-size: 2vw;
+  color: #111113;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.setting-TopicType-title {
+  font-size: 2.6vw;
+  font-weight: bold;
+  margin: 2vw;
+}
+
+.setting-TopicType .options {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.setting-TopicType .option {
+  width: calc(33.33% - 1vw);
+  margin-right: 0.2vw;
+  margin-bottom: 0.1vw;
+  display: inline-flex;
+  align-items: center;
+}
+
+.setting-TopicType .checkbox {
+  display: none;
+}
+
+.setting-TopicType .checkmark {
+  display: inline-block;
+  position: relative;
+  width: 2vw;
+  height: 2vw;
+  border-radius: 0.5vw;
+  border: 0.2vw solid #ccc;
+  margin-right: 0.3vw;
+  cursor: pointer;
+}
+
+.setting-TopicType .checkmark::before {
+  content: '√';
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2vw;
+  color: black;
+  visibility: hidden;
+}
+
+.setting-TopicType .checkbox:checked ~ .checkmark::before {
+  visibility: visible;
+}
+
+.setting-TopicType .option-label {
+  font-size: 2vw;
+}
+
+.setting-TopicType .ger-personal-topic {
+  margin: 2vw 0;
+}
+
+.setting-TopicType .submit-button {
+  margin-top: 2vw;
 }
 
 /*base code*/

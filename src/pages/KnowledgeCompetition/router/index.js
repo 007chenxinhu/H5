@@ -14,6 +14,18 @@ const routes = [
     component: () => import('../views/index.vue'),
     meta: { title: '世界之最知识竞赛' },
   },
+  {
+    path: '/singleCategory',
+    name: 'singleCategory',
+    component: () => import('../views/single.vue'),
+    meta: { title: '个人模式' },
+  },
+  {
+    path: '/doubleCategory',
+    name: 'doubleCategory',
+    component: () => import('../views/double.vue'),
+    meta: { title: '双人模式' },
+  },
 ]
 
 const router = new VueRouter({
