@@ -1,0 +1,98 @@
+@charset "UTF-8";
+.content {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  /* 火狐 */
+  -moz-user-select: none;
+  /* Safari 和 欧朋 */
+  -webkit-user-select: none;
+  /* IE10+ and Edge */
+  -ms-user-select: none;
+  /* Standard syntax 标准语法(谷歌) */
+  user-select: none;
+}
+
+.question {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(0.2vw);
+  box-shadow: 0.01vw 0.01vw 0.05vw #ccc;
+}
+
+.title {
+  font-size: 3vw;
+  font-weight: bold;
+  margin-bottom: 2vw;
+  margin-top: 15vh;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2vw;
+}
+
+.option {
+  width: 40vw;
+  flex-wrap: wrap;
+  text-align: left;
+  padding: 1vw;
+  border: 0.1vw solid #383636;
+  border-radius: 5vw;
+  margin: 1vw;
+  font-size: 2vw;
+  cursor: pointer;
+}
+
+.option.active {
+  border-color: #007aff;
+  color: #007aff;
+}
+
+.submit {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.submit button {
+  padding: 1vw 2vw;
+  border: none;
+  border-radius: 1vw;
+  background-color: #007aff;
+  color: #fff;
+  font-size: 3vw;
+  margin: 2vw;
+  cursor: pointer;
+}
+
+.submit button:hover {
+  background-color: #006cee;
+}
+
+.result {
+  font-size: 2vw;
+  font-weight: bold;
+  margin-bottom: 1vw;
+}
+
+.result.correct {
+  color: green;
+}
+
+.result.incorrect {
+  color: red;
+}

@@ -104,7 +104,9 @@ export default {
   },
   mounted() {},
   methods: {
-    singleCategory() {},
+    singleCategory() {
+      this.$router.push('/singleCategory')
+    },
     doubleCategory() {},
     gerPersonalTopic() {},
     submit() {
