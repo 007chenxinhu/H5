@@ -1,23 +1,35 @@
 <template>
   <div class="content" :style="backgroundDiv">
+    <div class="goBack" @click="goBack"></div>
     <!-- 进度条 -->
-    <div>
-      <div
-        class="progress"
-        v-for="(item, index) in questionList.length"
-        :key="index"
-      ></div>
+    <div class="progress">
+      <progress-bar
+        :stage="questionList.length"
+        :current-stage="currentQuestionIndex + 1"
+      ></progress-bar>
     </div>
+    <!-- 倒计时 -->
     <div class="question">
+      <div class="countDown">
+        {{ totalTime }}
+      </div>
       <div class="title">{{ currentQuestion.title }}</div>
       <div class="options">
         <div
           class="option"
           v-for="(option, index) in currentQuestion.options"
           :key="index"
-          :class="{
-            active: selectedOption === index,
-          }"
+          :class="
+            showResult
+              ? selectedOption === index
+                ? currentQuestion.selected === currentQuestion.answer
+                  ? 'success'
+                  : 'error'
+                : ''
+              : selectedOption === index
+              ? 'active'
+              : ''
+          "
           @click="selectOption(index)"
         >
           {{ option }}
@@ -25,7 +37,11 @@
       </div>
       <div class="submit">
         <button @click="checkAnswer">检查答案</button>
-        <button @click="nextQuestion">下一题</button>
+        <button @click="nextQuestion">
+          {{
+            currentQuestionIndex + 1 === questionList.length ? '提交' : '下一题'
+          }}
+        </button>
       </div>
       <div class="result" v-if="showResult">
         {{
@@ -36,22 +52,76 @@
         }}
       </div>
     </div>
+    <!-- 结果弹窗 -->
+    <div :class="showResultPopupClass" v-show="showResultPopup">
+      <div class="closeWrapper" @click="closePopup">
+        <van-icon name="cross" />
+      </div>
+      <div class="result-score">
+        本次答题你的得分是{{ score }},正确率是{{ accuracy }}%,思考时长{{
+          times
+        }}s
+      </div>
+      <div v-for="(question, index) in questionList" :key="index">
+        <div class="result-title">{{ question.title }}</div>
+        <div class="result-options">
+          <div
+            v-for="(option, index) in question.options"
+            :key="index"
+            :class="
+              question.selected === question.answer &&
+              index === question.selected
+                ? 'success'
+                : index === question.selected
+                ? 'error'
+                : index === question.answer
+                ? 'success'
+                : 'result-option'
+            "
+          >
+            {{ option }}
+          </div>
+          <div
+            v-show="questionList[index].selected === questionList[index].answer"
+            class="result-answer-s"
+          >
+            恭喜你选对了,正确答案是{{
+              questionList[index].options[questionList[index].answer]
+            }}
+          </div>
+          <div
+            v-show="questionList[index].selected !== questionList[index].answer"
+            class="result-answer-e"
+          >
+            你选错了,正确答案是{{
+              questionList[index].options[questionList[index].answer]
+            }}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import ProgressBar from '../components/ProgressBar.vue'
 export default {
+  components: {
+    ProgressBar,
+  },
   data() {
     return {
       questionList: [
         {
           title: '1. 世界上最长的河流是哪个？',
           options: ['A. 尼罗河', 'B. 亚马逊河', 'C. 长江', 'D. 密西西比河'],
+          selected: null, //已选选项
           answer: 0, // 答案为选项A
         },
         {
           title: '2. 世界上最大的洲是哪个？',
           options: ['A. 亚洲', 'B. 非洲', 'C. 欧洲', 'D. 北美洲'],
+          selected: null,
           answer: 0,
         },
         {
@@ -62,6 +132,7 @@ export default {
             'C. 马卡鲁峰',
             'D. 喜马拉雅山',
           ],
+          selected: null,
           answer: 0,
         },
         {
@@ -72,11 +143,13 @@ export default {
             'C. 莫哈维沙漠',
             'D. 亚特莱斯沙漠',
           ],
+          selected: null,
           answer: 0,
         },
         {
           title: '5. 世界上最长的海岸线在哪个国家？',
           options: ['A. 美国', 'B. 澳大利亚', 'C. 加拿大', 'D. 中国'],
+          selected: null,
           answer: 1,
         },
         {
@@ -87,6 +160,7 @@ export default {
             'C. 马达加斯加岛',
             'D. 纽芬兰岛',
           ],
+          selected: null,
           answer: 0,
         },
         {
@@ -97,6 +171,7 @@ export default {
             'C. 环太平洋海沟',
             'D. 日本海沟',
           ],
+          selected: null,
           answer: 0,
         },
         {
@@ -107,11 +182,13 @@ export default {
             'C. 布拉西瓦瀑布',
             'D. 伊瓜苏瀑布',
           ],
+          selected: null,
           answer: 3,
         },
         {
           title: '9. 世界上最大的城市是哪个？',
           options: ['A. 上海', 'B. 东京', 'C. 伦敦', 'D. 墨西哥城'],
+          selected: null,
           answer: 1,
         },
         {
@@ -122,9 +199,12 @@ export default {
             'C. 阿克海格桥',
             'D. 长江大桥',
           ],
+          selected: null,
           answer: 0,
         },
       ],
+      showResultPopup: false,
+      showResultPopupClass: 'result-popup bounceInDown animated',
       currentQuestionIndex: 0, // 当前问题的索引
       selectedOption: null, // 用户选择的选项，初始为null
       showResult: false, // 是否显示结果
@@ -133,6 +213,15 @@ export default {
           'url(' +
           require(`../assets/bg${parseInt(Math.random() * 13 + 1)}.png`),
       },
+      score: null,
+      accuracy: null,
+      times: null,
+      totalTime: 180,
+      isCountTimer: false,
+      interval: 1000,
+      timerId: null,
+      alertInterval: 30,
+      isAlerted: false,
     }
   },
   computed: {
@@ -143,21 +232,86 @@ export default {
       return this.selectedOption === this.currentQuestion.answer
     },
   },
+  mounted() {
+    this.startCountdown()
+  },
   methods: {
+    goBack() {
+      this.$router.push('/index')
+    },
+    startCountdown() {
+      this.timerId = setInterval(() => {
+        this.totalTime -= this.interval / 1000
+        // 每30秒进行提醒
+        if (this.totalTime % this.alertInterval === 0 && !this.isAlerted) {
+          this.$toast(`已经过去 ${180 - this.totalTime} 秒`)
+          this.isAlerted = true
+        } else if (this.totalTime % this.alertInterval !== 0) {
+          this.isAlerted = false
+        }
+
+        if (this.totalTime < 0) {
+          clearInterval(this.timerId)
+          this.totalTime = 0
+          this.$toast('时间到！')
+        }
+      }, this.interval)
+    },
+    closePopup() {
+      try {
+        let self = this
+        this.showResultPopupClass = 'result-popup bounceOutRight animated'
+        setTimeout(() => {
+          self.showResultPopupClass = 'result-popup bounceInDown animated'
+          self.showResultPopup = false
+        }, 599)
+      } catch (error) {
+        console.log(error)
+      }
+    },
     selectOption(index) {
+      if (this.showResult === true) return
       this.selectedOption = index
     },
     checkAnswer() {
       if (this.selectedOption === null) {
-        alert('请选择一个选项')
+        this.$toast('请选择一个选项...')
         return
       }
+      this.questionList[this.currentQuestionIndex].selected =
+        this.selectedOption
       this.showResult = true
     },
     nextQuestion() {
-      this.currentQuestionIndex++
-      this.selectedOption = null
-      this.showResult = false
+      try {
+        if (this.selectedOption === null) {
+          this.$toast('请先作答！')
+          return
+        }
+        this.questionList[this.currentQuestionIndex].selected =
+          this.selectedOption
+
+        if (this.currentQuestionIndex + 1 === this.questionList.length) {
+          this.questionList.forEach((item, index) => {
+            if (item.selected === item.answer) {
+              this.score = this.score + 50
+            }
+          })
+          this.accuracy = (
+            (this.score / (this.questionList.length * 50)) *
+            100
+          ).toFixed(2)
+          clearInterval(this.timerId)
+          this.times = 180 - this.totalTime
+          this.showResultPopup = true
+        } else {
+          this.currentQuestionIndex++
+          this.selectedOption = null
+          this.showResult = false
+        }
+      } catch (error) {
+        console.log(error)
+      }
     },
   },
 }
