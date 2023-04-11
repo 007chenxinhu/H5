@@ -1,16 +1,19 @@
 <template>
   <div class="home" :style="backgroundDiv">
     <!-- <div class="title">知识答题竞赛</div> -->
-    <div class="container">
-      <p class="a">The world's best</p>
-      <p class="b">Knowledge</p>
-      <p class="a">Contest</p>
+    <div class="content">
+      <div class="container">
+        <p class="a">The world's best</p>
+        <p class="b">Knowledge</p>
+        <p class="a">Contest</p>
+      </div>
+      <!-- 模式 -->
+      <div class="category">
+        <div class="b category-single" @click="singleCategory">单人模式</div>
+        <div class="a category-double" @click="doubleCategory">双人模式</div>
+      </div>
     </div>
-    <!-- 模式 -->
-    <div class="category">
-      <div class="b category-single" @click="singleCategory">单人模式</div>
-      <div class="a category-double" @click="doubleCategory">双人模式</div>
-    </div>
+
     <!-- 旁边栏目 -->
     <div class="sidebar">
       <!-- 提示说明 -->
@@ -68,10 +71,13 @@
             <span class="option-label">{{ option }}</span>
           </label>
         </div>
+        <div class="teeth">
+          <Teeth></Teeth>
+        </div>
         <button class="ger-personal-topic" @click="gerPersonalTopic">
           获取自定义题库
         </button>
-        <div>
+        <div v-show="showInputPassward">
           <input type="text" placeholder="输入你的个人id" />
           <button>获取</button>
         </div>
@@ -82,8 +88,12 @@
 </template>
 
 <script>
+import Teeth from '../components/teeth.vue'
 export default {
   name: 'Home',
+  components: {
+    Teeth,
+  },
   data() {
     return {
       randomNumberBg: require('../assets/bg' +
@@ -100,15 +110,22 @@ export default {
       showHintPopupClass: 'hint-popup bounceInDown animated',
       showSettingPopup: false,
       showSettingPopupClass: 'hint-popup bounceInDown animated',
+      showInputPassward: false,
     }
   },
-  mounted() {},
+  mounted() {
+    if (this.$route.query.type === 'single') {
+      this.showSettingPopup = true
+    }
+  },
   methods: {
     singleCategory() {
       this.$router.push('/singleCategory')
     },
     doubleCategory() {},
-    gerPersonalTopic() {},
+    gerPersonalTopic() {
+      this.showInputPassward = true
+    },
     submit() {
       // 处理提交逻辑
       console.log(this.selectedOptions)

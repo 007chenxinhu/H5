@@ -31,39 +31,33 @@ body {
   background: #000;
 }
 
-.container {
-  width: 50vw;
+.content {
   position: absolute;
+  top: 3vw;
+  left: 50%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  margin: auto;
-  top: 6vh;
-  left: 50%;
-  transform: rotateX(25deg) rotateY(-25deg) translate(-50%, 0);
+  transform: translate(-50%, 0);
+}
+
+.container {
+  transform: rotateX(25deg) rotateY(-25deg);
 }
 
 p {
   text-align: center;
   display: block;
   font-size: 10vh;
-  margin: 1vw 0;
+  margin: 1.5vw 0;
   letter-spacing: 0.1em;
   max-height: 6vh;
   white-space: nowrap;
 }
 
 .category {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: auto;
-  top: 45vh;
-  left: 50%;
-  transform: translate(-50%, 0);
+  margin: 10vh 0;
 }
 
 .category .category-single {

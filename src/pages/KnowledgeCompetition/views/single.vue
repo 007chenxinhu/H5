@@ -1,6 +1,11 @@
 <template>
   <div class="content" :style="backgroundDiv">
-    <div class="goBack" @click="goBack"></div>
+    <div class="startPopup" v-if="showStartPopup">
+      <div @click="startAnswer" class="start-btn">开始作答</div>
+    </div>
+    <div class="goBack" @click="goBack">
+      <van-icon name="wap-home" />
+    </div>
     <!-- 进度条 -->
     <div class="progress">
       <progress-bar
@@ -36,7 +41,7 @@
         </div>
       </div>
       <div class="submit">
-        <button @click="checkAnswer">检查答案</button>
+        <!-- <button @click="checkAnswer">检查答案</button> -->
         <button @click="nextQuestion">
           {{
             currentQuestionIndex + 1 === questionList.length ? '提交' : '下一题'
@@ -58,9 +63,12 @@
         <van-icon name="cross" />
       </div>
       <div class="result-score">
-        本次答题你的得分是{{ score }},正确率是{{ accuracy }}%,思考时长{{
-          times
-        }}s
+        <div>
+          本次答题你的得分是{{ score }},正确率是{{ accuracy }}%,思考时长{{
+            times
+          }}s
+        </div>
+        <div class="more-btn" @click="oneMore()">再来一次</div>
       </div>
       <div v-for="(question, index) in questionList" :key="index">
         <div class="result-title">{{ question.title }}</div>
@@ -222,6 +230,7 @@ export default {
       timerId: null,
       alertInterval: 30,
       isAlerted: false,
+      showStartPopup: true,
     }
   },
   computed: {
@@ -232,10 +241,15 @@ export default {
       return this.selectedOption === this.currentQuestion.answer
     },
   },
-  mounted() {
-    this.startCountdown()
-  },
+  mounted() {},
   methods: {
+    startAnswer() {
+      this.showStartPopup = false
+      this.startCountdown()
+    },
+    oneMore() {
+      this.$router.push('/index?type=single')
+    },
     goBack() {
       this.$router.push('/index')
     },
