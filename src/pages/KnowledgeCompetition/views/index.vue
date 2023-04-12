@@ -122,7 +122,9 @@ export default {
     singleCategory() {
       this.$router.push('/singleCategory')
     },
-    doubleCategory() {},
+    doubleCategory() {
+      this.$router.push('/doubleCategory')
+    },
     gerPersonalTopic() {
       this.showInputPassward = true
     },

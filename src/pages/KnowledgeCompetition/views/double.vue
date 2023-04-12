@@ -1,89 +1,129 @@
 <template>
-  <div class="home" :style="backgroundDiv">
-    <!-- <div class="title">知识答题竞赛</div> -->
-    <div class="container">
-      <p class="a">The world's best</p>
-      <p class="b">Knowledge</p>
-      <p class="a">Contest</p>
+  <div class="content" :style="backgroundDiv">
+    <div class="startPopup" v-if="showStartPopup">
+      <div @click="startAnswer" class="start-btn">开始作答</div>
     </div>
-    <!-- 模式 -->
-    <div class="category">
-      <div class="b category-single" @click="singleCategory">单人模式</div>
-      <div class="a category-double" @click="doubleCategory">双人模式</div>
+    <div class="goBack" @click="goBack">
+      <van-icon name="wap-home" size="3vw" />
     </div>
-    <!-- 旁边栏目 -->
-    <div class="sidebar">
-      <!-- 提示说明 -->
-      <div class="sidebar-hint" @click="ViewInstructions"></div>
-      <!-- star支持 -->
-      <div class="sidebar-star"></div>
-      <!-- 历史排行 -->
-      <div class="sidebar-ranking"></div>
-      <!-- 设置 -->
-      <div class="sidebar-setting" @click="Setting"></div>
+    <div class="countDown">
+      {{ totalTime }}
     </div>
-    <!-- 提示说明 -->
-    <div :class="showHintPopupClass" v-show="showHintPopup">
-      <div class="closeWrapper" @click="closePopup">
-        <van-icon name="cross" />
-      </div>
-      <div class="hint-text">答题模式：单人答题模式和双人竞赛答题模式。</div>
-      <div class="hint-text">
-        概述：世界之最知识选项答题是一款考验学生知识广度和深度的游戏。游戏分为单人答题模式和双人答题模式，学生需要在规定的时间内回答尽可能多的问题，获得尽可能高的得分。
-      </div>
-      <div class="hint-text">
-        时间提示：在单人答题模式下，游戏开始后，每隔30秒会有一个时间提示。在双人答题模式下，每轮回合开始前会有一个时间提示，每个回合时长为1分钟。
-      </div>
-      <div class="hint-text">
-        题目类型：涵盖世界各个领域的知识，包括但不限于科学、历史、文化、地理等。
-      </div>
-      <div class="hint-text">
-        游戏细节： 游戏中，学生无法修改已提交的答案。
-        在双人答题模式下，学生需要尊重对手，不能使用不公平或不正当的手段干扰对手。
-        游戏结束后，系统将公布学生的得分排名，单人模式可记录历史最高得分。
-        未开始答题时可手动刷新题库，限制3次。
-      </div>
-    </div>
-    <!-- 设置 -->
-    <div :class="showSettingPopupClass" v-show="showSettingPopup">
-      <div class="closeWrapper" @click="closePopup">
-        <van-icon name="cross" />
-      </div>
-      <div class="setting-title">设置</div>
-      <div class="setting-intro">
-        设置题目类型、范围，做题时间限制，是否开启时间提醒
-      </div>
-      <div class="setting-TopicType">
-        <h2 class="setting-TopicType-title">题目类型:</h2>
-        <div class="options">
-          <label v-for="(option, index) in options" :key="index" class="option">
-            <input
-              type="checkbox"
-              :id="`option-${index}`"
-              :value="option"
-              v-model="selectedOptions"
-              class="checkbox"
-            />
-            <span class="checkmark"></span>
-            <span class="option-label">{{ option }}</span>
-          </label>
+    <div class="double-category">
+      <div>
+        <!-- 进度条 -->
+        <div class="progress">
+          <progress-bar
+            :stage="questionList1.length"
+            :current-stage="currentQuestionIndex1 + 1"
+          ></progress-bar>
         </div>
-        <button class="ger-personal-topic" @click="gerPersonalTopic">
-          获取自定义题库
-        </button>
-        <div>
-          <input type="text" placeholder="输入你的个人id" />
-          <button>获取</button>
+        <!-- 倒计时 -->
+        <div class="question">
+          <div class="title">{{ currentQuestion.title }}</div>
+          <div class="options">
+            <div
+              class="option"
+              v-for="(option, index) in currentQuestion.options"
+              :key="index"
+              :class="
+                showResult
+                  ? selectedOption1 === index
+                    ? currentQuestion.selected === currentQuestion.answer
+                      ? 'success'
+                      : 'error'
+                    : ''
+                  : selectedOption1 === index
+                  ? 'active'
+                  : ''
+              "
+              @click="selectOption(true, index)"
+            >
+              {{ option }}
+            </div>
+          </div>
+          <div class="submit">
+            <!-- <button @click="checkAnswer">检查答案</button> -->
+            <button @click="nextQuestion(true)">
+              {{
+                currentQuestionIndex1 + 1 === questionList1.length
+                  ? '提交'
+                  : '下一题'
+              }}
+            </button>
+          </div>
         </div>
-        <button @click="submit" class="submit-button">提交</button>
+      </div>
+      <div>
+        <!-- 进度条 -->
+        <div class="progress">
+          <progress-bar
+            :stage="questionList2.length"
+            :current-stage="currentQuestionIndex2 + 1"
+          ></progress-bar>
+        </div>
+        <!-- 倒计时 -->
+        <div class="question">
+          <div class="title">{{ currentQuestionss.title }}</div>
+          <div class="options">
+            <div
+              class="option"
+              v-for="(option, index) in currentQuestionss.options"
+              :key="index"
+              :class="
+                showResult
+                  ? selectedOption2 === index
+                    ? currentQuestionss.selected === currentQuestionss.answer
+                      ? 'success'
+                      : 'error'
+                    : ''
+                  : selectedOption2 === index
+                  ? 'active'
+                  : ''
+              "
+              @click="selectOption(false, index)"
+            >
+              {{ option }}
+            </div>
+          </div>
+          <div class="submit">
+            <!-- <button @click="checkAnswer">检查答案</button> -->
+            <button @click="nextQuestion(false)">
+              {{
+                currentQuestionIndex1 + 1 === questionList1.length
+                  ? '提交'
+                  : '下一题'
+              }}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ProgressBar from '../components/ProgressBar.vue'
+
 export default {
-  name: 'Home',
+  name: 'DoubleCategory',
+  components: {
+    ProgressBar,
+  },
+  computed: {
+    currentQuestion() {
+      return this.questionList1[this.currentQuestionIndex1]
+    },
+    currentQuestionss() {
+      return this.questionList2[this.currentQuestionIndex2]
+    },
+    isAnswerCorrect1() {
+      return this.selectedOption1 === this.currentQuestion.answer
+    },
+    isAnswerCorrect2() {
+      return this.selectedOption2 === this.currentQuestionss.answer
+    },
+  },
   data() {
     return {
       randomNumberBg: require('../assets/bg' +
@@ -94,12 +134,197 @@ export default {
           'url(' +
           require(`../assets/bg${parseInt(Math.random() * 13 + 1)}.png`),
       },
-      options: ['综合', '历史', '地理', '数学', '物理', '化学'],
       selectedOptions: [],
       showHintPopup: false,
       showHintPopupClass: 'hint-popup bounceInDown animated',
       showSettingPopup: false,
       showSettingPopupClass: 'hint-popup bounceInDown animated',
+      questionList1: [
+        {
+          title: '1. 世界上最大的洲是什么？',
+          options: ['A. 亚洲', 'B. 非洲', 'C. 欧洲', 'D. 北美洲'],
+          selected: null,
+          answer: 0,
+        },
+        {
+          title: '2. 世界上最高的山峰是什么？',
+          options: [
+            'A. 珠穆朗玛峰',
+            'B. 干城章嘉峰',
+            'C. 洛子峰',
+            'D. 马卡鲁峰',
+          ],
+          selected: null,
+          answer: 0,
+        },
+        {
+          title: '3. 世界上最深的海洋是什么？',
+          options: ['A. 太平洋', 'B. 大西洋', 'C. 印度洋', 'D. 北冰洋'],
+          selected: null,
+          answer: 0,
+        },
+        {
+          title: '4. 世界上最大的沙漠是什么？',
+          options: [
+            'A. 撒哈拉沙漠',
+            'B. 阿拉伯沙漠',
+            'C. 澳大利亚沙漠',
+            'D. 巴西利亚沙漠',
+          ],
+          selected: null,
+          answer: 0,
+        },
+        {
+          title: '5. 世界上最大的洋是什么？',
+          options: ['A. 太平洋', 'B. 大西洋', 'C. 印度洋', 'D. 北冰洋'],
+          selected: null,
+          answer: 0,
+        },
+        {
+          title: '6. 世界上最大的湖泊是什么？',
+          options: ['A. 里海', 'B. 苏必利尔湖', 'C. 咸海', 'D. 死海'],
+          selected: null,
+          answer: 0,
+        },
+        {
+          title: '7. 世界上最大的岛屿是什么？',
+          options: [
+            'A. 格陵兰岛',
+            'B. 夏威夷岛',
+            'C. 马达加斯加岛',
+            'D. 加里曼丹岛',
+          ],
+          selected: null,
+          answer: 2,
+        },
+        {
+          title: '8. 世界上最大的河流是什么？',
+          options: ['A. 长江', 'B. 尼罗河', 'C. 亚马逊河', 'D. 密西西比河'],
+          selected: null,
+          answer: 2,
+        },
+        {
+          title: '9. 世界上最长的河流是什么？',
+          options: ['A. 尼罗河', 'B. 亚马逊河', 'C. 密西西比河', 'D. 长江'],
+          selected: null,
+          answer: 0,
+        },
+        {
+          title: '10. 世界上最大的珊瑚礁群是什么？',
+          options: [
+            'A. 大堡礁',
+            'B. 马尔代夫珊瑚礁',
+            'C. 菲律宾珊瑚礁',
+            'D. 澳大利亚珊瑚礁',
+          ],
+          selected: null,
+          answer: 0,
+        },
+      ],
+      questionList2: [
+        {
+          title: '1.世界上最长的山脉是什么？',
+          options: [
+            'A. 安第斯山脉',
+            'B. 喜马拉雅山脉',
+            'C. 阿尔卑斯山脉',
+            'D. 昆仑山脉',
+          ],
+          selected: null,
+          answer: 1,
+        },
+        {
+          title: '2.世界上最大的洋流是什么？',
+          options: [
+            'A. 北太平洋暖流',
+            'B. 墨西哥湾暖流',
+            'C. 加勒比海流',
+            'D. 加利福尼亚洋流',
+          ],
+          selected: null,
+          answer: 0,
+        },
+        {
+          title: '3.世界上最大的海洋生态系统是什么？',
+          options: ['A. 珊瑚礁', 'B. 深海海底', 'C. 热带雨林', 'D. 海洋草原'],
+          selected: null,
+          answer: 0,
+        },
+        {
+          title: '4.世界上最大的岛屿是什么？',
+          options: [
+            'A. 格陵兰岛',
+            'B. 夏威夷岛',
+            'C. 马达加斯加岛',
+            'D. 加里曼丹岛',
+          ],
+          selected: null,
+          answer: 0,
+        },
+        {
+          title: '5.世界上最大的河流是什么？',
+          options: ['A. 尼罗河', 'B. 亚马逊河', 'C. 密西西比河', 'D. 长江'],
+          selected: null,
+          answer: 1,
+        },
+        {
+          title: '6.世界上最大的半岛是什么？',
+          options: [
+            'A. 阿拉伯半岛',
+            'B. 印度半岛',
+            'C. 中南半岛',
+            'D. 巴尔干半岛',
+          ],
+          selected: null,
+          answer: 0,
+        },
+        {
+          title: '7.世界上最大的国家是什么？',
+          options: ['A. 俄罗斯', 'B. 中国', 'C. 美国', 'D. 巴西'],
+          selected: null,
+          answer: 0,
+        },
+        {
+          title: '8.世界上最大的湖泊是什么？',
+          options: ['A. 里海', 'B. 苏必利尔湖', 'C. 咸海', 'D. 死海'],
+          selected: null,
+          answer: 0,
+        },
+        {
+          title: '9.世界上最高的山峰是什么？',
+          options: [
+            'A. 珠穆朗玛峰',
+            'B. 干城章嘉峰',
+            'C. 洛子峰',
+            'D. 马卡鲁峰',
+          ],
+          selected: null,
+          answer: 0,
+        },
+        {
+          title: '10.世界上最大的珊瑚礁群是什么？',
+          options: [
+            'A. 大堡礁',
+            'B. 马尔代夫珊瑚礁',
+            'C. 菲律宾珊瑚礁',
+            'D. 澳大利亚珊瑚礁',
+          ],
+          selected: null,
+          answer: 0,
+        },
+      ],
+      currentQuestionIndex1: 0, // 当前问题的索引
+      currentQuestionIndex2: 0, // 当前问题的索引
+
+      interval: 1000,
+      timerId: null,
+      alertInterval: 30,
+      isAlerted: false,
+      totalTime: 180,
+      showResult: false, // 是否显示结果
+      selectedOption1: null, // 用户选择的选项，初始为null
+      selectedOption2: null, // 用户选择的选项，初始为null
+      showStartPopup: true,
     }
   },
   mounted() {},
@@ -107,9 +332,68 @@ export default {
     singleCategory() {},
     doubleCategory() {},
     gerPersonalTopic() {},
+    startAnswer() {
+      this.showStartPopup = false
+      this.startCountdown()
+    },
+    oneMore() {
+      this.$router.push('/index?type=single')
+    },
+    goBack() {
+      this.$router.push('/index')
+    },
+    startCountdown() {
+      this.timerId = setInterval(() => {
+        this.totalTime -= this.interval / 1000
+        // 每30秒进行提醒
+        if (this.totalTime % this.alertInterval === 0 && !this.isAlerted) {
+          this.$toast(`已经过去 ${180 - this.totalTime} 秒`)
+          this.isAlerted = true
+        } else if (this.totalTime % this.alertInterval !== 0) {
+          this.isAlerted = false
+        }
+
+        if (this.totalTime < 0) {
+          clearInterval(this.timerId)
+          this.totalTime = 0
+          this.$toast('时间到！')
+        }
+      }, this.interval)
+    },
     submit() {
       // 处理提交逻辑
       console.log(this.selectedOptions)
+    },
+    nextQuestion(flag) {
+      try {
+        if (this.selectedOption === null) {
+          this.$toast('请先作答！')
+          return
+        }
+        this.questionList[this.currentQuestionIndex].selected =
+          this.selectedOption
+
+        if (this.currentQuestionIndex + 1 === this.questionList.length) {
+          this.questionList.forEach((item, index) => {
+            if (item.selected === item.answer) {
+              this.score = this.score + 50
+            }
+          })
+          this.accuracy = (
+            (this.score / (this.questionList.length * 50)) *
+            100
+          ).toFixed(2)
+          clearInterval(this.timerId)
+          this.times = 180 - this.totalTime
+          this.showResultPopup = true
+        } else {
+          this.currentQuestionIndex++
+          this.selectedOption = null
+          this.showResult = false
+        }
+      } catch (error) {
+        console.log(error)
+      }
     },
     Setting() {
       try {
@@ -143,10 +427,19 @@ export default {
         console.log(error)
       }
     },
+    selectOption(type, index) {
+      if (type) {
+        if (this.showResult === true) return
+        this.selectedOption1 = index
+      } else {
+        if (this.showResult === true) return
+        this.selectedOption2 = index
+      }
+    },
   },
 }
 </script>
 
 <style scoped lang="scss">
-@import './index.scss';
+@import './double.scss';
 </style>

@@ -1,11 +1,25 @@
 <template>
   <div class="progress-bar">
-    <div
-      v-for="i in stage"
-      :key="i"
-      :style="{ width: `calc(100% / ${stage})` }"
-      :class="`stage-${i} ${getStageStatus(i)}`"
-    ></div>
+    <template v-if="isSingle">
+      <div class="progress-bar-single">
+        <div
+          v-for="i in stage"
+          :key="i"
+          :style="{ width: `calc(100% / ${stage})` }"
+          :class="`stage-${i} ${getStageStatus(i)}`"
+        ></div>
+      </div>
+    </template>
+    <template v-else>
+      <div class="progress-bar-double">
+        <div
+          v-for="i in stage"
+          :key="i"
+          :style="{ width: `calc(100% / ${stage})` }"
+          :class="`stage-${i} ${getStageStatus(i)}`"
+        ></div>
+      </div>
+    </template>
   </div>
   <!-- 在上面的代码中，我们定义了一个ProgressBar组件，
     它接受两个属性：stage和currentStage，分别表示总共
@@ -29,6 +43,10 @@ export default {
       type: Number,
       default: 0,
     },
+    isSingle: {
+      type: Boolean,
+      default: false,
+    },
   },
   mounted() {
     console.log(this.stage, this.currentStage)
@@ -48,7 +66,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.progress-bar {
+.progress-bar-single {
+  display: flex;
+  justify-content: space-around;
+  width: 100vw;
+  height: 1vh;
+  background-color: #eee;
+}
+
+.progress-bar-double {
   display: flex;
   justify-content: space-around;
   width: 100vw;

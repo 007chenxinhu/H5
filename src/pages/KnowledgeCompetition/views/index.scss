@@ -65,20 +65,19 @@ body {
 p {
   text-align: center;
   display: block;
-  font-size: 10vh;
-  margin: 1.5vw 0;
+  font-size: 6vw;
+  // margin: 1vh 0;
   letter-spacing: 0.1em;
-  max-height: 6vh;
   white-space: nowrap;
 }
 .category {
-  margin: 10vh 0;
+  margin: 6vw 0;
   .category-single {
     text-align: center;
     display: block;
     padding: 1vw;
-    font-size: 10vh;
-    margin-top: 1vh;
+    font-size: 5vw;
+    margin-top: 0.7vw;
     border: 1vh solid #44a;
     border-radius: 1vw;
   }
@@ -86,7 +85,7 @@ p {
     text-align: center;
     display: block;
     padding: 1vw;
-    font-size: 10vh;
+    font-size: 5vw;
     margin-top: 1vh;
     border: 1vh solid #f99;
     border-radius: 1vw;

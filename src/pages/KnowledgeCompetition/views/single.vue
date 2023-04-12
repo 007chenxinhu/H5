@@ -4,12 +4,13 @@
       <div @click="startAnswer" class="start-btn">开始作答</div>
     </div>
     <div class="goBack" @click="goBack">
-      <van-icon name="wap-home" />
+      <van-icon name="wap-home" size="3vw" />
     </div>
     <!-- 进度条 -->
     <div class="progress">
       <progress-bar
         :stage="questionList.length"
+        :is-single="true"
         :current-stage="currentQuestionIndex + 1"
       ></progress-bar>
     </div>
@@ -114,8 +115,17 @@
 <script>
 import ProgressBar from '../components/ProgressBar.vue'
 export default {
+  name: 'SingleCategory',
   components: {
     ProgressBar,
+  },
+  computed: {
+    currentQuestion() {
+      return this.questionList[this.currentQuestionIndex]
+    },
+    isAnswerCorrect() {
+      return this.selectedOption === this.currentQuestion.answer
+    },
   },
   data() {
     return {
@@ -233,14 +243,7 @@ export default {
       showStartPopup: true,
     }
   },
-  computed: {
-    currentQuestion() {
-      return this.questionList[this.currentQuestionIndex]
-    },
-    isAnswerCorrect() {
-      return this.selectedOption === this.currentQuestion.answer
-    },
-  },
+
   mounted() {},
   methods: {
     startAnswer() {
