@@ -77,7 +77,7 @@ export default {
 .progress-bar-double {
   display: flex;
   justify-content: space-around;
-  width: 100vw;
+  width: 50vw;
   height: 1vh;
   background-color: #eee;
 }

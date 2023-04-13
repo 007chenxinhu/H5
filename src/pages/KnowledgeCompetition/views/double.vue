@@ -11,8 +11,9 @@
     </div>
     <div class="double-category">
       <div>
+        <div class="toast1" v-show="showToast1">请先做答！</div>
         <!-- 进度条 -->
-        <div class="progress">
+        <div class="progress1">
           <progress-bar
             :stage="questionList1.length"
             :current-stage="currentQuestionIndex1 + 1"
@@ -55,8 +56,9 @@
         </div>
       </div>
       <div>
+        <div class="toast2" v-show="showToast2">请先做答！</div>
         <!-- 进度条 -->
-        <div class="progress">
+        <div class="progress2">
           <progress-bar
             :stage="questionList2.length"
             :current-stage="currentQuestionIndex2 + 1"
@@ -90,11 +92,62 @@
             <!-- <button @click="checkAnswer">检查答案</button> -->
             <button @click="nextQuestion(false)">
               {{
-                currentQuestionIndex1 + 1 === questionList1.length
+                currentQuestionIndex2 + 1 === questionList2.length
                   ? '提交'
                   : '下一题'
               }}
             </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 结果弹窗 -->
+    <div :class="showResultPopupClass" v-show="showResultPopup">
+      <div class="closeWrapper" @click="closePopup">
+        <van-icon name="cross" />
+      </div>
+      <div class="result-score">
+        <div>
+          本次答题你的得分是{{ score }},正确率是{{ accuracy }}%,思考时长{{
+            times
+          }}s
+        </div>
+        <div class="more-btn" @click="oneMore()">再来一次</div>
+      </div>
+      <div v-for="(question, index) in questionList" :key="index">
+        <div class="result-title">{{ question.title }}</div>
+        <div class="result-options">
+          <div
+            v-for="(option, index) in question.options"
+            :key="index"
+            :class="
+              question.selected === question.answer &&
+              index === question.selected
+                ? 'success'
+                : index === question.selected
+                ? 'error'
+                : index === question.answer
+                ? 'success'
+                : 'result-option'
+            "
+          >
+            {{ option }}
+          </div>
+          <div
+            v-show="questionList[index].selected === questionList[index].answer"
+            class="result-answer-s"
+          >
+            恭喜你选对了,正确答案是{{
+              questionList[index].options[questionList[index].answer]
+            }}
+          </div>
+          <div
+            v-show="questionList[index].selected !== questionList[index].answer"
+            class="result-answer-e"
+          >
+            你选错了,正确答案是{{
+              questionList[index].options[questionList[index].answer]
+            }}
           </div>
         </div>
       </div>
@@ -135,10 +188,8 @@ export default {
           require(`../assets/bg${parseInt(Math.random() * 13 + 1)}.png`),
       },
       selectedOptions: [],
-      showHintPopup: false,
-      showHintPopupClass: 'hint-popup bounceInDown animated',
-      showSettingPopup: false,
-      showSettingPopupClass: 'hint-popup bounceInDown animated',
+      showResultPopup: false,
+      showResultPopupClass: 'result-popup bounceInDown animated',
       questionList1: [
         {
           title: '1. 世界上最大的洲是什么？',
@@ -320,11 +371,16 @@ export default {
       timerId: null,
       alertInterval: 30,
       isAlerted: false,
+      score: null,
+      accuracy: null,
+      times: null,
       totalTime: 180,
       showResult: false, // 是否显示结果
       selectedOption1: null, // 用户选择的选项，初始为null
       selectedOption2: null, // 用户选择的选项，初始为null
       showStartPopup: true,
+      showToast1: false,
+      showToast2: false,
     }
   },
   mounted() {},
@@ -366,30 +422,65 @@ export default {
     },
     nextQuestion(flag) {
       try {
-        if (this.selectedOption === null) {
-          this.$toast('请先作答！')
-          return
-        }
-        this.questionList[this.currentQuestionIndex].selected =
-          this.selectedOption
+        let self = this
+        if (flag) {
+          if (this.selectedOption1 === null) {
+            this.showToast1 = true
+            setTimeout(() => {
+              self.showToast1 = false
+            }, 599)
+            return
+          }
+          this.questionList1[this.currentQuestionIndex1].selected =
+            this.selectedOption1
 
-        if (this.currentQuestionIndex + 1 === this.questionList.length) {
-          this.questionList.forEach((item, index) => {
-            if (item.selected === item.answer) {
-              this.score = this.score + 50
-            }
-          })
-          this.accuracy = (
-            (this.score / (this.questionList.length * 50)) *
-            100
-          ).toFixed(2)
-          clearInterval(this.timerId)
-          this.times = 180 - this.totalTime
-          this.showResultPopup = true
+          if (this.currentQuestionIndex1 + 1 === this.questionList1.length) {
+            this.questionList1.forEach((item, index) => {
+              if (item.selected === item.answer) {
+                this.score = this.score + 50
+              }
+            })
+            this.accuracy = (
+              (this.score / (this.questionList1.length * 50)) *
+              100
+            ).toFixed(2)
+            clearInterval(this.timerId)
+            this.times = 180 - this.totalTime
+            this.showResultPopup = true
+          } else {
+            this.currentQuestionIndex1++
+            this.selectedOption1 = null
+            this.showResult = false
+          }
         } else {
-          this.currentQuestionIndex++
-          this.selectedOption = null
-          this.showResult = false
+          if (this.selectedOption2 === null) {
+            this.showToast2 = true
+            setTimeout(() => {
+              self.showToast2 = false
+            }, 599)
+            return
+          }
+          this.questionList2[this.currentQuestionIndex2].selected =
+            this.selectedOption2
+
+          if (this.currentQuestionIndex2 + 1 === this.questionList2.length) {
+            this.questionList2.forEach((item, index) => {
+              if (item.selected === item.answer) {
+                this.score = this.score + 50
+              }
+            })
+            this.accuracy = (
+              (this.score / (this.questionList.length * 50)) *
+              100
+            ).toFixed(2)
+            clearInterval(this.timerId)
+            this.times = 180 - this.totalTime
+            this.showResultPopup = true
+          } else {
+            this.currentQuestionIndex2++
+            this.selectedOption2 = null
+            this.showResult = false
+          }
         }
       } catch (error) {
         console.log(error)

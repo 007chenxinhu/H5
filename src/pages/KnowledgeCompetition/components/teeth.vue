@@ -1,5 +1,11 @@
 <template>
   <div class="number-select">
+    <div>
+      <van-radio-group v-model="radio" direction="horizontal">
+        <van-radio name="1">启用计时</van-radio>
+        <van-radio name="2">禁用计时</van-radio>
+      </van-radio-group>
+    </div>
     <div class="numbers">
       <div
         v-for="number in numbers"
