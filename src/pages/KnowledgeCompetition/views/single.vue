@@ -75,15 +75,14 @@
         <div class="result-title">{{ question.title }}</div>
         <div class="result-options">
           <div
-            v-for="(option, index) in question.options"
-            :key="index"
+            v-for="(option, i) in question.options"
+            :key="i"
             :class="
-              question.selected === question.answer &&
-              index === question.selected
+              question.selected === question.answer && i === question.selected
                 ? 'success'
-                : index === question.selected
+                : i === question.selected
                 ? 'error'
-                : index === question.answer
+                : i === question.answer
                 ? 'success'
                 : 'result-option'
             "

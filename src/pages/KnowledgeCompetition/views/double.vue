@@ -106,48 +106,102 @@
       <div class="closeWrapper" @click="closePopup">
         <van-icon name="cross" />
       </div>
-      <div class="result-score">
-        <div>
-          本次答题你的得分是{{ score }},正确率是{{ accuracy }}%,思考时长{{
-            times
-          }}s
+      <!-- <div class="more-btn" @click="oneMore()">再来一次</div> -->
+      <div class="result-left">
+        <div class="result-score">
+          <div>
+            本次答题你的得分是{{ score1 }},正确率是{{ accuracy1 }}%,思考时长{{
+              times1
+            }}s
+          </div>
         </div>
-        <div class="more-btn" @click="oneMore()">再来一次</div>
+        <div
+          class="answer-question"
+          v-for="(question, index) in questionList1"
+          :key="index + question"
+        >
+          <div class="result-title">{{ question.title }}</div>
+          <div class="result-options">
+            <div
+              v-for="(option, i) in question.options"
+              :key="i + option"
+              :class="
+                question.selected === question.answer && i === question.selected
+                  ? 'success'
+                  : i === question.selected
+                  ? 'error'
+                  : i === question.answer
+                  ? 'success'
+                  : 'result-option'
+              "
+            >
+              {{ option }}
+            </div>
+            <div
+              v-if="
+                questionList1[index].selected === questionList1[index].answer
+              "
+              class="result-answer-s"
+            >
+              恭喜你选对了,正确答案是{{
+                questionList1[index].options[questionList1[index].answer]
+              }}
+            </div>
+            <div v-else class="result-answer-e">
+              你选错了,正确答案是{{
+                questionList1[index].options[questionList1[index].answer]
+              }}
+            </div>
+          </div>
+        </div>
       </div>
-      <div v-for="(question, index) in questionList" :key="index">
-        <div class="result-title">{{ question.title }}</div>
-        <div class="result-options">
-          <div
-            v-for="(option, index) in question.options"
-            :key="index"
-            :class="
-              question.selected === question.answer &&
-              index === question.selected
-                ? 'success'
-                : index === question.selected
-                ? 'error'
-                : index === question.answer
-                ? 'success'
-                : 'result-option'
-            "
-          >
-            {{ option }}
+      <div class="online"></div>
+      <div class="result-right">
+        <div class="result-score">
+          <div>
+            本次答题你的得分是{{ score2 }},正确率是{{ accuracy2 }}%,思考时长{{
+              times2
+            }}s
           </div>
-          <div
-            v-show="questionList[index].selected === questionList[index].answer"
-            class="result-answer-s"
-          >
-            恭喜你选对了,正确答案是{{
-              questionList[index].options[questionList[index].answer]
-            }}
-          </div>
-          <div
-            v-show="questionList[index].selected !== questionList[index].answer"
-            class="result-answer-e"
-          >
-            你选错了,正确答案是{{
-              questionList[index].options[questionList[index].answer]
-            }}
+        </div>
+        <div v-for="(question, index) in questionList2" :key="index + question">
+          <div class="result-title">{{ question.title }}</div>
+          <div class="result-options">
+            <div
+              v-for="(option, i) in question.options"
+              :key="i + option"
+              :class="
+                question.selected === question.answer && i === question.selected
+                  ? 'success'
+                  : i === question.selected
+                  ? 'error'
+                  : i === question.answer
+                  ? 'success'
+                  : 'result-option'
+              "
+            >
+              {{ option }}
+            </div>
+            <div
+              v-show="
+                questionList2[index].selected === questionList2[index].answer
+              "
+              class="result-answer-s"
+            >
+              恭喜你选对了,正确答案是{{
+                questionList2[index].options[questionList2[index].answer]
+              }}
+            </div>
+            <div
+              v-show="
+                questionList2[index].selected !== questionList2[index].answer
+              "
+              class="result-answer-e"
+            >
+              你选错了,正确答案是{{
+                questionList2[index].options[questionList2[index].answer]
+              }}
+            </div>
           </div>
         </div>
       </div>
@@ -371,9 +425,12 @@ export default {
       timerId: null,
       alertInterval: 30,
       isAlerted: false,
-      score: null,
-      accuracy: null,
-      times: null,
+      score1: null,
+      accuracy1: null,
+      times1: null,
+      score2: null,
+      accuracy2: null,
+      times2: null,
       totalTime: 180,
       showResult: false, // 是否显示结果
       selectedOption1: null, // 用户选择的选项，初始为null
@@ -381,19 +438,18 @@ export default {
       showStartPopup: true,
       showToast1: false,
       showToast2: false,
+      oneDone1: false,
+      oneDone2: false,
     }
   },
   mounted() {},
   methods: {
-    singleCategory() {},
-    doubleCategory() {},
-    gerPersonalTopic() {},
     startAnswer() {
       this.showStartPopup = false
       this.startCountdown()
     },
     oneMore() {
-      this.$router.push('/index?type=single')
+      this.$router.push('/index?type=double')
     },
     goBack() {
       this.$router.push('/index')
@@ -416,10 +472,6 @@ export default {
         }
       }, this.interval)
     },
-    submit() {
-      // 处理提交逻辑
-      console.log(this.selectedOptions)
-    },
     nextQuestion(flag) {
       try {
         let self = this
@@ -437,16 +489,20 @@ export default {
           if (this.currentQuestionIndex1 + 1 === this.questionList1.length) {
             this.questionList1.forEach((item, index) => {
               if (item.selected === item.answer) {
-                this.score = this.score + 50
+                this.score1 = this.score1 + 50
               }
             })
-            this.accuracy = (
-              (this.score / (this.questionList1.length * 50)) *
+            this.accuracy1 = (
+              (this.score1 / (this.questionList1.length * 50)) *
               100
             ).toFixed(2)
-            clearInterval(this.timerId)
-            this.times = 180 - this.totalTime
-            this.showResultPopup = true
+            this.times2 && clearInterval(this.timerId)
+            this.times1 = 180 - this.totalTime
+            if (this.oneDone2) {
+              this.showResultPopup = true
+            } else {
+              this.oneDone1 = true
+            }
           } else {
             this.currentQuestionIndex1++
             this.selectedOption1 = null
@@ -466,16 +522,20 @@ export default {
           if (this.currentQuestionIndex2 + 1 === this.questionList2.length) {
             this.questionList2.forEach((item, index) => {
               if (item.selected === item.answer) {
-                this.score = this.score + 50
+                this.score2 = this.score2 + 50
               }
             })
-            this.accuracy = (
-              (this.score / (this.questionList.length * 50)) *
+            this.accuracy2 = (
+              (this.score2 / (this.questionList2.length * 50)) *
               100
             ).toFixed(2)
-            clearInterval(this.timerId)
-            this.times = 180 - this.totalTime
-            this.showResultPopup = true
+            this.times1 && clearInterval(this.timerId)
+            this.times2 = 180 - this.totalTime
+            if (this.oneDone1) {
+              this.showResultPopup = true
+            } else {
+              this.oneDone2 = true
+            }
           } else {
             this.currentQuestionIndex2++
             this.selectedOption2 = null
@@ -486,33 +546,13 @@ export default {
         console.log(error)
       }
     },
-    Setting() {
-      try {
-        this.showSettingPopup = true
-
-        // let self = this
-        // this.showHintPopupClass = 'hint-popup bounceOutRight animated'
-        // setTimeout(() => {
-        //   self.showHintPopupClass = 'hint-popup bounceInDown animated'
-        //   self.showSettingPopup = false
-        // }, 599)
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    ViewInstructions() {
-      this.showHintPopup = true
-    },
     closePopup() {
       try {
         let self = this
-        this.showHintPopupClass = 'hint-popup bounceOutRight animated'
-        this.showSettingPopupClass = 'hint-popup bounceOutRight animated'
+        this.showResultPopupClass = 'result-popup bounceOutRight animated'
         setTimeout(() => {
-          self.showHintPopupClass = 'hint-popup bounceInDown animated'
-          self.showSettingPopupClass = 'hint-popup bounceInDown animated'
-          self.showHintPopup = false
-          self.showSettingPopup = false
+          self.showResultPopupClass = 'result-popup bounceInDown animated'
+          self.showResultPopup = false
         }, 599)
       } catch (error) {
         console.log(error)

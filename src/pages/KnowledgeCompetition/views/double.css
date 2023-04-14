@@ -1,8 +1,6 @@
 @charset "UTF-8";
 .content {
   position: relative;
-  width: 100vw;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,7 +21,7 @@
 
 .startPopup {
   opacity: 0.99;
-  padding: 1vw 3vw;
+  padding: 0 3vw;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -114,10 +112,11 @@
 .question {
   position: relative;
   width: 50vw;
-  height: 100vh;
+  height: 99vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 1vh;
   background-color: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(0.2vw);
   box-shadow: 0.01vw 0.01vw 0.05vw #ccc;
@@ -164,7 +163,6 @@
 .submit {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
 }
 
 .submit button {
@@ -174,7 +172,6 @@
   background-color: #007aff;
   color: #fff;
   font-size: 3vw;
-  margin: 2vw;
   cursor: pointer;
 }
 
@@ -198,13 +195,15 @@
 
 .result-popup {
   overflow: auto;
+  display: flex;
+  justify-content: space-around;
   opacity: 0.97;
-  padding: 1vw 3vw;
-  max-height: 80%;
-  width: 80%;
-  height: 80%;
+  padding: 1vw 2vw;
+  max-height: 90%;
+  width: 84%;
+  height: 90%;
   position: absolute;
-  top: 8vh;
+  top: 4vh;
   left: 7vw;
   backdrop-filter: blur(0.5vw);
   border-radius: 2.8vw;
@@ -226,6 +225,7 @@
 }
 
 .result-popup .result-score {
+  width: 100%;
   position: relative;
   display: flex;
   color: #383636;
@@ -234,13 +234,8 @@
   margin-top: 2vw;
 }
 
-.result-popup .result-score .more-btn {
-  position: absolute;
-  right: 3vw;
-  padding: 1vw 2vw;
-  background-color: #006cee;
-  border-radius: 1vw;
-  color: #fff;
+.result-popup .answer-question {
+  border-right: 0.1vw solid #000;
 }
 
 .result-popup .result-title {
@@ -279,6 +274,31 @@
   font-size: 1.6vw;
   color: #f56c6c;
   margin-top: 1vw;
+}
+
+.more-btn {
+  position: fixed;
+  right: 45vw;
+  top: 0vw;
+  padding: 1vw 0.5vw;
+  background-color: #6a7e96;
+  border-radius: 1vw;
+  font-size: 1vw;
+  color: #fff;
+}
+
+.result-left {
+  width: 49.4vw;
+}
+
+.online {
+  width: 0.1vw;
+  margin: 1vw 0.5vw;
+}
+
+.result-right {
+  width: 49.5vw;
+  padding-left: 1vw;
 }
 
 .closeWrapper {
