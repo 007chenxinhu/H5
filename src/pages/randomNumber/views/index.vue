@@ -81,6 +81,7 @@ export default {
     return {
       isPlayVideo: true,
       lang: 'en',
+      timer: null,
     }
   },
   created() {
@@ -88,9 +89,13 @@ export default {
   },
   mounted: function () {
     let self = this
-    setTimeout(() => {
-      self.isPlayVideo = false
-    }, 5000)
+    var videoTime = document.getElementsByClassName('video-box')
+    this.timer = setInterval(() => {
+      if (videoTime[0].duration <= videoTime[0].currentTime) {
+        self.isPlayVideo = false
+        clearInterval(self.timer)
+      } //获取视频当前播放时间
+    }, 100)
   },
   methods: {
     playAudioBtn() {
