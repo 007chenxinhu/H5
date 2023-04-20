@@ -21,30 +21,161 @@
 
 .startPopup {
   opacity: 0.99;
-  padding: 0 3vw;
   width: 100%;
   height: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
+  position: relative;
   backdrop-filter: blur(0.5vw);
-  border-radius: 2.8vw;
   background-color: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(1vw);
   z-index: 9;
 }
 
+.startPopup .start-animation {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background-image: linear-gradient(to right bottom, #059de4, #34d1ff, #f8dc66, #d1730e);
+}
+
+.startPopup .start-animation .start-animation-left {
+  position: absolute;
+  width: 38vw;
+  height: 38vw;
+  left: 0;
+  top: 50%;
+  -webkit-animation-name: waterLeft;
+  animation-name: waterLeft;
+}
+
+.startPopup .start-animation .start-animation-left .start-animation-l-box {
+  width: 38vw;
+  height: 38vw;
+}
+
+.startPopup .start-animation .start-animation-right {
+  position: absolute;
+  width: 38vw;
+  height: 38vw;
+  right: 0;
+  top: 50%;
+  -webkit-animation-name: fireRight;
+  animation-name: fireRight;
+}
+
+.startPopup .start-animation .start-animation-right .start-animation-r-box {
+  width: 38vw;
+  height: 38vw;
+}
+
+.startPopup .start-action {
+  width: 100vw;
+}
+
+.startPopup .start-action .start-action-vs {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-30vmin, -27vmin);
+  width: 60vmin;
+  height: 54vmin;
+}
+
+.startPopup .start-action .start-action-vs .start-action-vs-box {
+  width: 60vmin;
+  height: 54vmin;
+}
+
 .startPopup .start-btn {
-  width: 50%;
+  position: absolute;
+  width: 10vw;
+  height: 10vw;
+  top: 3%;
+  left: 50%;
+  text-align: center;
+  line-height: 9vw;
+  transform: translate(-50%, 0%);
   padding: 2vw 2vw;
-  margin: auto;
-  margin-top: 20%;
-  border-radius: 4vw;
-  font-size: 2vw;
-  color: #fff;
-  background-color: #006cee;
+  border-radius: 50%;
+  font-size: 3vw;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #000;
+  box-shadow: 2vw 0 1vw #f8dc66, -2vw 0 1vw #34d1ff;
+  background-image: linear-gradient(to right, #059de4, #34d1ff, #f8dc66, #d1730e);
+}
+
+.startPopup .start-btn:hover {
+  transform: translate(-27%, -50%) scale(1.1);
+}
+
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.animated.infinite {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+.animated.hinge {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+}
+
+@keyframes waterLeft {
+  0% {
+    transform: translate(-38vw, -50%);
+  }
+  100% {
+    transform: translate(12vw, -50%);
+  }
+}
+
+@-webkit-keyframes waterLeft {
+  0% {
+    transform: translate(-38vw, -50%);
+  }
+  100% {
+    transform: translate(12vw, -50%);
+  }
+}
+
+@keyframes fireRight {
+  0% {
+    transform: translate(100vw, -50%);
+  }
+  100% {
+    transform: translate(-12vw, -50%);
+  }
+}
+
+@-webkit-keyframes fireRight {
+  0% {
+    transform: translate(100vw, -50%);
+  }
+  100% {
+    transform: translate(-12vw, -50%);
+  }
+}
+
+@keyframes vsCenter {
+  0% {
+    transform: translate(100vw, -50%);
+  }
+  100% {
+    transform: translate(-12vw, -50%);
+  }
+}
+
+@-webkit-keyframes vsCenter {
+  0% {
+    transform: translate(100vw, -50%);
+  }
+  100% {
+    transform: translate(-12vw, -50%);
+  }
 }
 
 .goBack {
@@ -133,21 +264,44 @@
   margin-bottom: 2vw;
 }
 
-.option {
+.option-l {
   width: 40vw;
   flex-wrap: wrap;
   text-align: left;
   padding: 1vw;
   border: 0.1vw solid #383636;
+  background-image: linear-gradient(to right, #059de4, #34d1ff);
   border-radius: 5vw;
   margin: 1vw;
   font-size: 2vw;
   cursor: pointer;
 }
 
-.option.active {
+.option-r {
+  width: 40vw;
+  flex-wrap: wrap;
+  text-align: left;
+  padding: 1vw;
+  border: 0.1vw solid #383636;
+  background-image: linear-gradient(to right, #f8dc66, #d1730e);
+  border-radius: 5vw;
+  margin: 1vw;
+  font-size: 2vw;
+  cursor: pointer;
+}
+
+.option-l.active {
   border-color: #007aff;
+  border: 0.01vw solid #033cf5;
   color: #007aff;
+  background-color: #ffdaa0;
+}
+
+.option-r.active {
+  border-color: #007aff;
+  border: 0.01vw solid #033cf5;
+  color: #e69006;
+  background-color: #ffdaa0;
 }
 
 .option.success {
@@ -169,10 +323,17 @@
   padding: 1vw 2vw;
   border: none;
   border-radius: 1vw;
-  background-color: #007aff;
   color: #fff;
   font-size: 3vw;
   cursor: pointer;
+}
+
+.submit-l button {
+  background-image: linear-gradient(to right, #059de4, #34d1ff);
+}
+
+.submit-r button {
+  background-image: linear-gradient(to right, #f8dc66, #d1730e);
 }
 
 .submit button:hover {
@@ -499,4 +660,51 @@
 .bounceOutRight {
   -webkit-animation-name: bounceOutRight;
   animation-name: bounceOutRight;
+}
+
+/*base code*/
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.animated.infinite {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+.animated.hinge {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+}
+
+/*the animation definition*/
+@-webkit-keyframes zoomIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    -ms-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.zoomIn {
+  -webkit-animation-name: zoomIn;
+  animation-name: zoomIn;
 }

@@ -110,7 +110,9 @@
 
 .option.active {
   border-color: #007aff;
+  border: 0.01vw solid #033cf5;
   color: #007aff;
+  background-color: #ffdaa0;
 }
 
 .option.success {

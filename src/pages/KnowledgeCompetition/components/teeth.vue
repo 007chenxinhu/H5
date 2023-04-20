@@ -2,8 +2,8 @@
   <div class="number-select">
     <div>
       <van-radio-group v-model="radio" direction="horizontal">
-        <van-radio name="1">启用计时</van-radio>
-        <van-radio name="2">禁用计时</van-radio>
+        <van-radio name="1"><span>启用计时</span></van-radio>
+        <van-radio name="2"><span>禁用计时</span></van-radio>
       </van-radio-group>
     </div>
     <div class="numbers">
@@ -80,6 +80,9 @@ export default {
 }
 
 .selected-number {
+  margin-top: 1vw;
+}
+/deep/.van-radio .van-radio__label {
   margin-top: 1vw;
 }
 </style>

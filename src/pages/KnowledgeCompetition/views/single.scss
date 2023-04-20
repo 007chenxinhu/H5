@@ -106,12 +106,6 @@
   margin-bottom: 2vw;
 }
 
-// .options :nth-of-type(0) {
-//   margin-right: 2vw;
-// }
-// .options :nth-of-type(2) {
-//   margin-right: 2vw;
-// }
 .option {
   width: 40vw;
   flex-wrap: wrap;
@@ -121,11 +115,14 @@
   border-radius: 5vw;
   margin: 1vw;
   font-size: 2vw;
+
   cursor: pointer;
 }
 .option.active {
   border-color: #007aff;
+  border: 0.01vw solid #033cf5;
   color: #007aff;
+  background-color: rgb(255, 218, 160);
 }
 .option.success {
   border-color: rgb(103, 194, 58);

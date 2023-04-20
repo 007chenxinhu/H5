@@ -26,6 +26,12 @@ const routes = [
     component: () => import('../views/double.vue'),
     meta: { title: '双人模式' },
   },
+  {
+    path: '/text',
+    name: 'text',
+    component: () => import('../views/text.vue'),
+    meta: { title: '测试模式' },
+  },
 ]
 
 const router = new VueRouter({

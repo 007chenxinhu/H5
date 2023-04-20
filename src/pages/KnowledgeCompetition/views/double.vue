@@ -1,15 +1,28 @@
 <template>
   <div class="content" :style="backgroundDiv">
     <div class="startPopup" v-if="showStartPopup">
-      <div @click="startAnswer" class="start-btn">开始作答</div>
+      <div class="start-animation">
+        <div class="start-animation-left animated">
+          <img class="start-animation-l-box" src="../assets/ab.png" />
+        </div>
+        <div class="start-animation-right animated">
+          <img class="start-animation-r-box" src="../assets/a.png" />
+        </div>
+      </div>
+      <div class="start-action">
+        <div class="start-action-vs zoomIn animated">
+          <img class="start-action-vs-box" src="../assets/ba.png" />
+        </div>
+        <div @click="startAnswer" class="start-btn">Start</div>
+      </div>
     </div>
     <div class="goBack" @click="goBack">
       <van-icon name="wap-home" size="3vw" />
     </div>
-    <div class="countDown">
+    <div v-if="!showStartPopup" class="countDown">
       {{ totalTime }}
     </div>
-    <div class="double-category">
+    <div v-if="!showStartPopup" class="double-category">
       <div>
         <div class="toast1" v-show="showToast1">请先做答！</div>
         <!-- 进度条 -->
@@ -24,7 +37,7 @@
           <div class="title">{{ currentQuestion.title }}</div>
           <div class="options">
             <div
-              class="option"
+              class="option-l"
               v-for="(option, index) in currentQuestion.options"
               :key="index"
               :class="
@@ -43,7 +56,7 @@
               {{ option }}
             </div>
           </div>
-          <div class="submit">
+          <div class="submit submit-l">
             <!-- <button @click="checkAnswer">检查答案</button> -->
             <button @click="nextQuestion(true)">
               {{
@@ -69,7 +82,7 @@
           <div class="title">{{ currentQuestionss.title }}</div>
           <div class="options">
             <div
-              class="option"
+              class="option-r"
               v-for="(option, index) in currentQuestionss.options"
               :key="index"
               :class="
@@ -88,7 +101,7 @@
               {{ option }}
             </div>
           </div>
-          <div class="submit">
+          <div class="submit submit-r">
             <!-- <button @click="checkAnswer">检查答案</button> -->
             <button @click="nextQuestion(false)">
               {{

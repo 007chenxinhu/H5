@@ -71,7 +71,7 @@ export default {
   justify-content: space-around;
   width: 100vw;
   height: 1vh;
-  background-color: #eee;
+  background-color: #eeeeee8e;
 }
 
 .progress-bar-double {
@@ -79,7 +79,7 @@ export default {
   justify-content: space-around;
   width: 50vw;
   height: 1vh;
-  background-color: #eee;
+  background-color: #eeeeee8e;
 }
 
 // .progress-bar div {
@@ -95,10 +95,11 @@ export default {
 }
 
 .doing {
-  background-color: orange;
+  // background-color: orange;
+  background-image: linear-gradient(to right, #ff8a00, #e52e71);
 }
 
 .done {
-  background-color: green;
+  background-image: linear-gradient(to right, #00ff55, #00bb00);
 }
 </style>
