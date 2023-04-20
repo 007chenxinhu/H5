@@ -6,7 +6,7 @@
       data-end="1"
       muted
       play-duration="10s"
-      poster="../assets/poster.jpg"
+      poster="http://www.imagic-resource.com/public/poster.jpg"
       preload="auto"
       autoplay
       src="http://www.imagic-resource.com/public/poster.mp4"
