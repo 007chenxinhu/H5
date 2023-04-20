@@ -9,7 +9,7 @@
       poster="../assets/poster.jpg"
       preload="auto"
       autoplay
-      src="../assets/video/poster.mp4"
+      src="http://www.imagic-resource.com/public/poster.mp4"
     ></video>
     <div v-if="!isPlayVideo">
       <!-- 底部云 -->
