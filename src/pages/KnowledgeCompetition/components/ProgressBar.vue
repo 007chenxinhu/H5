@@ -10,8 +10,18 @@
         ></div>
       </div>
     </template>
-    <template v-else>
-      <div class="progress-bar-double">
+    <template v-if="!isSingle">
+      <div class="progress-bar-double-l">
+        <div
+          v-for="i in stage"
+          :key="i"
+          :style="{ width: `calc(100% / ${stage})` }"
+          :class="`stage-${i} ${getStageStatus(i)}`"
+        ></div>
+      </div>
+    </template>
+    <template v-if="!isSingle">
+      <div class="progress-bar-double-l">
         <div
           v-for="i in stage"
           :key="i"

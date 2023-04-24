@@ -28,6 +28,7 @@
         <!-- 进度条 -->
         <div class="progress1">
           <progress-bar
+            is-single="false"
             :stage="questionList1.length"
             :current-stage="currentQuestionIndex1 + 1"
           ></progress-bar>
@@ -35,6 +36,7 @@
         <!-- 倒计时 -->
         <div class="question">
           <div class="title">{{ currentQuestion.title }}</div>
+          <!-- <img src="../assets/cartoon/water.png" alt="" /> -->
           <div class="options">
             <div
               class="option-l"
@@ -53,6 +55,8 @@
               "
               @click="selectOption(true, index)"
             >
+              <div :class="'cartoon' + (index + 1)"></div>
+              <!-- <div class="clickIcon"></div> -->
               {{ option }}
             </div>
           </div>
@@ -73,6 +77,7 @@
         <!-- 进度条 -->
         <div class="progress2">
           <progress-bar
+            is-single="false"
             :stage="questionList2.length"
             :current-stage="currentQuestionIndex2 + 1"
           ></progress-bar>
@@ -98,6 +103,8 @@
               "
               @click="selectOption(false, index)"
             >
+              <div :class="'cartoon' + (index + 1)"></div>
+
               {{ option }}
             </div>
           </div>
@@ -177,7 +184,11 @@
             }}s
           </div>
         </div>
-        <div v-for="(question, index) in questionList2" :key="index + question">
+        <div
+          class="answer-question-r"
+          v-for="(question, index) in questionList2"
+          :key="index + question"
+        >
           <div class="result-title">{{ question.title }}</div>
           <div class="result-options">
             <div

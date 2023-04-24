@@ -98,7 +98,7 @@
   .start-btn {
     position: absolute;
     @include wh(10vw, 10vw);
-    top: 3%;
+    top: 5vw;
     left: 50%;
     text-align: center;
     line-height: 9vw;
@@ -117,9 +117,46 @@
       rgb(248, 220, 102),
       rgb(209, 115, 14)
     );
+    cursor: pointer;
+    animation: startBtn 1.5s forwards linear;
+    -webkit-animation: startBtn 1.5s forwards linear; /* Safari 和 Chrome */
   }
   .start-btn:hover {
-    transform: translate(-27%, -50%) scale(1.1);
+    transform: translate(-50%, 0%) scale(1.1);
+  }
+}
+@keyframes startBtn {
+  0% {
+    transform: translate(-50%, -15vw);
+  }
+  25% {
+    transform: translate(-50%, -13vw);
+  }
+  50% {
+    transform: translate(-50%, -10vw);
+  }
+  75% {
+    transform: translate(-50%, -6vw);
+  }
+  100% {
+    transform: translate(-50%, 0vw);
+  }
+}
+@-webkit-keyframes startBtn {
+  0% {
+    transform: translate(-50%, -15vw);
+  }
+  25% {
+    transform: translate(-50%, -13vw);
+  }
+  50% {
+    transform: translate(-50%, -10vw);
+  }
+  75% {
+    transform: translate(-50%, -6vw);
+  }
+  100% {
+    transform: translate(-50%, 0vw);
   }
 }
 .animated {
@@ -277,6 +314,7 @@
 }
 
 .option-l {
+  position: relative;
   width: 40vw;
   flex-wrap: wrap;
   text-align: left;
@@ -291,8 +329,184 @@
   margin: 1vw;
   font-size: 2vw;
   cursor: pointer;
+  .cartoon1 {
+    position: absolute;
+    right: 2vw;
+    top: 0;
+    @include wh(5vw, 5vw);
+    @include bg('../assets/cartoon/1.png');
+  }
+  .cartoon2 {
+    position: absolute;
+    right: 2vw;
+    top: 0;
+    @include wh(5vw, 5vw);
+    @include bg('../assets/cartoon/2.png');
+  }
+  .cartoon3 {
+    position: absolute;
+    right: 2vw;
+    top: 0;
+    @include wh(5vw, 5vw);
+    @include bg('../assets/cartoon/3.png');
+  }
+  .cartoon4 {
+    position: absolute;
+    right: 2vw;
+    top: 0;
+    @include wh(5vw, 5vw);
+    @include bg('../assets/cartoon/4.png');
+  }
+  .clickIcon {
+    position: absolute;
+    top: 0;
+    right: 10vw;
+    width: 5.12vw;
+    height: 3.84vw;
+    // background-image: url('../assets/cartoon/water.png');
+    // background-repeat: no-repeat;
+    // background-size: 15.36vw 15.36vw;
+    // background-color: #000;
+    // background-position: 5.12vw 3.84vw;
+    animation: clickWater 10s forwards linear;
+  }
+}
+@keyframes clickWater {
+  0% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 0 0;
+  }
+  8% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 33.33% 0;
+  }
+  16% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 66.66% 0;
+  }
+  25% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 0 25%;
+  }
+  33% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 33.33% 25%;
+  }
+  41% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 66.66% 25%;
+  }
+  50% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 0 50%;
+  }
+  58% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 33.33% 50%;
+  }
+  66% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 66.66% 50%;
+  }
+  75% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 0 75%;
+  }
+  83% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 33.33% 75%;
+  }
+  91% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 66.66% 75%;
+  }
+  100% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 66.66% 75%;
+  }
+}
+@-webkit-keyframes clickWater {
+  0% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 0 0;
+  }
+  8% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 33.33% 0;
+  }
+  16% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 66.66% 0;
+  }
+  25% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 0 25%;
+  }
+  33% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 33.33% 25%;
+  }
+  41% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 66.66% 25%;
+  }
+  50% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 0 50%;
+  }
+  58% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 33.33% 50%;
+  }
+  66% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 66.66% 50%;
+  }
+  75% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 0 75%;
+  }
+  83% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 33.33% 75%;
+  }
+  91% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 66.66% 75%;
+  }
+  100% {
+    background-image: url('../assets/cartoon/water.png');
+    background-size: 15.36vw 15.36vw;
+    background-position: 66.66% 75%;
+  }
 }
 .option-r {
+  position: relative;
   width: 40vw;
   flex-wrap: wrap;
   text-align: left;
@@ -308,16 +522,44 @@
   margin: 1vw;
   font-size: 2vw;
   cursor: pointer;
+  .cartoon1 {
+    position: absolute;
+    right: 2vw;
+    top: 0;
+    @include wh(5vw, 5vw);
+    @include bg('../assets/cartoon/5.png');
+  }
+  .cartoon2 {
+    position: absolute;
+    right: 2.5vw;
+    top: 0;
+    @include wh(4vw, 5vw);
+    @include bg('../assets/cartoon/6.png');
+  }
+  .cartoon3 {
+    position: absolute;
+    right: 2vw;
+    top: 0;
+    @include wh(5vw, 5vw);
+    @include bg('../assets/cartoon/7.png');
+  }
+  .cartoon4 {
+    position: absolute;
+    right: 2vw;
+    top: 0;
+    @include wh(3.5vw, 5vw);
+    @include bg('../assets/cartoon/8.png');
+  }
 }
 .option-l.active {
   border-color: #007aff;
-  border: 0.01vw solid #033cf5;
+  border: 0.1vw solid #033cf5;
   color: #007aff;
   background-color: rgb(255, 218, 160);
 }
 .option-r.active {
   border-color: #007aff;
-  border: 0.01vw solid #033cf5;
+  border: 0.1vw solid #033cf5;
   color: rgb(230, 144, 6);
   background-color: rgb(255, 218, 160);
 }
@@ -412,43 +654,47 @@
     position: relative;
     display: flex;
     color: #383636;
-    font-size: 2vw;
+    font-size: 1.5vw;
     line-height: 3vw;
     margin-top: 2vw;
   }
   .answer-question {
+    padding-bottom: 1vw;
     border-right: 0.1vw solid #000;
+  }
+  .answer-question-r {
+    padding-bottom: 1vw;
   }
   //滚动条样式
   .result-title {
-    font-size: 2vw;
+    font-size: 1.8vw;
     line-height: 3vw;
     margin-top: 2vw;
   }
   .result-option {
-    font-size: 1.6vw;
+    font-size: 1.4vw;
     line-height: 2vw;
     margin-top: 1vw;
   }
   .success {
-    font-size: 1.6vw;
+    font-size: 1.4vw;
     line-height: 2vw;
     margin-top: 1vw;
     color: rgb(103, 194, 58);
   }
   .error {
-    font-size: 1.6vw;
+    font-size: 1.4vw;
     line-height: 2vw;
     margin-top: 1vw;
     color: rgb(245, 108, 108);
   }
   .result-answer-s {
-    font-size: 1.6vw;
+    font-size: 1.4vw;
     color: rgb(103, 194, 58);
     margin-top: 1vw;
   }
   .result-answer-e {
-    font-size: 1.6vw;
+    font-size: 1.4vw;
     color: rgb(245, 108, 108);
     margin-top: 1vw;
   }
