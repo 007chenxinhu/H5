@@ -22,6 +22,9 @@ import {
 } from 'vant'
 import './style/common.scss'
 import 'vant/lib/index.css'
+import ElementUI from 'element-ui'
+// import { Button, Select } from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
@@ -39,6 +42,7 @@ Vue.use(Toast)
   .use(Popup)
   .use(Slider)
   .use(Icon)
+Vue.use(ElementUI)
 
 new Vue({
   render: h => h(App),

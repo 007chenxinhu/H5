@@ -32,6 +32,12 @@ const routes = [
     component: () => import('../views/text.vue'),
     meta: { title: '测试模式' },
   },
+  {
+    path: '/management',
+    name: 'management',
+    component: () => import('../views/management/index.vue'),
+    meta: { title: '世界之最后台管理' },
+  },
 ]
 
 const router = new VueRouter({
