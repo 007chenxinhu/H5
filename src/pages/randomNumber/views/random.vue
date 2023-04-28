@@ -296,11 +296,20 @@ export default {
     },
     setParam: debounce(function (flag) {
       try {
+        this.numberArr = []
+        this.arrResult = []
+        clearInterval(this.getResultTimer)
+        clearInterval(this.timer)
+        this.showResultPopupClass = 'result-popup zoomIn animated'
+        this.isShowResultPopup = false
         this.isRandom = flag
         if (this.isShowResultPopup) {
           return
         }
-        if (this.isSubmit) this.isSubmit = false
+        if (this.isSubmit) {
+          this.isSubmit = false
+          return
+        }
         this.showPopup = true
         this.playAudioBtn()
       } catch (error) {
