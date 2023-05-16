@@ -29,8 +29,9 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   // 响应成功
   response => {
-    const { data, message, success } = response.data
-    if (success) {
+    const { data, message, result } = response
+    console.log(response)
+    if (result) {
       return data
     } else {
       Message({

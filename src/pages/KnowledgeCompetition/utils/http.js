@@ -90,7 +90,7 @@ export default class BaseRequest {
             })
 
             return Promise.reject(data)
-          } else if (data.code !== 0) {
+          } else if (data.statusCode !== 0) {
             if (data.error && data.msg !== data.error) {
               data.msg = data.msg + ' ' + data.error
               data.error = ''

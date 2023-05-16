@@ -105,9 +105,12 @@ module.exports = {
   },
   devServer: {
     open: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
     proxy: {
-      '/download': {
-        target: `http://47.113.88.149:9060/download`,
+      '/game': {
+        target: `http://47.113.88.149:9060`,
         changeOrigin: true,
         secure: true,
       },
