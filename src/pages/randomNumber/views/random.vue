@@ -122,7 +122,11 @@
     </div>
     <!-- 结果展示款 -->
     <div :class="showResultPopupClass" v-show="isShowResultPopup">
-      <div class="closeWrapper" @click="closeResultPopup">
+      <div
+        class="closeWrapper"
+        :style="'top:' + ScrollTop + 'px;'"
+        @click="closeResultPopup"
+      >
         <van-icon name="cross" />
       </div>
       <template v-if="isRandom">
@@ -196,6 +200,7 @@ export default {
       isShowResultPopup: false,
       randomColor: `#${Math.floor(Math.random() * 0xffffff).toString(16)}`,
       randomNumberBg: [],
+      ScrollTop: window.innerWidth * 0.02,
     }
   },
   created: function () {
@@ -205,7 +210,20 @@ export default {
       self.showPopup = true
     }, 500)
   },
+  mounted() {
+    this.$nextTick(() => {
+      if (document.querySelector('.result-popup')) {
+        const selectWrap = document.querySelector('.result-popup')
+        selectWrap.addEventListener('scroll', this.scrollResultPopup)
+      }
+    })
+  },
   methods: {
+    scrollResultPopup() {
+      let scrollWrap = document.querySelector('.result-popup')
+      var currentScrollTop = scrollWrap.scrollTop
+      this.ScrollTop = window.innerWidth * 0.02 + currentScrollTop
+    },
     playAudioBtn() {
       let music1 = new Audio() //建立一个music1对象
       music1 = require('../assets/audio/btn.mp3') //通过require引入音频
