@@ -23,6 +23,10 @@ export const upload = params => api.post('/upload', params)
 //新增
 export const NewInterface = params => api.post('/NewInterface', params)
 
+//编辑
+export const Thetopictablerevise = params =>
+  api.post('/Thetopictablerevise', params)
+
 //单个删除
 export const DeleteThetopictable = params =>
   api.get(`/DeleteThetopictable?id=${params}`)

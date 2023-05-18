@@ -13,7 +13,9 @@
         <div class="a category-double" @click="doubleCategory">双人模式</div>
       </div>
     </div>
-
+    <div class="btn-back" v-if="isPreview" @click="GoManagement">
+      返回题库管理系统
+    </div>
     <!-- 旁边栏目 -->
     <div class="sidebar">
       <!-- 提示说明 -->
@@ -89,6 +91,8 @@
 
 <script>
 import Teeth from '../components/teeth.vue'
+import { getHashSearchParam } from '../utils/tools'
+
 export default {
   name: 'Home',
   components: {
@@ -111,14 +115,20 @@ export default {
       showSettingPopup: false,
       showSettingPopupClass: 'hint-popup bounceInDown animated',
       showInputPassward: false,
+      isPreview: false,
     }
   },
   mounted() {
     if (this.$route.query.type === 'single') {
       this.showSettingPopup = true
     }
+    console.log(getHashSearchParam('Preview'))
+    this.isPreview = getHashSearchParam('Preview') || false
   },
   methods: {
+    GoManagement() {
+      this.$router.push('/management')
+    },
     singleCategory() {
       this.$router.push('/singleCategory')
     },

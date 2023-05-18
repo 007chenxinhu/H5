@@ -31,6 +31,18 @@ body {
   background: #000;
 }
 
+.btn-back {
+  position: absolute;
+  top: 2vw;
+  left: 2vw;
+  width: 10vw;
+  text-align: center;
+  padding: 1vw;
+  color: #fff;
+  background-color: #251bb6;
+  border-radius: 2vw;
+}
+
 .content {
   position: absolute;
   top: 3vw;

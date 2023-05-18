@@ -42,9 +42,6 @@
           >
             新增
           </el-button>
-          <!-- <el-button type="primary" @click="handleClickFilterButton('edit')">
-            删除
-          </el-button> -->
           <el-button type="primary" @click="handleOutputButton()">
             导出题库模板
           </el-button>
@@ -53,6 +50,9 @@
           </el-button>
           <el-button type="primary" @click="getPersonalSubject()">
             获取个人题库
+          </el-button>
+          <el-button type="primary" @click="GoKnowledgeCompetition()">
+            游戏界面预览
           </el-button>
         </el-header>
         <el-main>
@@ -104,6 +104,9 @@
           <el-form-item label="个人题库密码: ">
             <input type="text" v-model="sixStringPwa" />
           </el-form-item>
+          <div class="hint">
+            注：输入六位数字、字母或者符号组成个人题库密码,请妥善保存密码方便查阅题库。
+          </div>
         </el-form>
       </div>
       <div class="buttom-button">
@@ -124,11 +127,11 @@
       <div>
         <el-form>
           <el-form-item label="输入个人题库名称: ">
-            <input v-model="subjectName" type="text" />
+            <input v-model.trim="subjectName" type="text" />
           </el-form-item>
           <el-form-item label="输入个人题库密码: ">
             <input
-              v-model="sixStringPwa"
+              v-model.trim="sixStringPwa"
               type="text"
               max="6"
               :active-change="false"
@@ -155,40 +158,59 @@
     </el-dialog>
     <el-dialog
       class="dialog-box"
-      title="新增题目"
+      :title="dialogType === 'add' ? '新增题目' : '编辑题目'"
       :visible.sync="dialogVisible"
       width="70%"
       style="border-radius: 2vw"
       :before-close="handleClose"
     >
       <el-form :v-model="formData" class="el-form-box">
-        <el-form-item label="科目:" prop="t_title" label-width="100px">
+        <el-form-item
+          v-if="dialogType === 'add'"
+          label="科目:"
+          prop="t_title"
+          label-width="100px"
+        >
           <div class="radio-box">
             <el-radio
               v-for="(item, index) in subjectList"
               :key="index"
               v-model="value"
-              :label="item.label"
+              :label="item.val"
+              @input="changeRadio(item, index)"
             >
               {{ item.label }}
             </el-radio>
           </div>
-          <!-- <el-radio v-model="radio" label="2">备选项</el-radio> -->
-          <!-- <el-select v-model="value" placeholder="请选择科目">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select> -->
         </el-form-item>
-        <el-form-item label="题目:" prop="t_title" label-width="100px">
+        <el-form-item
+          v-if="value && dialogType === 'add'"
+          label="题库名称:"
+          prop="t_FatherlevelID"
+          label-width="100px"
+        >
+          <div class="radio-box">
+            <template v-if="titleList.length">
+              <el-radio
+                v-for="(title, index) in titleList"
+                :key="index"
+                v-model="value1"
+                :label="title.val"
+                @input="changeRadioTitle(title)"
+              >
+                {{ title.label }}
+              </el-radio>
+            </template>
+            <template v-else>
+              <div>无</div>
+            </template>
+          </div>
+        </el-form-item>
+        <el-form-item label="题目:" prop="t_content" label-width="100px">
           <el-input
             type="textarea"
             class="inputBox"
-            v-model.trim="formData.t_title"
+            v-model.trim="formData.t_content"
             :disabled="disabled"
           >
           </el-input>
@@ -229,20 +251,20 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="答案:" prop="t_Explain" label-width="100px">
+        <el-form-item label="答案:" prop="t_Answer" label-width="100px">
           <el-input
             class="inputBox"
             type="textarea"
-            v-model.trim="formData.t_Explain"
+            v-model.trim="formData.t_Answer"
             :disabled="disabled"
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="解析:" prop="t_Answer" label-width="100px">
+        <el-form-item label="解析:" prop="t_Explain" label-width="100px">
           <el-input
             type="textarea"
             class="inputBox"
-            v-model.trim="formData.t_Answer"
+            v-model.trim="formData.t_Explain"
             :disabled="disabled"
           >
           </el-input>
@@ -261,47 +283,38 @@ import {
   getListTitle,
   listSubject,
   getListThetopictable,
-  // download,
   upload,
   NewInterface,
   DeleteThetopictable,
   personalQuery,
+  Thetopictablerevise,
 } from '../../api/index'
-// import { handelBlobData } from '../../utils/tools'
+import { getHashSearchParam } from '../../utils/tools'
 
 export default {
   name: 'QuestionManagement',
   data() {
     return {
-      sixStringPwa: '',
-      subjectName: '',
+      dialogType: 'add',
+      sixStringPwa: '', //密码
+      subjectName: '', //题库名称
       uploadList: null,
       chooseSub: null,
       subjectList: null,
       dialogVisible: false,
       dialogVisible1: false,
       dialogVisible2: false,
-      showTitleList: false,
+      showTitleList: 0,
       titleList: null,
       personalTitleList: null,
       disabled: false,
       tableData: null,
       titleId: null,
-      // {
-      //   t_Answer: '',
-      //   t_Answer_A: '',
-      //   t_Answer_B: '',
-      //   t_Answer_C: '',
-      //   t_Answer_D: '',
-      //   t_Explain: '',
-      //   t_FatherlevelID: '',
-      //   t_SubjectID: '',
-      //   t_SublevelID: '',
-      //   t_TheTopicTableID: '',
-      //   t_content: '',
-      //   t_title: '',
-      // },
+      isPersonalPower: false, //个人
+      isAdministrators: false, //管理员
       formData: {
+        // id: null,
+        // t_FatherlevelID: null,
         t_Answer: '',
         t_Answer_A: '',
         t_Answer_B: '',
@@ -311,41 +324,40 @@ export default {
         t_FatherlevelID: '',
         t_SubjectID: '',
         t_SublevelID: '',
-        t_TheTopicTableID: '',
-        t_content: '',
-        t_title: '',
+        t_content: '', //题目
+        t_title: '', //题库名称
       },
-      options: [
-        {
-          value: '选项1',
-          label: '黄金糕',
-        },
-        {
-          value: '选项2',
-          label: '双皮奶',
-        },
-        {
-          value: '选项3',
-          label: '蚵仔煎',
-        },
-        {
-          value: '选项4',
-          label: '龙须面',
-        },
-        {
-          value: '选项5',
-          label: '北京烤鸭',
-        },
-      ],
       value: '',
+      value1: '',
     }
   },
   async mounted() {
+    const administrators = getHashSearchParam('administrators')
+    if (administrators === '666') {
+      this.isAdministrators = true
+    }
     await this._listSubject()
     await this._getNewsList()
     await this._getListTheopictable()
   },
   methods: {
+    changeRadio(e, index) {
+      try {
+        if (e.val === 'fff') {
+          this.titleList = []
+          this.personalTitleList.map(item => {
+            this.titleList.push(item)
+          })
+        } else {
+          this._getNewsList(e.val, index)
+        }
+      } catch (error) {
+        this.$message(`${error}` || '发生错误')
+      }
+    },
+    changeRadioTitle(e) {
+      this.formData.t_FatherlevelID = e.val
+    },
     //单条删除
     deteleTopic(e) {
       try {
@@ -373,13 +385,18 @@ export default {
             })
           })
       } catch (e) {
-        console.log(e)
+        this.$message(`${e}` || '发生错误')
       }
     },
+    //获取个人题库
     async hangleGetPersonalSubject() {
       try {
         if (!this.sixStringPwa) {
           this.$message('请先输入密码！')
+          return
+        }
+        if (this.sixStringPwa.length !== 6) {
+          this.$message('请输入6位密码！')
           return
         }
         let subject = {
@@ -393,17 +410,24 @@ export default {
             val: item.t_FatherlevelID,
           }
         })
+        //个人题库
         this.personalTitleList = subject
-
+        this.chooseSub = 'fff'
+        this.dialogVisible2 = false
+        this.$message({
+          message: '获取成功！',
+          type: 'success',
+        })
+        if (this.isPersonalPower) {
+          return
+        }
         this.subjectList.push({
           label: '个人题库',
           val: 'fff',
         })
-        this.chooseSub = 'fff'
-        this.dialogVisible2 = false
-        console.log(res, this.subjectList, subject, 'ressixStringPwa')
+        this.isPersonalPower = true
       } catch (error) {
-        console.log(error)
+        this.$message(`${error}` || '发生错误')
       }
     },
     //输入个人密码
@@ -415,29 +439,28 @@ export default {
       try {
         await DeleteThetopictable(id)
       } catch (error) {
-        console.log(error)
+        this.$message(`${error}` || '发生错误')
       }
     },
+    //点击科目
     chooseSubject(id, index) {
-      if (id === 'fff') {
-        this.titleList = []
-        this.personalTitleList.map(item => {
-          this.titleList.push(item)
-        })
-        this.titleId = this.titleList[0].val
-        this.showTitleList = index
-        this._getListTheopictable(this.titleId)
-      } else {
-        this._getNewsList(id, index)
+      try {
+        if (id === 'fff') {
+          this.titleList = []
+          this.personalTitleList.map(item => {
+            this.titleList.push(item)
+          })
+          this.titleId = this.titleList[0].val
+          this.showTitleList = index
+          this._getListTheopictable(this.titleId)
+        } else {
+          this._getNewsList(id, index)
+        }
+      } catch (error) {
+        this.$message(`${error}` || '发生错误')
       }
-      console.log(
-        id,
-        index,
-        this.titleList,
-        this.personalTitleList,
-        'this.titleList = this.personalTitleList',
-      )
     },
+    //点击科目下的题库
     chooseTitle(id) {
       this._getListTheopictable(id)
     },
@@ -445,9 +468,10 @@ export default {
       try {
         this.dialogVisible1 = true
       } catch (error) {
-        console.log(error)
+        this.$message(`${error}` || '发生错误')
       }
     },
+    //导入题库
     async handleChooseFiles(e) {
       try {
         if (!this.subjectName) {
@@ -463,9 +487,7 @@ export default {
         formData.append('file', file)
         formData.append('password', this.sixStringPwa)
         formData.append('title', this.subjectName)
-        console.log(formData, 'formData')
         const res = await upload(formData)
-        console.log(res, 'upload')
         this.uploadList = res.result
       } catch (e) {
         this.$message({
@@ -474,16 +496,21 @@ export default {
         })
       }
     },
+    //新增编辑按钮
     handleClickFilterButton(type, data) {
       try {
         if (type === 'add') {
+          this.formData = Object.assign({})
+          this.dialogType = 'add'
           this.dialogVisible = true
         } else if (type === 'edit') {
+          this.dialogType = 'edit'
           this.dialogVisible = true
-
           this.formData = Object.assign({}, data)
         }
-      } catch (e) {}
+      } catch (e) {
+        this.$message(`${e}` || '发生错误')
+      }
     },
     handleClose(done) {
       this.$confirm('确认关闭？')
@@ -498,24 +525,38 @@ export default {
     handleClose2() {
       this.dialogVisible2 = false
     },
-    //新增
+    //新增&编辑
     async handleSubmit() {
       try {
-        const params = this.formData
-        const res = await NewInterface(params)
-        if (res === true) {
-          this.dialogVisible = false
-          this.$message({
-            message: '新增成功！',
-            type: 'success',
-          })
+        let params = Object.assign({}, this.formData)
+        if (this.dialogType === 'add') {
+          const res = await NewInterface(params)
+          if (res === true) {
+            this.dialogVisible = false
+            await this._getListTheopictable()
+
+            this.$message({
+              message: '新增成功！',
+              type: 'success',
+            })
+          }
+        } else if (this.dialogType === 'edit') {
+          const res = await Thetopictablerevise(params)
+          if (res === true) {
+            this.dialogVisible = false
+            await this._getListTheopictable()
+
+            this.$message({
+              message: '修改成功！',
+              type: 'success',
+            })
+          }
         }
       } catch (e) {
         this.$message({
           message: `${e}`,
           type: 'error',
         })
-        console.log(e)
       }
     },
     // 查询科目列表
@@ -526,7 +567,6 @@ export default {
           val: '',
         }
         const res = await listSubject()
-
         subject = res.map(item => {
           return {
             label: item.name,
@@ -536,7 +576,7 @@ export default {
         // this.titleList = subject
         this.subjectList = subject
       } catch (e) {
-        console.log(e)
+        this.$message(`${e}` || '发生错误')
       }
     },
     // 查询科目下题目标题列表
@@ -546,22 +586,24 @@ export default {
           label: '',
           val: '',
         }
-        this.chooseSub = id
-        const res = await getListTitle(id)
-        if (res) {
-          this.showTitleList = index
+        let params = id ? id : this.subjectList[0].val
+        this.chooseSub = params
+        const res = await getListTitle(params)
+        if (res.length !== 0) {
+          this.showTitleList = index ? index : 0
+          title = res.map(item => {
+            return {
+              label: item.t_title,
+              val: item.t_FatherlevelID,
+            }
+          })
+          this.titleId = title[0].val
+          this.titleList = title
+        } else {
+          this.titleList = []
         }
-        title = res.map(item => {
-          return {
-            label: item.t_SubjectID,
-            val: item.t_FatherlevelID,
-          }
-        })
-        this.titleId = title[0].val
-        this.titleList = title
-        // this.subjectList = subject
       } catch (e) {
-        console.log(e)
+        this.$message(`${e}` || '发生错误')
       }
     },
     //下载模板
@@ -571,7 +613,7 @@ export default {
           'http://47.113.88.149:9060/game/download?fileName=题目导入模板.xlsx',
         )
       } catch (e) {
-        console.log(e)
+        this.$message(`${e}` || '发生错误')
       }
     },
     //获取选中当前题库下的题目列表
@@ -579,12 +621,30 @@ export default {
       try {
         const params = id ? id : this.titleList[0].val
         this.titleId = params
-        console.log(this.titleId, 'this.titleId')
         const res = await getListThetopictable(params)
+
         this.tableData = res
       } catch (e) {
-        console.log(e)
+        this.$message(`${e}` || '发生错误')
       }
+    },
+    // //获取#后面的参数
+    // getHashSearchParam(key) {
+    //   const url = location.href
+    //   // 获取 hash 值，不包含 '#' 号
+    //   const hash = url.substring(url.indexOf('#') + 1)
+    //   // 查找 '?' 号所在的索引
+    //   const searchIndex = hash.indexOf('?')
+    //   // '?' 号后面接的是索引参数，如果找到则+1，去除'?' 号
+    //   const search = searchIndex !== -1 ? hash.substring(searchIndex + 1) : ''
+    //   // 把搜索参数字符串提过URLSearchParams转成对象形式
+    //   const usp = new URLSearchParams(search)
+    //   // 通过URLSearchParams自带的get方法，查询键所对应的值
+    //   return usp.get(key)
+    // },
+    //跳往游戏界面
+    GoKnowledgeCompetition() {
+      this.$router.push('/index?Preview=true')
     },
   },
 }
@@ -678,10 +738,12 @@ export default {
     font-size: 1.3vw;
     .radio-box {
       display: flex;
+      flex-wrap: wrap;
       .el-radio {
         display: flex;
         flex-direction: row;
         align-items: center;
+        flex-wrap: wrap;
       }
     }
   }
