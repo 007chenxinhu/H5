@@ -7,7 +7,7 @@
             <div class="icon-box">
               <img src="../../assets/icon.png" class="icon" />
             </div>
-            <div class="aside-title-box">世界之最知识竞赛管理系统</div>
+            <div class="aside-title-box">世界之最知识<br />竞赛管理系统</div>
           </div>
           <div class="aside-subject">科目</div>
         </div>
@@ -661,7 +661,7 @@ export default {
   //   line-height: 10vh;
 }
 .el-button {
-  font-size: 1.1vw;
+  font-size: 26px;
 }
 .el-icon-message {
   line-height: 10vh;
@@ -675,7 +675,7 @@ export default {
 .el-menu {
   // height: 10vh;
   line-height: 5vh;
-  font-size: 1.3vw;
+  font-size: 80px;
   color: #000000;
 
   cursor: pointer;
@@ -692,13 +692,13 @@ export default {
 }
 .title-t {
   border-top: 0.5px solid #bfc8d3;
-  font-size: 1vw;
+  font-size: 70px;
   color: #bbb6b6;
   background-color: #3a3939;
 }
 .title-f {
   border-top: 0.5px solid #bfc8d3;
-  font-size: 1vw;
+  font-size: 70px;
   color: #333;
   background-color: #dfdede;
 }
@@ -706,45 +706,53 @@ export default {
   color: #bbb6b6;
   background-color: #3a3939;
 }
-/deep/.el-submenu .el-submenu__title {
-  line-height: 10vh;
-  font-size: 2vw;
-}
+// /deep/.el-submenu .el-submenu__title {
+//   line-height: 10vh;
+//   font-size: 50px;
+// }
 /deep/.el-table th.el-table__cell > .cell {
   line-height: 6vh;
-  font-size: 1.1vw;
+  font-size: 70px;
 }
 /deep/.el-table td.el-table__cell div {
   line-height: 2.5vh;
-  font-size: 1vw;
+  font-size: 65px;
 }
 /deep/.el-dialog {
   position: relative;
   padding: 2vw;
   height: 80%;
   max-height: 80%;
-  font-size: 1.5vw;
+  font-size: 80px;
   border-radius: 1vw;
   .el-dialog__title {
-    font-size: 1.5vw;
+    font-size: 80px;
   }
   .el-form-item__label {
     // height: 2vw;
     line-height: 2vw;
-    font-size: 1.3vw;
+    font-size: 70px;
   }
   .el-form-item__content {
     // height: 2vw;
-    font-size: 1.3vw;
+    font-size: 70px;
     .radio-box {
       display: flex;
       flex-wrap: wrap;
+      font-size: 70px;
       .el-radio {
         display: flex;
         flex-direction: row;
         align-items: center;
         flex-wrap: wrap;
+        font-size: 70px;
+        .el-radio__label {
+          font-size: 70px;
+        }
       }
+    }
+    .el-textarea__inner {
+      font-size: 70px;
     }
   }
   .buttom-button {
@@ -754,6 +762,11 @@ export default {
     transform: translate(0 50%);
     display: flex;
     justify-content: center;
+    font-size: 70px;
+    .el-button {
+      border-radius: 20px;
+      font-size: 70px;
+    }
   }
   /deep/.el-option {
     line-height: 10vh !important;
@@ -774,6 +787,10 @@ export default {
   /deep/.el-select-dropdown__wrap {
     max-height: 300px !important;
   }
+}
+/deep/.el-dialog__headerbtn {
+  margin: 30px;
+  font-size: 80px;
 }
 /deep/.el-form-item {
   // display: flex;
@@ -796,6 +813,7 @@ export default {
 .aside-header {
   // height: 10vh;
   background: #fff;
+  text-align: center;
   .aside-title-box {
     display: flex;
     .icon-box {
@@ -810,14 +828,14 @@ export default {
     }
     .aside-title-box {
       line-height: 4vh;
-      font-size: 1.5vw;
+      // font-size: 50px !important;
       font-weight: bold;
     }
   }
   .aside-subject {
     // height: 10vh;
     line-height: 5vh;
-    font-size: 1.4vw;
+    font-size: 90px;
     font-weight: 500;
     background-color: #b3c0d1;
   }
