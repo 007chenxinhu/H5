@@ -61,7 +61,47 @@
       <div class="setting-TopicType">
         <h2 class="setting-TopicType-title">题目类型:</h2>
         <div class="options">
-          <label v-for="(option, index) in options" :key="index" class="option">
+          <div class="choose-subject">
+            <ul>
+              <li
+                v-for="(subject, i) in subjectList"
+                :key="subject.val"
+                @click="chooseSubject(subject.val, i)"
+              >
+                {{ subject.label }}
+              </li>
+            </ul>
+            <ul>
+              <li
+                v-for="(subject, i) in subjectList"
+                :key="subject.val"
+                @click="chooseSubject(subject.val, i)"
+              >
+                {{ subject.label }}
+              </li>
+            </ul>
+          </div>
+          <div class="choose-title">
+            <ul>
+              <li
+                v-for="title in titleList"
+                :key="title.val"
+                @click="clickTitle(title.val)"
+              >
+                {{ title.label }}
+              </li>
+            </ul>
+            <ul>
+              <li
+                v-for="title in titleList"
+                :key="title.val"
+                @click="clickTitle(title.val)"
+              >
+                {{ title.label }}
+              </li>
+            </ul>
+          </div>
+          <!-- <label v-for="(option, index) in options" :key="index" class="option">
             <input
               type="checkbox"
               :id="`option-${index}`"
@@ -71,7 +111,7 @@
             />
             <span class="checkmark"></span>
             <span class="option-label">{{ option }}</span>
-          </label>
+          </label> -->
         </div>
         <div class="teeth">
           <Teeth></Teeth>
@@ -92,6 +132,7 @@
 <script>
 import Teeth from '../components/teeth.vue'
 import { getHashSearchParam } from '../utils/tools'
+import { listSubject, getListTitle } from '../api/index'
 
 export default {
   name: 'Home',
@@ -116,16 +157,91 @@ export default {
       showSettingPopupClass: 'hint-popup bounceInDown animated',
       showInputPassward: false,
       isPreview: false,
+      subjectList: null,
+      firstSub: null,
+      titleList: null,
+      chooseTitle: null,
+      showTitleList: 0,
+      titleId: null,
     }
   },
-  mounted() {
+  async mounted() {
     if (this.$route.query.type === 'single') {
       this.showSettingPopup = true
     }
-    console.log(getHashSearchParam('Preview'))
     this.isPreview = getHashSearchParam('Preview') || false
+    await this._listSubject()
+    await this._getNewsList()
   },
   methods: {
+    //点击科目
+    chooseSubject(id, index) {
+      try {
+        if (id === 'fff') {
+          this.titleList = []
+          this.personalTitleList.map(item => {
+            this.titleList.push(item)
+          })
+          this.titleId = this.titleList[0].val
+          this.showTitleList = index
+          this._getListTheopictable(this.titleId)
+        } else {
+          this._getNewsList(id, index)
+        }
+      } catch (error) {
+        this.$message(`${error}` || '发生错误')
+      }
+    },
+    //点击科目下的题库
+    clickTitle(id) {
+      this._getListTheopictable(id)
+    },
+    // 查询科目列表
+    async _listSubject() {
+      try {
+        let subject = {
+          label: '',
+          val: '',
+        }
+        const res = await listSubject()
+        subject = res.map(item => {
+          return {
+            label: item.name,
+            val: item.id,
+          }
+        })
+        this.subjectList = subject
+      } catch (e) {
+        this.$message(`${e}` || '发生错误')
+      }
+    },
+    // 查询科目下题目标题列表
+    async _getNewsList(id, index) {
+      try {
+        let title = {
+          label: '',
+          val: '',
+        }
+        let params = id ? id : this.subjectList[0].val
+        this.chooseSub = params
+        const res = await getListTitle(params)
+        if (res.length !== 0) {
+          this.showTitleList = index ? index : 0
+          title = res.map(item => {
+            return {
+              label: item.t_title,
+              val: item.t_FatherlevelID,
+            }
+          })
+          this.titleId = title[0].val
+          this.titleList = title
+        } else {
+          this.titleList = []
+        }
+      } catch (e) {
+        this.$message(`${e}` || '发生错误')
+      }
+    },
     GoManagement() {
       this.$router.push('/management')
     },
@@ -144,6 +260,7 @@ export default {
     },
     Setting() {
       try {
+        this._listSubject()
         this.showSettingPopup = true
 
         // let self = this

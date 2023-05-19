@@ -213,10 +213,10 @@ p {
 
 .setting-title {
   width: 100%;
-  height: 10vh;
+  height: 8vh;
   text-align: center;
-  line-height: 10vh;
-  font-size: 3.8vw;
+  line-height: 8vh;
+  font-size: 3vw;
   font-weight: 500;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   border-bottom: 0.1vh solid #ccc;
@@ -224,9 +224,9 @@ p {
 
 .setting-intro {
   width: 100%;
-  height: 10vh;
+  height: 7vh;
   text-align: center;
-  line-height: 10vh;
+  line-height: 7vh;
   font-size: 2vw;
   color: #252529;
   font-weight: 500;
@@ -245,14 +245,57 @@ p {
 }
 
 .setting-TopicType-title {
-  font-size: 2.6vw;
+  font-size: 2.3vw;
   font-weight: bold;
-  margin: 2vw;
+  margin: 0 2vw;
 }
 
 .setting-TopicType .options {
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  background-color: #f1e0bc;
+  border: 1px solid #b8a782;
+  border-radius: 1vw;
+}
+
+.setting-TopicType .options .choose-subject {
+  overflow: auto;
+  width: 50%;
+  max-height: 30vh;
+  border-right: 1px solid #b8a782;
+}
+
+.setting-TopicType .options .choose-subject::-webkit-scrollbar {
+  width: 20px;
+}
+
+.setting-TopicType .options .choose-subject::-webkit-scrollbar-thumb {
+  background: rgba(20, 20, 20, 0.2);
+  border-radius: 3px;
+}
+
+.setting-TopicType .options .choose-subject::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.setting-TopicType .options .choose-title {
+  overflow: auto;
+  width: 50%;
+  max-height: 30vh;
+}
+
+.setting-TopicType .options .choose-title::-webkit-scrollbar {
+  width: 20px;
+}
+
+.setting-TopicType .options .choose-title::-webkit-scrollbar-thumb {
+  background: rgba(20, 20, 20, 0.2);
+  border-radius: 3px;
+}
+
+.setting-TopicType .options .choose-title::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .setting-TopicType .option {
