@@ -260,7 +260,7 @@ p {
 }
 
 .setting-TopicType .options .choose-subject {
-  overflow: auto;
+  overflow-y: auto;
   width: 50%;
   max-height: 30vh;
   border-right: 1px solid #b8a782;
@@ -279,8 +279,15 @@ p {
   background: transparent;
 }
 
+.setting-TopicType .options .choose-subject .li-item {
+  overflow: hidden;
+  font-weight: bold;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .setting-TopicType .options .choose-title {
-  overflow: auto;
+  overflow-y: auto;
   width: 50%;
   max-height: 30vh;
 }
@@ -296,6 +303,13 @@ p {
 
 .setting-TopicType .options .choose-title::-webkit-scrollbar-track {
   background: transparent;
+}
+
+.setting-TopicType .options .choose-title .li-item {
+  overflow: hidden;
+  font-weight: bold;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .setting-TopicType .option {

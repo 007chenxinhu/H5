@@ -64,15 +64,7 @@
           <div class="choose-subject">
             <ul>
               <li
-                v-for="(subject, i) in subjectList"
-                :key="subject.val"
-                @click="chooseSubject(subject.val, i)"
-              >
-                {{ subject.label }}
-              </li>
-            </ul>
-            <ul>
-              <li
+                class="li-item"
                 v-for="(subject, i) in subjectList"
                 :key="subject.val"
                 @click="chooseSubject(subject.val, i)"
@@ -84,15 +76,7 @@
           <div class="choose-title">
             <ul>
               <li
-                v-for="title in titleList"
-                :key="title.val"
-                @click="clickTitle(title.val)"
-              >
-                {{ title.label }}
-              </li>
-            </ul>
-            <ul>
-              <li
+                class="li-item"
                 v-for="title in titleList"
                 :key="title.val"
                 @click="clickTitle(title.val)"
@@ -101,17 +85,6 @@
               </li>
             </ul>
           </div>
-          <!-- <label v-for="(option, index) in options" :key="index" class="option">
-            <input
-              type="checkbox"
-              :id="`option-${index}`"
-              :value="option"
-              v-model="selectedOptions"
-              class="checkbox"
-            />
-            <span class="checkmark"></span>
-            <span class="option-label">{{ option }}</span>
-          </label> -->
         </div>
         <div class="teeth">
           <Teeth></Teeth>
@@ -149,7 +122,6 @@ export default {
           'url(' +
           require(`../assets/bg${parseInt(Math.random() * 13 + 1)}.png`),
       },
-      options: ['综合', '历史', '地理', '数学', '物理', '化学'],
       selectedOptions: [],
       showHintPopup: false,
       showHintPopupClass: 'hint-popup bounceInDown animated',
