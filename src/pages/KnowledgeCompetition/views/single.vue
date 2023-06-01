@@ -1,18 +1,27 @@
 <template>
-  <div class="content" :style="backgroundDiv">
+  <div class="content">
     <div class="startPopup" v-if="showStartPopup">
-      <div @click="startAnswer" class="start-btn">开始作答</div>
+      <div @click="startAnswer" class="start-btn">开始答题</div>
     </div>
-    <div class="goBack" @click="goBack">
-      <van-icon name="wap-home" size="3vw" />
+    <div class="go_back" @click="goBack">
+      <img class="go_back_img" src="../assets/images/star_btn_home.png" />
+      <!-- <van-icon name="wap-home" size="3vw" /> -->
     </div>
     <!-- 进度条 -->
     <div class="progress">
-      <progress-bar
+      <!-- <progress-bar
         :stage="questionList.length"
         :is-single="true"
         :current-stage="currentQuestionIndex + 1"
-      ></progress-bar>
+      ></progress-bar> -->
+      <div class="progress-bar-single">
+        <div
+          v-for="i in questionList.length"
+          :key="i"
+          :style="{ width: `calc(100% / ${questionList.length})` }"
+          :class="`stage-${i} ${getStageStatus(i)}`"
+        ></div>
+      </div>
     </div>
     <!-- 倒计时 -->
     <div class="question">
@@ -41,69 +50,85 @@
           {{ option }}
         </div>
       </div>
-      <div class="submit">
-        <!-- <button @click="checkAnswer">检查答案</button> -->
-        <button @click="nextQuestion">
+      <!-- <div class="submit"> -->
+      <!-- <button @click="checkAnswer">检查答案</button> -->
+      <!-- <button @click="nextQuestion">
           {{
             currentQuestionIndex + 1 === questionList.length ? '提交' : '下一题'
           }}
-        </button>
-      </div>
-      <div class="result" v-if="showResult">
+        </button> -->
+      <!-- </div> -->
+      <!-- <div class="result" v-if="showResult">
         {{
           isAnswerCorrect
             ? '回答正确！'
             : '回答错误！正确答案是：' +
               currentQuestion.options[currentQuestion.answer]
         }}
-      </div>
+      </div> -->
     </div>
     <!-- 结果弹窗 -->
     <div :class="showResultPopupClass" v-show="showResultPopup">
-      <div class="closeWrapper" @click="closePopup">
-        <van-icon name="cross" />
-      </div>
-      <div class="result-score">
-        <div>
-          本次答题你的得分是{{ score }},正确率是{{ accuracy }}%,思考时长{{
-            times
-          }}s
+      <div class="content-popup">
+        <div class="closeWrapper" @click="closePopup">
+          <van-icon name="cross" />
         </div>
-        <div class="more-btn" @click="oneMore()">再来一次</div>
-      </div>
-      <div v-for="(question, index) in questionList" :key="index">
-        <div class="result-title">{{ question.title }}</div>
-        <div class="result-options">
-          <div
-            v-for="(option, i) in question.options"
-            :key="i"
-            :class="
-              question.selected === question.answer && i === question.selected
-                ? 'success'
-                : i === question.selected
-                ? 'error'
-                : i === question.answer
-                ? 'success'
-                : 'result-option'
-            "
-          >
-            {{ option }}
+        <div class="result-score">
+          <div class="result-score-button">Score: {{ score }}</div>
+          <div class="result-score-button">Accuracy: {{ accuracy }}%</div>
+          <div class="result-score-button">Time: {{ times }}s</div>
+          <!-- <div class="more-btn" @click="oneMore()">再来一次</div> -->
+        </div>
+        <div
+          class="topic-list"
+          v-for="(question, index) in questionList"
+          :key="index"
+        >
+          <div class="result-title">{{ question.title }}</div>
+          <div class="result-options">
+            <div
+              v-for="(option, i) in question.options"
+              :key="i"
+              :class="
+                question.selected === question.answer && i === question.selected
+                  ? 'success'
+                  : i === question.selected
+                  ? 'error'
+                  : i === question.answer
+                  ? 'success'
+                  : 'result-option'
+              "
+            >
+              {{ option }}
+            </div>
+            <div
+              v-show="
+                questionList[index].selected === questionList[index].answer
+              "
+              class="result-answer-s"
+            >
+              恭喜你选对了,正确答案是{{
+                questionList[index].options[questionList[index].answer]
+              }}
+            </div>
+            <div
+              v-show="
+                questionList[index].selected !== questionList[index].answer
+              "
+              class="result-answer-e"
+            >
+              你选错了,正确答案是{{
+                questionList[index].options[questionList[index].answer]
+              }}
+            </div>
           </div>
-          <div
-            v-show="questionList[index].selected === questionList[index].answer"
-            class="result-answer-s"
-          >
-            恭喜你选对了,正确答案是{{
-              questionList[index].options[questionList[index].answer]
-            }}
+        </div>
+        <div class="result-score">
+          <div class="result-score-button margin-bottom" @click="closePopup">
+            Close
           </div>
-          <div
-            v-show="questionList[index].selected !== questionList[index].answer"
-            class="result-answer-e"
-          >
-            你选错了,正确答案是{{
-              questionList[index].options[questionList[index].answer]
-            }}
+          <div class="result-score-button margin-bottom" @click="oneMore">
+            Again
           </div>
         </div>
       </div>
@@ -112,12 +137,12 @@
 </template>
 
 <script>
-import ProgressBar from '../components/ProgressBar.vue'
+// import ProgressBar from '../components/ProgressBar.vue'
 export default {
   name: 'SingleCategory',
-  components: {
-    ProgressBar,
-  },
+  // components: {
+  //   ProgressBar,
+  // },
   computed: {
     currentQuestion() {
       return this.questionList[this.currentQuestionIndex]
@@ -225,11 +250,11 @@ export default {
       currentQuestionIndex: 0, // 当前问题的索引
       selectedOption: null, // 用户选择的选项，初始为null
       showResult: false, // 是否显示结果
-      backgroundDiv: {
-        backgroundImage:
-          'url(' +
-          require(`../assets/bg${parseInt(Math.random() * 13 + 1)}.png`),
-      },
+      // backgroundDiv: {
+      //   backgroundImage:
+      //     'url(' +
+      //     require(`../assets/bg${parseInt(Math.random() * 13 + 1)}.png`),
+      // },
       score: null,
       accuracy: null,
       times: null,
@@ -245,6 +270,15 @@ export default {
 
   mounted() {},
   methods: {
+    getStageStatus(i) {
+      if (i < this.currentQuestionIndex + 1) {
+        return 'done'
+      } else if (i === this.currentQuestionIndex + 1) {
+        return 'doing'
+      } else {
+        return ''
+      }
+    },
     startAnswer() {
       this.showStartPopup = false
       this.startCountdown()
@@ -288,6 +322,7 @@ export default {
     selectOption(index) {
       if (this.showResult === true) return
       this.selectedOption = index
+      this.nextQuestion()
     },
     checkAnswer() {
       if (this.selectedOption === null) {

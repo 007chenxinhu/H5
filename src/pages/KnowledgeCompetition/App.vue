@@ -16,6 +16,12 @@ export default {
   width: 100%;
   -webkit-overflow-scrolling: touch;
 }
+@font-face {
+  font-family: Coco;
+  src: url('./assets/font/Coco.otf') /* Safari, Android, iOS */;
+  font-weight: normal;
+  font-style: normal;
+}
 .el-message-box {
   min-width: 50vw;
   min-height: 10vh;

@@ -17,7 +17,7 @@ export default class BaseRequest {
     this.http = axios.create({
       baseURL,
     })
-    const API_BASE_URL = 'http://47.113.88.149:9060/'
+    const API_BASE_URL = 'http://47.113.88.149:5572/'
     // 全局默认配置
     this.http.defaults.headers.Authorization =
       localStorage.getItem('ADMIN-TOKEN') || ''
