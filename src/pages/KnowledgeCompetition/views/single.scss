@@ -344,20 +344,20 @@
     }
   }
 }
-.closeWrapper {
-  position: fixed;
-  width: 2vw;
-  height: 2vw;
-  text-align: center;
-  line-height: 2vw;
-  top: 2vw;
-  right: 2vw;
-  border: 0.1vw solid #000;
-  border-radius: 50%;
-  /deep/.van-icon {
-    font-size: 2vw;
-  }
-}
+// .closeWrapper {
+//   position: fixed;
+//   width: 2vw;
+//   height: 2vw;
+//   text-align: center;
+//   line-height: 2vw;
+//   top: 2vw;
+//   right: 2vw;
+//   border: 0.1vw solid #000;
+//   border-radius: 50%;
+//   /deep/.van-icon {
+//     font-size: 2vw;
+//   }
+// }
 .countDown {
   position: absolute;
   top: 2vh;

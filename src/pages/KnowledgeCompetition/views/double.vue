@@ -1,7 +1,9 @@
 <template>
-  <div class="content" :style="backgroundDiv">
+  <div class="content">
     <div class="startPopup" v-if="showStartPopup">
-      <div class="start-animation">
+      <div @click="startAnswer" class="start-btn">开始答题</div>
+
+      <!-- <div class="start-animation">
         <div class="start-animation-left animated">
           <img class="start-animation-l-box" src="../assets/ab.png" />
         </div>
@@ -14,10 +16,11 @@
           <img class="start-action-vs-box" src="../assets/ba.png" />
         </div>
         <div @click="startAnswer" class="start-btn">Start</div>
-      </div>
+      </div> -->
     </div>
-    <div class="goBack" @click="goBack">
-      <van-icon name="wap-home" size="3vw" />
+    <div class="go_back" @click="goBack">
+      <img class="go_back_img" src="../assets/images/star_btn_home.png" />
+      <!-- <van-icon name="wap-home" size="3vw" /> -->
     </div>
     <div v-if="!showStartPopup" class="countDown">
       {{ totalTime }}
@@ -27,11 +30,17 @@
         <div class="toast1" v-show="showToast1">请先做答！</div>
         <!-- 进度条 -->
         <div class="progress1">
-          <progress-bar
+          <!-- <progress-bar
             is-single="false"
             :stage="questionList1.length"
             :current-stage="currentQuestionIndex1 + 1"
-          ></progress-bar>
+          ></progress-bar> -->
+          <div
+            v-for="i in questionList1.length"
+            :key="i"
+            :style="{ width: `calc(100% / ${questionList1.length})` }"
+            :class="`stage-${i} ${getStageStatus1(i)}`"
+          ></div>
         </div>
         <!-- 倒计时 -->
         <div class="question">
@@ -55,13 +64,13 @@
               "
               @click="selectOption(true, index)"
             >
-              <div :class="'cartoon' + (index + 1)"></div>
+              <!-- <div :class="'cartoon' + (index + 1)"></div> -->
               <!-- <div class="clickIcon"></div> -->
               {{ option }}
             </div>
           </div>
-          <div class="submit submit-l">
-            <!-- <button @click="checkAnswer">检查答案</button> -->
+          <!-- <div class="submit submit-l">
+            <button @click="checkAnswer">检查答案</button>
             <button @click="nextQuestion(true)">
               {{
                 currentQuestionIndex1 + 1 === questionList1.length
@@ -69,18 +78,24 @@
                   : '下一题'
               }}
             </button>
-          </div>
+          </div> -->
         </div>
       </div>
       <div>
         <div class="toast2" v-show="showToast2">请先做答！</div>
         <!-- 进度条 -->
         <div class="progress2">
-          <progress-bar
+          <!-- <progress-bar
             is-single="false"
             :stage="questionList2.length"
             :current-stage="currentQuestionIndex2 + 1"
-          ></progress-bar>
+          ></progress-bar> -->
+          <div
+            v-for="i in questionList2.length"
+            :key="i"
+            :style="{ width: `calc(100% / ${questionList2.length})` }"
+            :class="`stage-${i} ${getStageStatus2(i)}`"
+          ></div>
         </div>
         <!-- 倒计时 -->
         <div class="question">
@@ -103,13 +118,13 @@
               "
               @click="selectOption(false, index)"
             >
-              <div :class="'cartoon' + (index + 1)"></div>
+              <!-- <div :class="'cartoon' + (index + 1)"></div> -->
 
               {{ option }}
             </div>
           </div>
-          <div class="submit submit-r">
-            <!-- <button @click="checkAnswer">检查答案</button> -->
+          <!-- <div class="submit submit-r">
+            <button @click="checkAnswer">检查答案</button>
             <button @click="nextQuestion(false)">
               {{
                 currentQuestionIndex2 + 1 === questionList2.length
@@ -117,7 +132,7 @@
                   : '下一题'
               }}
             </button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -234,13 +249,13 @@
 </template>
 
 <script>
-import ProgressBar from '../components/ProgressBar.vue'
+// import ProgressBar from '../components/ProgressBar.vue'
 
 export default {
   name: 'DoubleCategory',
-  components: {
-    ProgressBar,
-  },
+  // components: {
+  //   ProgressBar,
+  // },
   computed: {
     currentQuestion() {
       return this.questionList1[this.currentQuestionIndex1]
@@ -468,6 +483,24 @@ export default {
   },
   mounted() {},
   methods: {
+    getStageStatus1(i) {
+      if (i < this.currentQuestionIndex1 + 1) {
+        return 'done'
+      } else if (i === this.currentQuestionIndex1 + 1) {
+        return 'doing'
+      } else {
+        return ''
+      }
+    },
+    getStageStatus2(i) {
+      if (i < this.currentQuestionIndex2 + 1) {
+        return 'done'
+      } else if (i === this.currentQuestionIndex2 + 1) {
+        return 'doing'
+      } else {
+        return ''
+      }
+    },
     startAnswer() {
       this.showStartPopup = false
       this.startCountdown()

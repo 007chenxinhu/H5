@@ -70,9 +70,9 @@
     <!-- 结果弹窗 -->
     <div :class="showResultPopupClass" v-show="showResultPopup">
       <div class="content-popup">
-        <div class="closeWrapper" @click="closePopup">
+        <!-- <div class="closeWrapper" @click="closePopup">
           <van-icon name="cross" />
-        </div>
+        </div> -->
         <div class="result-score">
           <div class="result-score-button">Score: {{ score }}</div>
           <div class="result-score-button">Accuracy: {{ accuracy }}%</div>

@@ -9,6 +9,9 @@
   height: 100vh;
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  background-image: url("../assets/images/double_bg.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   /* 火狐 */
   -moz-user-select: none;
   /* Safari 和 欧朋 */
@@ -21,94 +24,31 @@
 
 .startPopup {
   opacity: 0.99;
+  padding: 0 3vw;
   width: 100%;
   height: 100%;
-  position: relative;
-  backdrop-filter: blur(0.5vw);
-  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  border-radius: 2.8vw;
+  background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(1vw);
   z-index: 9;
 }
 
-.startPopup .start-animation {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  background-image: linear-gradient(to right bottom, #059de4, #34d1ff, #f8dc66, #d1730e);
-}
-
-.startPopup .start-animation .start-animation-left {
-  position: absolute;
-  width: 38vw;
-  height: 38vw;
-  left: 0;
-  top: 50%;
-  -webkit-animation-name: waterLeft;
-  animation-name: waterLeft;
-}
-
-.startPopup .start-animation .start-animation-left .start-animation-l-box {
-  width: 38vw;
-  height: 38vw;
-}
-
-.startPopup .start-animation .start-animation-right {
-  position: absolute;
-  width: 38vw;
-  height: 38vw;
-  right: 0;
-  top: 50%;
-  -webkit-animation-name: fireRight;
-  animation-name: fireRight;
-}
-
-.startPopup .start-animation .start-animation-right .start-animation-r-box {
-  width: 38vw;
-  height: 38vw;
-}
-
-.startPopup .start-action {
-  width: 100vw;
-}
-
-.startPopup .start-action .start-action-vs {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-30vmin, -27vmin);
-  width: 60vmin;
-  height: 54vmin;
-}
-
-.startPopup .start-action .start-action-vs .start-action-vs-box {
-  width: 60vmin;
-  height: 54vmin;
-}
-
 .startPopup .start-btn {
-  position: absolute;
-  width: 10vw;
-  height: 10vw;
-  top: 5vw;
-  left: 50%;
-  text-align: center;
-  line-height: 9vw;
-  transform: translate(-50%, 0%);
-  padding: 2vw 2vw;
-  border-radius: 50%;
+  width: 25.33vw;
+  height: 5.66vw;
+  line-height: 5.66vw;
+  background: #4264ff;
+  box-shadow: 0px 0.5vw 0px 0px #3b53bf;
+  border-radius: 0.8vw;
+  margin: auto;
+  margin-top: 20%;
   font-size: 3vw;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  color: #000;
-  box-shadow: 2vw 0 1vw #f8dc66, -2vw 0 1vw #34d1ff;
-  background-image: linear-gradient(to right, #059de4, #34d1ff, #f8dc66, #d1730e);
-  cursor: pointer;
-  animation: startBtn 1.5s forwards linear;
-  -webkit-animation: startBtn 1.5s forwards linear;
-  /* Safari 和 Chrome */
-}
-
-.startPopup .start-btn:hover {
-  transform: translate(-50%, 0%) scale(1.1);
+  color: #fff;
 }
 
 @keyframes startBtn {
@@ -218,18 +158,22 @@
   }
 }
 
-.goBack {
+.go_back {
   position: absolute;
   top: 3vh;
   left: 3vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 5vw;
-  height: 5vw;
-  border: 0.1vw solid #000;
+  width: 5.33vw;
+  height: 5.33vw;
   border-radius: 50%;
   z-index: 10;
+}
+
+.go_back .go_back_img {
+  width: 5.33vw;
+  height: 5.33vw;
 }
 
 .double-category {
@@ -280,6 +224,14 @@
   transform: rotate(180deg);
 }
 
+.doing {
+  background-image: linear-gradient(to right, #ff8a00, #e52e71);
+}
+
+.done {
+  background-image: linear-gradient(to right, #00ff55, #00bb00);
+}
+
 .question {
   position: relative;
   width: 50vw;
@@ -288,8 +240,6 @@
   flex-direction: column;
   align-items: center;
   margin-top: 1vh;
-  background-color: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(0.2vw);
   box-shadow: 0.01vw 0.01vw 0.05vw #ccc;
 }
 
@@ -310,65 +260,35 @@
   flex-wrap: wrap;
   text-align: left;
   padding: 1vw;
-  border: 0.1vw solid #383636;
-  background-image: linear-gradient(to right, #059de4, #34d1ff);
-  border-radius: 5vw;
-  margin: 1vw;
+  margin: 1.33vw 0;
+  border-radius: 2vw;
   font-size: 2vw;
   cursor: pointer;
+  color: #fefefe;
+  border-radius: 0.42vw;
 }
 
-.option-l .cartoon1 {
-  position: absolute;
-  right: 2vw;
-  top: 0;
-  width: 5vw;
-  height: 5vw;
-  background-image: url("../assets/cartoon/1.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
+.option-l:nth-of-type(1) {
+  margin: 0 0.5vw 1vw 0;
+  background: #ffa21f;
+  box-shadow: 0 0.5vw 0 0 #cb821a;
 }
 
-.option-l .cartoon2 {
-  position: absolute;
-  right: 2vw;
-  top: 0;
-  width: 5vw;
-  height: 5vw;
-  background-image: url("../assets/cartoon/2.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
+.option-l:nth-of-type(2) {
+  margin-bottom: 1vw;
+  background: #3378ff;
+  box-shadow: 0 0.5vw 0 0 #2960cc;
 }
 
-.option-l .cartoon3 {
-  position: absolute;
-  right: 2vw;
-  top: 0;
-  width: 5vw;
-  height: 5vw;
-  background-image: url("../assets/cartoon/3.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
+.option-l:nth-of-type(3) {
+  margin-right: 0.5vw;
+  background: #00cf77;
+  box-shadow: 0 0.5vw 0 0 #05a65f;
 }
 
-.option-l .cartoon4 {
-  position: absolute;
-  right: 2vw;
-  top: 0;
-  width: 5vw;
-  height: 5vw;
-  background-image: url("../assets/cartoon/4.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-}
-
-.option-l .clickIcon {
-  position: absolute;
-  top: 0;
-  right: 10vw;
-  width: 5.12vw;
-  height: 3.84vw;
-  animation: clickWater 10s forwards linear;
+.option-l:nth-of-type(4) {
+  background: #ff462c;
+  box-shadow: 0 0.5vw 0 0 #cc3824;
 }
 
 @keyframes clickWater {
@@ -513,56 +433,12 @@
   flex-wrap: wrap;
   text-align: left;
   padding: 1vw;
-  border: 0.1vw solid #383636;
-  background-image: linear-gradient(to right, #f8dc66, #d1730e);
   border-radius: 5vw;
-  margin: 1vw;
+  margin: 1.33vw 0;
   font-size: 2vw;
+  color: #fefefe;
+  border-radius: 0.42vw;
   cursor: pointer;
-}
-
-.option-r .cartoon1 {
-  position: absolute;
-  right: 2vw;
-  top: 0;
-  width: 5vw;
-  height: 5vw;
-  background-image: url("../assets/cartoon/5.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-}
-
-.option-r .cartoon2 {
-  position: absolute;
-  right: 2.5vw;
-  top: 0;
-  width: 4vw;
-  height: 5vw;
-  background-image: url("../assets/cartoon/6.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-}
-
-.option-r .cartoon3 {
-  position: absolute;
-  right: 2vw;
-  top: 0;
-  width: 5vw;
-  height: 5vw;
-  background-image: url("../assets/cartoon/7.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-}
-
-.option-r .cartoon4 {
-  position: absolute;
-  right: 2vw;
-  top: 0;
-  width: 3.5vw;
-  height: 5vw;
-  background-image: url("../assets/cartoon/8.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
 }
 
 .option-l.active {
@@ -592,6 +468,29 @@
 .submit {
   display: flex;
   justify-content: space-between;
+}
+
+.option-r:nth-of-type(1) {
+  margin: 0 0.5vw 1vw 0;
+  background: #ffa21f;
+  box-shadow: 0 0.5vw 0 0 #cb821a;
+}
+
+.option-r:nth-of-type(2) {
+  margin-bottom: 1vw;
+  background: #3378ff;
+  box-shadow: 0 0.5vw 0 0 #2960cc;
+}
+
+.option-r:nth-of-type(3) {
+  margin-right: 0.5vw;
+  background: #00cf77;
+  box-shadow: 0 0.5vw 0 0 #05a65f;
+}
+
+.option-r:nth-of-type(4) {
+  background: #ff462c;
+  box-shadow: 0 0.5vw 0 0 #cc3824;
 }
 
 .submit button {
@@ -760,20 +659,18 @@
 
 .countDown {
   position: absolute;
-  width: 7vw;
-  height: 7vw;
-  background-image: url("../assets/timer.png");
+  width: 6.66vw;
+  height: 6.66vw;
+  background-image: url("../assets/images/play_img_time.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  border-radius: 50%;
-  font-size: 2vw;
+  font-size: 1.2vw;
   text-align: center;
-  line-height: 7vw;
+  line-height: 8vw;
   top: 2vh;
   left: 50%;
   transform: translate(-50%, 0);
-  color: #d19f3a;
-  animation: alarm-2 0.5s infinite;
+  color: #454243;
   z-index: 1;
 }
 
