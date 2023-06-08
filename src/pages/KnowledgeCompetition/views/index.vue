@@ -197,10 +197,10 @@ export default {
       },
       time: 360,
       selectTime: [
-        10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160,
-        170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300,
-        310, 320, 330, 340, 350, 360, 370, 380, 390, 400, 410, 420, 430, 440,
-        450, 460, 470, 480, 490, 500, 510, 520, 530, 540,
+        60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200,
+        210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340,
+        350, 360, 370, 380, 390, 400, 410, 420, 430, 440, 450, 460, 470, 480,
+        490, 500, 510, 520, 530, 540,
       ],
       selectedOptions: [],
       showHintPopup: false,
@@ -301,7 +301,7 @@ export default {
           })
           this.titleId = this.titleList[0].val
           this.showTitleList = index
-          this._getListTheopictable(this.titleId)
+          // this._getListTheopictable(this.titleId)
         } else {
           this._getNewsList(id, index)
         }
@@ -312,7 +312,9 @@ export default {
     //点击科目下的题库
     clickTitle(id, index) {
       this.showChooseTitle = index
-      this._getListTheopictable(id)
+      console.log(id, index, 'id, index')
+      this.titleId = id
+      // this._getListTheopictable(id)
     },
     // 查询科目列表
     async _listSubject() {
@@ -321,6 +323,7 @@ export default {
           label: '',
           val: '',
         }
+        let arr = null
         const res = await listSubject()
         subject = res.map(item => {
           return {
@@ -328,6 +331,16 @@ export default {
             val: item.id,
           }
         })
+        subject.map((item, index) => {
+          if (item.val === 5) {
+            arr = {
+              label: '世界之最',
+              val: item.val,
+            }
+            subject.splice(index, 1)
+          }
+        })
+        subject.unshift(arr)
         this.subjectList = subject
       } catch (e) {
         this.$message(`${e}` || '发生错误')
@@ -364,16 +377,31 @@ export default {
       this.$router.push('/management')
     },
     singleCategory() {
-      this.$router.push('/singleCategory')
+      this.$router.push({
+        path: '/singleCategory',
+        query: {
+          limitTime: this.limitTime,
+          time: this.time,
+          id: this.titleId,
+        },
+      })
     },
     doubleCategory() {
-      this.$router.push('/doubleCategory')
+      this.$router.push({
+        path: '/doubleCategory',
+        query: {
+          limitTime: this.limitTime,
+          time: this.time,
+          id: this.titleId,
+        },
+      })
     },
     // gerPersonalTopic() {
     //   this.showInputPassword = true
     // },
     submit() {
       // 处理提交逻辑
+      this.closePopup()
       console.log(this.selectedOptions)
     },
     Setting() {

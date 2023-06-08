@@ -22,7 +22,7 @@
       <img class="go_back_img" src="../assets/images/star_btn_home.png" />
       <!-- <van-icon name="wap-home" size="3vw" /> -->
     </div>
-    <div v-if="!showStartPopup" class="countDown">
+    <div v-if="TimeLimit === 'true'" class="countDown">
       {{ totalTime }}
     </div>
     <div v-if="!showStartPopup" class="double-category">
@@ -44,41 +44,38 @@
         </div>
         <!-- 倒计时 -->
         <div class="question">
-          <div class="title">{{ currentQuestion.title }}</div>
+          <div class="title">{{ currentQuestion.t_content }}</div>
           <!-- <img src="../assets/cartoon/water.png" alt="" /> -->
           <div class="options">
             <div
               class="option-l"
-              v-for="(option, index) in currentQuestion.options"
-              :key="index"
-              :class="
-                showResult
-                  ? selectedOption1 === index
-                    ? currentQuestion.selected === currentQuestion.answer
-                      ? 'success'
-                      : 'error'
-                    : ''
-                  : selectedOption1 === index
-                  ? 'active'
-                  : ''
-              "
-              @click="selectOption(true, index)"
+              :class="showResult ? (selectedOption1 === 0 ? 'active' : '') : ''"
+              @click="selectOption(true, 0)"
             >
-              <!-- <div :class="'cartoon' + (index + 1)"></div> -->
-              <!-- <div class="clickIcon"></div> -->
-              {{ option }}
+              {{ currentQuestion.t_Answer_A }}
+            </div>
+            <div
+              class="option-l"
+              :class="showResult ? (selectedOption1 === 1 ? 'active' : '') : ''"
+              @click="selectOption(true, 1)"
+            >
+              {{ currentQuestion.t_Answer_B }}
+            </div>
+            <div
+              class="option-l"
+              :class="showResult ? (selectedOption1 === 2 ? 'active' : '') : ''"
+              @click="selectOption(true, 2)"
+            >
+              {{ currentQuestion.t_Answer_C }}
+            </div>
+            <div
+              class="option-l"
+              :class="showResult ? (selectedOption1 === 3 ? 'active' : '') : ''"
+              @click="selectOption(true, 3)"
+            >
+              {{ currentQuestion.t_Answer_D }}
             </div>
           </div>
-          <!-- <div class="submit submit-l">
-            <button @click="checkAnswer">检查答案</button>
-            <button @click="nextQuestion(true)">
-              {{
-                currentQuestionIndex1 + 1 === questionList1.length
-                  ? '提交'
-                  : '下一题'
-              }}
-            </button>
-          </div> -->
         </div>
       </div>
       <div>
@@ -99,28 +96,35 @@
         </div>
         <!-- 倒计时 -->
         <div class="question">
-          <div class="title">{{ currentQuestionss.title }}</div>
+          <div class="title">{{ currentQuestionss.t_content }}</div>
           <div class="options">
             <div
               class="option-r"
-              v-for="(option, index) in currentQuestionss.options"
-              :key="index"
-              :class="
-                showResult
-                  ? selectedOption2 === index
-                    ? currentQuestionss.selected === currentQuestionss.answer
-                      ? 'success'
-                      : 'error'
-                    : ''
-                  : selectedOption2 === index
-                  ? 'active'
-                  : ''
-              "
-              @click="selectOption(false, index)"
+              :class="showResult ? (selectedOption2 === 0 ? 'active' : '') : ''"
+              @click="selectOption(false, 0)"
             >
-              <!-- <div :class="'cartoon' + (index + 1)"></div> -->
-
-              {{ option }}
+              {{ currentQuestionss.t_Answer_A }}
+            </div>
+            <div
+              class="option-r"
+              :class="showResult ? (selectedOption2 === 1 ? 'active' : '') : ''"
+              @click="selectOption(false, 1)"
+            >
+              {{ currentQuestionss.t_Answer_B }}
+            </div>
+            <div
+              class="option-r"
+              :class="showResult ? (selectedOption2 === 2 ? 'active' : '') : ''"
+              @click="selectOption(false, 2)"
+            >
+              {{ currentQuestionss.t_Answer_C }}
+            </div>
+            <div
+              class="option-r"
+              :class="showResult ? (selectedOption2 === 3 ? 'active' : '') : ''"
+              @click="selectOption(false, 3)"
+            >
+              {{ currentQuestionss.t_Answer_D }}
             </div>
           </div>
           <!-- <div class="submit submit-r">
@@ -137,12 +141,114 @@
       </div>
     </div>
     <!-- 结果弹窗 -->
-    <div :class="showResultPopupClass" v-show="showResultPopup">
-      <div class="closeWrapper" @click="closePopup">
-        <van-icon name="cross" />
+    <div :class="showResultPopupClass" v-if="showResultPopup">
+      <div class="content-popup">
+        <!-- <div class="closeWrapper" @click="closePopup">
+          <van-icon name="cross" />
+        </div> -->
+        <div class="result-score">
+          <div class="double-score">
+            <div class="result-score-button">Score: {{ score1 }}</div>
+            <div class="circle1"></div>
+          </div>
+          <div class="double-score">
+            <div class="result-score-button">Score: {{ score2 }}</div>
+            <div class="circle2"></div>
+          </div>
+          <!-- <div class="result-score-button">Accuracy: {{ accuracy1 }}%</div>
+          <div class="result-score-button">Time: {{ times1 }}s</div> -->
+          <!-- <div class="more-btn" @click="oneMore()">再来一次</div> -->
+        </div>
+        <div
+          class="topic-list"
+          v-for="(question, index) in questionList1"
+          :key="index"
+        >
+          <div class="result-title">{{ question.t_content }}</div>
+          <div class="result-options">
+            <div
+              :class="
+                selected.left[index] === selected.right[index] &&
+                selected.right[index] === 0
+                  ? 'success'
+                  : selected.left[index] === 0
+                  ? 'left'
+                  : selected.right[index] === 0
+                  ? 'right'
+                  : ''
+              "
+            >
+              {{ question.t_Answer_A }}
+            </div>
+          </div>
+
+          <div class="result-options">
+            <div
+              :class="
+                selected.left[index] === selected.right[index] &&
+                selected.right[index] === 1
+                  ? 'success'
+                  : selected.left[index] === 1
+                  ? 'left'
+                  : selected.right[index] === 1
+                  ? 'right'
+                  : ''
+              "
+            >
+              {{ question.t_Answer_B }}
+            </div>
+          </div>
+
+          <div class="result-options">
+            <div
+              :class="
+                selected.left[index] === selected.right[index] &&
+                selected.right[index] === 2
+                  ? 'success'
+                  : selected.left[index] === 2
+                  ? 'left'
+                  : selected.right[index] === 2
+                  ? 'right'
+                  : ''
+              "
+            >
+              {{ question.t_Answer_C }}
+            </div>
+          </div>
+          <div class="result-options">
+            <div
+              :class="
+                selected.left[index] === selected.right[index] &&
+                selected.right[index] === 3
+                  ? 'success'
+                  : selected.left[index] === 3
+                  ? 'left'
+                  : selected.right[index] === 3
+                  ? 'right'
+                  : ''
+              "
+            >
+              {{ question.t_Answer_D }}
+            </div>
+          </div>
+          <div class="result-answer-s">
+            正确答案是{{
+              questionList1[index].t_Answer + questionList1[index].t_Explain
+            }}
+          </div>
+        </div>
+        <div class="result-score">
+          <div class="result-score-button margin-bottom" @click="closePopup">
+            Close
+          </div>
+          <div class="result-score-button margin-bottom" @click="oneMore">
+            Again
+          </div>
+        </div>
       </div>
+
       <!-- <div class="more-btn" @click="oneMore()">再来一次</div> -->
-      <div class="result-left">
+      <!-- <div class="result-left">
         <div class="result-score">
           <div>
             本次答题你的得分是{{ score1 }},正确率是{{ accuracy1 }}%,思考时长{{
@@ -190,7 +296,6 @@
           </div>
         </div>
       </div>
-      <div class="online"></div>
       <div class="result-right">
         <div class="result-score">
           <div>
@@ -243,13 +348,14 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
 // import ProgressBar from '../components/ProgressBar.vue'
+import { getListThetopictable } from '../api/index'
 
 export default {
   name: 'DoubleCategory',
@@ -257,209 +363,30 @@ export default {
   //   ProgressBar,
   // },
   computed: {
-    currentQuestion() {
-      return this.questionList1[this.currentQuestionIndex1]
-    },
-    currentQuestionss() {
-      return this.questionList2[this.currentQuestionIndex2]
-    },
-    isAnswerCorrect1() {
-      return this.selectedOption1 === this.currentQuestion.answer
-    },
-    isAnswerCorrect2() {
-      return this.selectedOption2 === this.currentQuestionss.answer
-    },
+    // currentQuestion() {
+    //   return this.questionList1[this.currentQuestionIndex1]
+    // },
+    // currentQuestionss() {
+    //   return this.questionList2[this.currentQuestionIndex2]
+    // },
+    // isAnswerCorrect1() {
+    //   return this.selectedOption1 === this.currentQuestion.answer
+    // },
+    // isAnswerCorrect2() {
+    //   return this.selectedOption2 === this.currentQuestionss.answer
+    // },
   },
   data() {
     return {
-      randomNumberBg: require('../assets/bg' +
-        parseInt(Math.random() * 13 + 1) +
-        '.png'),
-      backgroundDiv: {
-        backgroundImage:
-          'url(' +
-          require(`../assets/bg${parseInt(Math.random() * 13 + 1)}.png`),
-      },
+      currentQuestion: null,
+      currentQuestionss: null,
       selectedOptions: [],
       showResultPopup: false,
       showResultPopupClass: 'result-popup bounceInDown animated',
-      questionList1: [
-        {
-          title: '1. 世界上最大的洲是什么？',
-          options: ['A. 亚洲', 'B. 非洲', 'C. 欧洲', 'D. 北美洲'],
-          selected: null,
-          answer: 0,
-        },
-        {
-          title: '2. 世界上最高的山峰是什么？',
-          options: [
-            'A. 珠穆朗玛峰',
-            'B. 干城章嘉峰',
-            'C. 洛子峰',
-            'D. 马卡鲁峰',
-          ],
-          selected: null,
-          answer: 0,
-        },
-        {
-          title: '3. 世界上最深的海洋是什么？',
-          options: ['A. 太平洋', 'B. 大西洋', 'C. 印度洋', 'D. 北冰洋'],
-          selected: null,
-          answer: 0,
-        },
-        {
-          title: '4. 世界上最大的沙漠是什么？',
-          options: [
-            'A. 撒哈拉沙漠',
-            'B. 阿拉伯沙漠',
-            'C. 澳大利亚沙漠',
-            'D. 巴西利亚沙漠',
-          ],
-          selected: null,
-          answer: 0,
-        },
-        {
-          title: '5. 世界上最大的洋是什么？',
-          options: ['A. 太平洋', 'B. 大西洋', 'C. 印度洋', 'D. 北冰洋'],
-          selected: null,
-          answer: 0,
-        },
-        {
-          title: '6. 世界上最大的湖泊是什么？',
-          options: ['A. 里海', 'B. 苏必利尔湖', 'C. 咸海', 'D. 死海'],
-          selected: null,
-          answer: 0,
-        },
-        {
-          title: '7. 世界上最大的岛屿是什么？',
-          options: [
-            'A. 格陵兰岛',
-            'B. 夏威夷岛',
-            'C. 马达加斯加岛',
-            'D. 加里曼丹岛',
-          ],
-          selected: null,
-          answer: 2,
-        },
-        {
-          title: '8. 世界上最大的河流是什么？',
-          options: ['A. 长江', 'B. 尼罗河', 'C. 亚马逊河', 'D. 密西西比河'],
-          selected: null,
-          answer: 2,
-        },
-        {
-          title: '9. 世界上最长的河流是什么？',
-          options: ['A. 尼罗河', 'B. 亚马逊河', 'C. 密西西比河', 'D. 长江'],
-          selected: null,
-          answer: 0,
-        },
-        {
-          title: '10. 世界上最大的珊瑚礁群是什么？',
-          options: [
-            'A. 大堡礁',
-            'B. 马尔代夫珊瑚礁',
-            'C. 菲律宾珊瑚礁',
-            'D. 澳大利亚珊瑚礁',
-          ],
-          selected: null,
-          answer: 0,
-        },
-      ],
-      questionList2: [
-        {
-          title: '1.世界上最长的山脉是什么？',
-          options: [
-            'A. 安第斯山脉',
-            'B. 喜马拉雅山脉',
-            'C. 阿尔卑斯山脉',
-            'D. 昆仑山脉',
-          ],
-          selected: null,
-          answer: 1,
-        },
-        {
-          title: '2.世界上最大的洋流是什么？',
-          options: [
-            'A. 北太平洋暖流',
-            'B. 墨西哥湾暖流',
-            'C. 加勒比海流',
-            'D. 加利福尼亚洋流',
-          ],
-          selected: null,
-          answer: 0,
-        },
-        {
-          title: '3.世界上最大的海洋生态系统是什么？',
-          options: ['A. 珊瑚礁', 'B. 深海海底', 'C. 热带雨林', 'D. 海洋草原'],
-          selected: null,
-          answer: 0,
-        },
-        {
-          title: '4.世界上最大的岛屿是什么？',
-          options: [
-            'A. 格陵兰岛',
-            'B. 夏威夷岛',
-            'C. 马达加斯加岛',
-            'D. 加里曼丹岛',
-          ],
-          selected: null,
-          answer: 0,
-        },
-        {
-          title: '5.世界上最大的河流是什么？',
-          options: ['A. 尼罗河', 'B. 亚马逊河', 'C. 密西西比河', 'D. 长江'],
-          selected: null,
-          answer: 1,
-        },
-        {
-          title: '6.世界上最大的半岛是什么？',
-          options: [
-            'A. 阿拉伯半岛',
-            'B. 印度半岛',
-            'C. 中南半岛',
-            'D. 巴尔干半岛',
-          ],
-          selected: null,
-          answer: 0,
-        },
-        {
-          title: '7.世界上最大的国家是什么？',
-          options: ['A. 俄罗斯', 'B. 中国', 'C. 美国', 'D. 巴西'],
-          selected: null,
-          answer: 0,
-        },
-        {
-          title: '8.世界上最大的湖泊是什么？',
-          options: ['A. 里海', 'B. 苏必利尔湖', 'C. 咸海', 'D. 死海'],
-          selected: null,
-          answer: 0,
-        },
-        {
-          title: '9.世界上最高的山峰是什么？',
-          options: [
-            'A. 珠穆朗玛峰',
-            'B. 干城章嘉峰',
-            'C. 洛子峰',
-            'D. 马卡鲁峰',
-          ],
-          selected: null,
-          answer: 0,
-        },
-        {
-          title: '10.世界上最大的珊瑚礁群是什么？',
-          options: [
-            'A. 大堡礁',
-            'B. 马尔代夫珊瑚礁',
-            'C. 菲律宾珊瑚礁',
-            'D. 澳大利亚珊瑚礁',
-          ],
-          selected: null,
-          answer: 0,
-        },
-      ],
+      questionList1: [],
+      questionList2: [],
       currentQuestionIndex1: 0, // 当前问题的索引
       currentQuestionIndex2: 0, // 当前问题的索引
-
       interval: 1000,
       timerId: null,
       alertInterval: 30,
@@ -471,18 +398,64 @@ export default {
       accuracy2: null,
       times2: null,
       totalTime: 180,
+      getTime: null,
       showResult: false, // 是否显示结果
       selectedOption1: null, // 用户选择的选项，初始为null
       selectedOption2: null, // 用户选择的选项，初始为null
+      selected: { left: [], right: [] },
       showStartPopup: true,
+      TimeLimit: null,
       showToast1: false,
       showToast2: false,
       oneDone1: false,
       oneDone2: false,
+      time: null,
+      titleId: null,
+      tableData: null,
     }
   },
-  mounted() {},
+  created() {
+    this.TimeLimit = this.$route.query.limitTime
+      ? this.$route.query.limitTime
+      : false
+    this.getTime = this.$route.query.time
+      ? this.$route.query.limitTime.time
+      : 360
+    this.titleId = this.$route.query.id
+    this._getListTheopictable(this.titleId)
+  },
   methods: {
+    //获取选中当前题库下的题目列表
+    async _getListTheopictable(id) {
+      try {
+        const answerMap = ['A', 'B', 'C', 'D']
+        const res = await getListThetopictable(id)
+        this.questionList1 = res
+        this.questionList1.forEach((obj, i) => {
+          obj.selected = null
+
+          answerMap.forEach((item, index) => {
+            if (obj.t_Answer === item) {
+              obj.answer = index
+            }
+          })
+        })
+        this.currentQuestion = this.questionList1[this.currentQuestionIndex1]
+        this.questionList2 = this.shuffleArray(res)
+        this.questionList2.forEach((obj, i) => {
+          obj.selected = null
+
+          answerMap.forEach((item, index) => {
+            if (obj.t_Answer === item) {
+              obj.answer = index
+            }
+          })
+        })
+        this.currentQuestionss = this.questionList2[this.currentQuestionIndex2]
+      } catch (e) {
+        this.$message(`${e}` || '发生错误')
+      }
+    },
     getStageStatus1(i) {
       if (i < this.currentQuestionIndex1 + 1) {
         return 'done'
@@ -503,7 +476,9 @@ export default {
     },
     startAnswer() {
       this.showStartPopup = false
-      this.startCountdown()
+      if (this.TimeLimit === 'true') {
+        this.startCountdown()
+      }
     },
     oneMore() {
       this.$router.push('/index?type=double')
@@ -542,7 +517,7 @@ export default {
           }
           this.questionList1[this.currentQuestionIndex1].selected =
             this.selectedOption1
-
+          this.selected.left.push(this.selectedOption1)
           if (this.currentQuestionIndex1 + 1 === this.questionList1.length) {
             this.questionList1.forEach((item, index) => {
               if (item.selected === item.answer) {
@@ -554,7 +529,7 @@ export default {
               100
             ).toFixed(2)
             this.times2 && clearInterval(this.timerId)
-            this.times1 = 180 - this.totalTime
+            this.times1 = this.getTime - this.totalTime
             if (this.oneDone2) {
               this.showResultPopup = true
             } else {
@@ -562,6 +537,9 @@ export default {
             }
           } else {
             this.currentQuestionIndex1++
+            this.currentQuestion =
+              this.questionList1[this.currentQuestionIndex1]
+
             this.selectedOption1 = null
             this.showResult = false
           }
@@ -575,7 +553,7 @@ export default {
           }
           this.questionList2[this.currentQuestionIndex2].selected =
             this.selectedOption2
-
+          this.selected.right.push(this.selectedOption2)
           if (this.currentQuestionIndex2 + 1 === this.questionList2.length) {
             this.questionList2.forEach((item, index) => {
               if (item.selected === item.answer) {
@@ -587,7 +565,7 @@ export default {
               100
             ).toFixed(2)
             this.times1 && clearInterval(this.timerId)
-            this.times2 = 180 - this.totalTime
+            this.times2 = this.getTime - this.totalTime
             if (this.oneDone1) {
               this.showResultPopup = true
             } else {
@@ -595,6 +573,9 @@ export default {
             }
           } else {
             this.currentQuestionIndex2++
+            this.currentQuestionss =
+              this.questionList2[this.currentQuestionIndex2]
+
             this.selectedOption2 = null
             this.showResult = false
           }
@@ -619,10 +600,21 @@ export default {
       if (type) {
         if (this.showResult === true) return
         this.selectedOption1 = index
+        this.nextQuestion(type)
       } else {
         if (this.showResult === true) return
         this.selectedOption2 = index
+        this.nextQuestion(type)
       }
+    },
+    shuffleArray(array) {
+      for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1))
+        var temp = array[i]
+        array[i] = array[j]
+        array[j] = temp
+      }
+      return array
     },
   },
 }

@@ -38,6 +38,7 @@
         <el-header style="text-align: left; font-size: 40px">
           <el-button
             type="primary"
+            v-if="isPersonalPower || isAdministrators"
             @click="handleClickFilterButton('add', null)"
           >
             新增
@@ -45,14 +46,29 @@
           <el-button type="primary" @click="handleOutputButton()">
             导出题库模板
           </el-button>
-          <el-button type="primary" @click="handleInputButton()">
+          <el-button
+            type="primary"
+            v-if="!isAdministrators"
+            @click="handleInputButton()"
+          >
             导入题库
           </el-button>
-          <el-button type="primary" @click="getPersonalSubject()">
+          <el-button
+            type="primary"
+            v-if="!isAdministrators"
+            @click="getPersonalSubject()"
+          >
             获取个人题库
           </el-button>
           <el-button type="primary" @click="GoKnowledgeCompetition()">
             游戏界面预览
+          </el-button>
+          <el-button
+            type="primary"
+            v-if="isAdministrators"
+            @click="administratorsInputButton()"
+          >
+            管理人员导入默认题库
           </el-button>
         </el-header>
         <el-main>
@@ -67,7 +83,7 @@
             <el-table-column prop="t_Answer_D" label="D"> </el-table-column>
             <el-table-column prop="t_Answer" label="答案"> </el-table-column>
             <el-table-column prop="t_Explain" label="解析"> </el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作" v-if="isShowClickButton">
               <template slot-scope="scope">
                 <el-button
                   @click="handleClickFilterButton('edit', scope.row)"
@@ -126,10 +142,28 @@
     >
       <div>
         <el-form>
+          <el-form-item
+            v-if="isAdministrators"
+            label="科目:"
+            prop="subjectID"
+            label-width="100px"
+          >
+            <div class="radio-box">
+              <el-radio
+                v-for="(item, index) in subjectList"
+                :key="index"
+                v-model="subjectID"
+                :label="item.val"
+                @input="changeRadio(item, index)"
+              >
+                {{ item.label }}
+              </el-radio>
+            </div>
+          </el-form-item>
           <el-form-item label="输入个人题库名称: ">
             <input v-model.trim="subjectName" type="text" />
           </el-form-item>
-          <el-form-item label="输入个人题库密码: ">
+          <el-form-item v-if="!isAdministrators" label="输入个人题库密码: ">
             <input
               v-model.trim="sixStringPwa"
               type="text"
@@ -137,7 +171,7 @@
               :active-change="false"
             />
           </el-form-item>
-          <div class="hint">
+          <div class="hint" v-if="!isAdministrators">
             注：输入六位数字、字母或者符号组成个人题库密码,请妥善保存密码方便查阅题库。
           </div>
         </el-form>
@@ -149,7 +183,7 @@
         @change="handleChooseFiles"
       />
       <div v-if="uploadList">
-        <h4>导入题目列表</h4>
+        <h4>成功导入的题目列表</h4>
         <div v-for="(item, index) in uploadList" :key="index">
           {{ index + 1 + ' ' + item.t_content }}
         </div>
@@ -173,7 +207,7 @@
         >
           <div class="radio-box">
             <el-radio
-              v-for="(item, index) in subjectList"
+              v-for="(item, index) in addFormSubject"
               :key="index"
               v-model="value"
               :label="item.val"
@@ -190,9 +224,9 @@
           label-width="100px"
         >
           <div class="radio-box">
-            <template v-if="titleList.length">
+            <template v-if="addFormTitleList.length">
               <el-radio
-                v-for="(title, index) in titleList"
+                v-for="(title, index) in addFormTitleList"
                 :key="index"
                 v-model="value1"
                 :label="title.val"
@@ -310,8 +344,9 @@ export default {
       disabled: false,
       tableData: null,
       titleId: null,
-      isPersonalPower: false, //个人
-      isAdministrators: false, //管理员
+      isPersonalPower: false, //个人  输入密码之后 只能操作自己的题库
+      isAdministrators: false, //管理员 有所有权限
+      isShowClickButton: false, //表格操作按钮
       formData: {
         // id: null,
         // t_FatherlevelID: null,
@@ -329,26 +364,53 @@ export default {
       },
       value: '',
       value1: '',
+      subjectID: 5,
+      addFormSubject: [],
+      addFormTitleList: [],
     }
   },
   async mounted() {
     const administrators = getHashSearchParam('administrators')
     if (administrators === '666') {
       this.isAdministrators = true
+      this.isShowClickButton = true
     }
     await this._listSubject()
     await this._getNewsList()
     await this._getListTheopictable()
   },
   methods: {
+    administratorsInputButton() {
+      this.dialogVisible1 = true
+    },
     changeRadio(e, index) {
       try {
         if (e.val === 'fff') {
+          this.isShowClickButton = true
           this.titleList = []
-          this.personalTitleList.map(item => {
-            this.titleList.push(item)
-          })
+          this.addFormTitleList = []
+          //没数据时
+          if (!this.personalTitleList.length) {
+            this.$message('个人题库为空，请下载模板再导入！')
+            return
+          }
+          //个人获取题库之后 的新增
+          if (index === 'person') {
+            this.personalTitleList.map(item => {
+              this.addFormTitleList.push(item)
+            })
+          } else {
+            this.personalTitleList.map(item => {
+              this.titleList.push(item)
+            })
+          }
         } else {
+          if (!this.isAdministrators) {
+            this.isShowClickButton = false
+          }
+          if (e.label === '世界之最') {
+            this.subjectID = e.val
+          }
           this._getNewsList(e.val, index)
         }
       } catch (error) {
@@ -414,10 +476,18 @@ export default {
         this.personalTitleList = subject
         this.chooseSub = 'fff'
         this.dialogVisible2 = false
-        this.$message({
-          message: '获取成功！',
-          type: 'success',
-        })
+        if (!this.personalTitleList.length) {
+          this.$message({
+            message: '个人题库为空，请下载模板再导入！',
+            type: 'error',
+          })
+        } else {
+          this.$message({
+            message: '获取成功！',
+            type: 'success',
+          })
+        }
+
         if (this.isPersonalPower) {
           return
         }
@@ -425,6 +495,12 @@ export default {
           label: '个人题库',
           val: 'fff',
         })
+        this.addFormSubject = [
+          {
+            label: '个人题库',
+            val: 'fff',
+          },
+        ]
         this.isPersonalPower = true
       } catch (error) {
         this.$message(`${error}` || '发生错误')
@@ -452,8 +528,12 @@ export default {
           })
           this.titleId = this.titleList[0].val
           this.showTitleList = index
+          this.isShowClickButton = true
           this._getListTheopictable(this.titleId)
         } else {
+          if (!this.isAdministrators) {
+            this.isShowClickButton = false
+          }
           this._getNewsList(id, index)
         }
       } catch (error) {
@@ -478,15 +558,22 @@ export default {
           this.$message('请先输入个人题库名称！')
           return
         }
-        if (!this.sixStringPwa) {
-          this.$message('请先输入密码！')
-          return
+        if (!this.isAdministrators) {
+          if (!this.sixStringPwa) {
+            this.$message('请先输入密码！')
+            return
+          }
         }
+
         const file = e.target.files[0]
         const formData = new FormData()
         formData.append('file', file)
+        if ((this.isAdministrators = true)) {
+          formData.append('subjectID', this.subjectID)
+        }
         formData.append('password', this.sixStringPwa)
         formData.append('title', this.subjectName)
+
         const res = await upload(formData)
         this.uploadList = res.result
       } catch (e) {
@@ -502,6 +589,13 @@ export default {
         if (type === 'add') {
           this.formData = Object.assign({})
           this.dialogType = 'add'
+          if (this.isPersonalPower) {
+            const arr = {
+              label: '个人题库',
+              val: 'fff',
+            }
+            this.changeRadio(arr, 'person')
+          }
           this.dialogVisible = true
         } else if (type === 'edit') {
           this.dialogType = 'edit'
@@ -566,6 +660,7 @@ export default {
           label: '',
           val: '',
         }
+        let arr = null
         const res = await listSubject()
         subject = res.map(item => {
           return {
@@ -573,13 +668,23 @@ export default {
             val: item.id,
           }
         })
-        // this.titleList = subject
+        subject.map((item, index) => {
+          if (item.val === 5) {
+            arr = {
+              label: '世界之最',
+              val: item.val,
+            }
+            subject.splice(index, 1)
+          }
+        })
+        subject.unshift(arr)
+        this.addFormSubject = subject
         this.subjectList = subject
       } catch (e) {
         this.$message(`${e}` || '发生错误')
       }
     },
-    // 查询科目下题目标题列表
+    // 查询科目下题目题库列表
     async _getNewsList(id, index) {
       try {
         let title = {
@@ -599,6 +704,7 @@ export default {
           })
           this.titleId = title[0].val
           this.titleList = title
+          this.addFormTitleList = title
         } else {
           this.titleList = []
         }
@@ -610,7 +716,7 @@ export default {
     async handleOutputButton() {
       try {
         window.open(
-          'http://47.113.88.149:9060/game/download?fileName=题目导入模板.xlsx',
+          'http://47.113.88.149:5572/game/download?fileName=题目导入模板.xlsx',
         )
       } catch (e) {
         this.$message(`${e}` || '发生错误')
