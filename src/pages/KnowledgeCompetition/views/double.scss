@@ -347,7 +347,6 @@
 
 .title {
   font-size: 3vw;
-  margin-bottom: 2vw;
   margin-top: 15vh;
 }
 
@@ -355,7 +354,8 @@
   position: absolute;
   bottom: 0;
   // width: 100vw;
-  min-height: 32vw;
+  min-height: 54.8vh;
+
   // display: flex;
   // flex-direction: column;
   // flex-wrap: wrap;
@@ -366,10 +366,10 @@
 .option-l {
   position: relative;
   width: 40vw;
-  min-height: 6vw;
+  min-height: 10.28vh;
   flex-wrap: wrap;
   text-align: left;
-  padding: 1vw;
+  padding: 0.5vw;
   margin: 1.33vw 0;
   // border: 0.1vw solid #383636;
   // background-image: linear-gradient(
@@ -584,8 +584,8 @@
   width: 40vw;
   flex-wrap: wrap;
   text-align: left;
-  padding: 1vw;
-  min-height: 6vw;
+  padding: 0.5vw;
+  min-height: 10.28vh;
 
   // border: 0.1vw solid #383636;
   // background-image: linear-gradient(
@@ -777,11 +777,12 @@
 .result-popup {
   position: absolute;
   width: 72vw;
-  height: 43.34vw;
-  top: 3.5vw;
+  height: 75vh;
+
+  top: 5.7vh;
   left: 10vw;
   transform: translate(0, -50%);
-  padding: 4.16vw 4vw 3.8vw;
+  padding: 7.5vh 4vw 7.6vh;
   @include bg('../assets/images/play_bg_pop.png');
   z-index: 9;
   .content-popup {

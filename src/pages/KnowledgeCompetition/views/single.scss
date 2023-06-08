@@ -243,11 +243,11 @@
 .result-popup {
   position: absolute;
   width: 72vw;
-  height: 43.34vw;
-  top: 3.5vw;
+  height: 75vh;
+  top: 5.7vh;
   left: 10vw;
   transform: translate(0, -50%);
-  padding: 4.16vw 4vw 3.8vw;
+  padding: 7.5vh 4vw 7.6vh;
   @include bg('../assets/images/play_bg_pop.png');
   // text-align: center;
   // background-color: hsla(0, 0%, 100%, 0.5);
