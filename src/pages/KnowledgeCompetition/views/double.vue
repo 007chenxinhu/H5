@@ -35,12 +35,14 @@
             :stage="questionList1.length"
             :current-stage="currentQuestionIndex1 + 1"
           ></progress-bar> -->
-          <div
-            v-for="i in questionList1.length"
-            :key="i"
-            :style="{ width: `calc(100% / ${questionList1.length})` }"
-            :class="`stage-${i} ${getStageStatus1(i)}`"
-          ></div>
+          <div class="progress-bar-double1">
+            <div
+              v-for="i in questionList1.length"
+              :key="i"
+              :style="{ width: `calc(100% / ${questionList1.length})` }"
+              :class="`stage-${i} ${getStageStatus1(i)}`"
+            ></div>
+          </div>
         </div>
         <!-- 倒计时 -->
         <div class="question">
@@ -87,12 +89,14 @@
             :stage="questionList2.length"
             :current-stage="currentQuestionIndex2 + 1"
           ></progress-bar> -->
-          <div
-            v-for="i in questionList2.length"
-            :key="i"
-            :style="{ width: `calc(100% / ${questionList2.length})` }"
-            :class="`stage-${i} ${getStageStatus2(i)}`"
-          ></div>
+          <div class="progress-bar-double2">
+            <div
+              v-for="i in questionList2.length"
+              :key="i"
+              :style="{ width: `calc(100% / ${questionList2.length})` }"
+              :class="`stage-${i} ${getStageStatus2(i)}`"
+            ></div>
+          </div>
         </div>
         <!-- 倒计时 -->
         <div class="question">
@@ -457,6 +461,7 @@ export default {
       }
     },
     getStageStatus1(i) {
+      console.log(i, this.currentQuestionIndex1, 'currentQuestionIndex1')
       if (i < this.currentQuestionIndex1 + 1) {
         return 'done'
       } else if (i === this.currentQuestionIndex1 + 1) {
@@ -466,6 +471,8 @@ export default {
       }
     },
     getStageStatus2(i) {
+      console.log(i, this.currentQuestionIndex1, 'currentQuestionIndex2')
+
       if (i < this.currentQuestionIndex2 + 1) {
         return 'done'
       } else if (i === this.currentQuestionIndex2 + 1) {

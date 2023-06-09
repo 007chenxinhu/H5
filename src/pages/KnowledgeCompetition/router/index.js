@@ -27,12 +27,6 @@ const routes = [
     meta: { title: '双人模式' },
   },
   {
-    path: '/text',
-    name: 'text',
-    component: () => import('../views/text.vue'),
-    meta: { title: '测试模式' },
-  },
-  {
     path: '/management',
     name: 'management',
     component: () => import('../views/management/index.vue'),

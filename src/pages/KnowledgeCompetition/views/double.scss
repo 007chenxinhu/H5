@@ -306,13 +306,28 @@
   top: 0;
   left: 0;
   width: 50vw;
+  height: 1vh;
+}
+.progress-bar-double1 {
+  display: flex;
+  justify-content: space-around;
+  height: 1vh;
+  background-color: #eeeeee8e;
 }
 .progress2 {
   position: absolute;
   top: 0;
   right: 0;
   width: 50vw;
+  height: 1vh;
+
   transform: rotate(180deg);
+}
+.progress-bar-double2 {
+  display: flex;
+  justify-content: space-around;
+  height: 1vh;
+  background-color: #eeeeee8e;
 }
 .stage-2,
 .stage-4,
@@ -346,8 +361,13 @@
 }
 
 .title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   font-size: 3vw;
-  margin-top: 15vh;
+  min-height: 40vh;
+  // margin-top: 15vh;
 }
 
 .options {
@@ -445,140 +465,140 @@
   background: #ff462c;
   box-shadow: 0 0.3vw 0 0 #cc3824;
 }
-@keyframes clickWater {
-  0% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 0 0;
-  }
-  8% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 33.33% 0;
-  }
-  16% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 66.66% 0;
-  }
-  25% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 0 25%;
-  }
-  33% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 33.33% 25%;
-  }
-  41% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 66.66% 25%;
-  }
-  50% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 0 50%;
-  }
-  58% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 33.33% 50%;
-  }
-  66% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 66.66% 50%;
-  }
-  75% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 0 75%;
-  }
-  83% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 33.33% 75%;
-  }
-  91% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 66.66% 75%;
-  }
-  100% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 66.66% 75%;
-  }
-}
-@-webkit-keyframes clickWater {
-  0% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 0 0;
-  }
-  8% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 33.33% 0;
-  }
-  16% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 66.66% 0;
-  }
-  25% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 0 25%;
-  }
-  33% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 33.33% 25%;
-  }
-  41% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 66.66% 25%;
-  }
-  50% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 0 50%;
-  }
-  58% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 33.33% 50%;
-  }
-  66% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 66.66% 50%;
-  }
-  75% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 0 75%;
-  }
-  83% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 33.33% 75%;
-  }
-  91% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 66.66% 75%;
-  }
-  100% {
-    background-image: url('../assets/cartoon/water.png');
-    background-size: 15.36vw 15.36vw;
-    background-position: 66.66% 75%;
-  }
-}
+// @keyframes clickWater {
+//   0% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 0 0;
+//   }
+//   8% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 33.33% 0;
+//   }
+//   16% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 66.66% 0;
+//   }
+//   25% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 0 25%;
+//   }
+//   33% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 33.33% 25%;
+//   }
+//   41% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 66.66% 25%;
+//   }
+//   50% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 0 50%;
+//   }
+//   58% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 33.33% 50%;
+//   }
+//   66% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 66.66% 50%;
+//   }
+//   75% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 0 75%;
+//   }
+//   83% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 33.33% 75%;
+//   }
+//   91% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 66.66% 75%;
+//   }
+//   100% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 66.66% 75%;
+//   }
+// }
+// @-webkit-keyframes clickWater {
+//   0% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 0 0;
+//   }
+//   8% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 33.33% 0;
+//   }
+//   16% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 66.66% 0;
+//   }
+//   25% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 0 25%;
+//   }
+//   33% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 33.33% 25%;
+//   }
+//   41% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 66.66% 25%;
+//   }
+//   50% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 0 50%;
+//   }
+//   58% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 33.33% 50%;
+//   }
+//   66% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 66.66% 50%;
+//   }
+//   75% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 0 75%;
+//   }
+//   83% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 33.33% 75%;
+//   }
+//   91% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 66.66% 75%;
+//   }
+//   100% {
+//     background-image: url('../assets/cartoon/water.png');
+//     background-size: 15.36vw 15.36vw;
+//     background-position: 66.66% 75%;
+//   }
+// }
 .option-r {
   position: relative;
   width: 40vw;

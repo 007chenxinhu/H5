@@ -32,7 +32,7 @@
       <!-- 提示说明 -->
       <div class="sidebar-hint" @click="ViewInstructions"></div>
       <!-- star支持 -->
-      <div class="sidebar-star"></div>
+      <!-- <div class="sidebar-star"></div> -->
       <!-- 历史排行 -->
       <!-- <div class="sidebar-ranking"></div> -->
       <!-- 设置 -->
@@ -187,14 +187,14 @@ export default {
   name: 'Home',
   data() {
     return {
-      randomNumberBg: require('../assets/bg' +
-        parseInt(Math.random() * 13 + 1) +
-        '.png'),
-      backgroundDiv: {
-        backgroundImage:
-          'url(' +
-          require(`../assets/bg${parseInt(Math.random() * 13 + 1)}.png`),
-      },
+      // randomNumberBg: require('../assets/bg' +
+      //   parseInt(Math.random() * 13 + 1) +
+      //   '.png'),
+      // backgroundDiv: {
+      //   backgroundImage:
+      //     'url(' +
+      //     require(`../assets/bg${parseInt(Math.random() * 13 + 1)}.png`),
+      // },
       time: 360,
       selectTime: [
         60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200,
@@ -220,6 +220,7 @@ export default {
       activeTollId: '',
       limitTime: true,
       paw: '',
+      preUrl: '',
     }
   },
   async mounted() {
@@ -227,6 +228,7 @@ export default {
       this.showSettingPopup = true
     }
     this.isPreview = getHashSearchParam('Preview') || false
+    this.preUrl = window.location.href
     await this._listSubject()
     await this._getNewsList()
   },

@@ -97,7 +97,7 @@ body {
   width: 21.16vw;
   height: 5.6vw;
   background: #4264ff;
-  box-shadow: 0 3px 0 0 #3b53bf;
+  box-shadow: 0 0.34vw 0 0 #3b53bf;
   border-radius: 1vw;
   text-align: center;
   line-height: 5.6vw;
@@ -112,7 +112,7 @@ body {
   width: 21.16vw;
   height: 5.6vw;
   background: #d1293a;
-  box-shadow: 0px 3px 0px 0px #a80a1a;
+  box-shadow: 0px 0.34vw 0px 0px #a80a1a;
   border-radius: 1vw;
   text-align: center;
   font-size: 3vw;
