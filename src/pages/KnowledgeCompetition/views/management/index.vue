@@ -835,12 +835,10 @@ export default {
     font-size: 80px;
   }
   .el-form-item__label {
-    // height: 2vw;
     line-height: 2vw;
     font-size: 70px;
   }
   .el-form-item__content {
-    // height: 2vw;
     font-size: 70px;
     .radio-box {
       display: flex;

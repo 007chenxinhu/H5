@@ -86,7 +86,7 @@
           <van-icon name="cross" />
         </div> -->
         <div class="result-score">
-          <div class="result-score-button">Score: {{ score }}</div>
+          <div class="result-score-button">Score: {{ score ? score : 0 }}</div>
           <div class="result-score-button">Accuracy: {{ accuracy }}%</div>
           <div class="result-score-button">Time: {{ times }}s</div>
           <!-- <div class="more-btn" @click="oneMore()">再来一次</div> -->
@@ -186,7 +186,8 @@ export default {
     this.TimeLimit = this.$route.query.limitTime
       ? this.$route.query.limitTime
       : false
-    this.getTime = this.$route.query.time ? this.$route.query.time : 360
+    this.getTime = this.$route.query.time
+    this.totalTime = this.$route.query.time
     this.titleId = this.$route.query.id
     this._getListTheopictable(this.titleId)
   },
@@ -219,9 +220,9 @@ export default {
       // },
       score: null,
       accuracy: null,
-      getTime: 360,
+      getTime: null,
       times: null,
-      totalTime: 360,
+      totalTime: null,
       isCountTimer: false,
       interval: 1000,
       timerId: null,
@@ -233,7 +234,9 @@ export default {
       tableData: null,
     }
   },
-
+  beforeDestroy() {
+    clearInterval(this.timerId)
+  },
   methods: {
     //获取选中当前题库下的题目列表
     async _getListTheopictable(id) {
@@ -243,7 +246,6 @@ export default {
         this.questionList = res
         this.questionList.forEach((obj, i) => {
           obj.selected = null
-
           answerMap.forEach((item, index) => {
             if (obj.t_Answer === item) {
               obj.answer = index
@@ -281,7 +283,7 @@ export default {
         this.totalTime -= this.interval / 1000
         // 每30秒进行提醒
         if (this.totalTime % this.alertInterval === 0 && !this.isAlerted) {
-          this.$toast(`已经过去 ${180 - this.totalTime} 秒`)
+          this.$toast(`已经过去 ${this.getTime - this.totalTime} 秒`)
           this.isAlerted = true
         } else if (this.totalTime % this.alertInterval !== 0) {
           this.isAlerted = false
@@ -291,6 +293,7 @@ export default {
           clearInterval(this.timerId)
           this.totalTime = 0
           this.$toast('时间到！')
+          this.showResultPopup = true
         }
       }, this.interval)
     },
@@ -302,6 +305,8 @@ export default {
           self.showResultPopupClass = 'result-popup bounceInDown animated'
           self.showResultPopup = false
         }, 599)
+        clearInterval(this.timerId)
+        this.goBack()
       } catch (error) {
         console.log(error)
       }

@@ -197,10 +197,10 @@ export default {
       // },
       time: 360,
       selectTime: [
-        60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200,
-        210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340,
-        350, 360, 370, 380, 390, 400, 410, 420, 430, 440, 450, 460, 470, 480,
-        490, 500, 510, 520, 530, 540,
+        40, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190,
+        200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330,
+        340, 350, 360, 370, 380, 390, 400, 410, 420, 430, 440, 450, 460, 470,
+        480, 490, 500, 510, 520, 530, 540,
       ],
       selectedOptions: [],
       showHintPopup: false,
@@ -219,6 +219,7 @@ export default {
       showChooseTitle: 0,
       activeTollId: '',
       limitTime: true,
+      personalTitleList: [],
       paw: '',
       preUrl: '',
     }
@@ -257,7 +258,11 @@ export default {
         })
         //个人题库
         subject.map(item => {
-          this.subjectList.push(item)
+          this.personalTitleList.push(item)
+        })
+        this.subjectList.push({
+          label: '个人题库',
+          val: 'fff',
         })
         this.$message({
           message: '获取成功！',
@@ -296,6 +301,7 @@ export default {
     //点击科目
     chooseSubject(id, index) {
       try {
+        console.log(id, index, '======')
         if (id === 'fff') {
           this.titleList = []
           this.personalTitleList.map(item => {
@@ -408,7 +414,11 @@ export default {
     },
     Setting() {
       try {
+        if (this.showHintPopup) {
+          this.showHintPopup = false
+        }
         this._listSubject()
+
         this.showSettingPopup = true
 
         // let self = this
@@ -422,6 +432,9 @@ export default {
       }
     },
     ViewInstructions() {
+      if (this.showSettingPopup) {
+        this.showSettingPopup = false
+      }
       this.showHintPopup = true
     },
     closePopup() {

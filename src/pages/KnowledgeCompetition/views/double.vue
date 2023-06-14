@@ -40,7 +40,13 @@
               v-for="i in questionList1.length"
               :key="i"
               :style="{ width: `calc(100% / ${questionList1.length})` }"
-              :class="`stage-${i} ${getStageStatus1(i)}`"
+              :class="
+                i < currentQuestionIndex1 + 1
+                  ? 'done'
+                  : i === currentQuestionIndex1 + 1
+                  ? 'doing'
+                  : ''
+              "
             ></div>
           </div>
         </div>
@@ -52,28 +58,28 @@
             <div
               class="option-l"
               :class="showResult ? (selectedOption1 === 0 ? 'active' : '') : ''"
-              @click="selectOption(true, 0)"
+              @click="selectOption1(true, 0)"
             >
               {{ currentQuestion.t_Answer_A }}
             </div>
             <div
               class="option-l"
               :class="showResult ? (selectedOption1 === 1 ? 'active' : '') : ''"
-              @click="selectOption(true, 1)"
+              @click="selectOption1(true, 1)"
             >
               {{ currentQuestion.t_Answer_B }}
             </div>
             <div
               class="option-l"
               :class="showResult ? (selectedOption1 === 2 ? 'active' : '') : ''"
-              @click="selectOption(true, 2)"
+              @click="selectOption1(true, 2)"
             >
               {{ currentQuestion.t_Answer_C }}
             </div>
             <div
               class="option-l"
               :class="showResult ? (selectedOption1 === 3 ? 'active' : '') : ''"
-              @click="selectOption(true, 3)"
+              @click="selectOption1(true, 3)"
             >
               {{ currentQuestion.t_Answer_D }}
             </div>
@@ -94,7 +100,13 @@
               v-for="i in questionList2.length"
               :key="i"
               :style="{ width: `calc(100% / ${questionList2.length})` }"
-              :class="`stage-${i} ${getStageStatus2(i)}`"
+              :class="
+                i < currentQuestionIndex2 + 1
+                  ? 'done'
+                  : i === currentQuestionIndex2 + 1
+                  ? 'doing'
+                  : ''
+              "
             ></div>
           </div>
         </div>
@@ -105,28 +117,28 @@
             <div
               class="option-r"
               :class="showResult ? (selectedOption2 === 0 ? 'active' : '') : ''"
-              @click="selectOption(false, 0)"
+              @click="selectOption2(false, 0)"
             >
               {{ currentQuestionss.t_Answer_A }}
             </div>
             <div
               class="option-r"
               :class="showResult ? (selectedOption2 === 1 ? 'active' : '') : ''"
-              @click="selectOption(false, 1)"
+              @click="selectOption2(false, 1)"
             >
               {{ currentQuestionss.t_Answer_B }}
             </div>
             <div
               class="option-r"
               :class="showResult ? (selectedOption2 === 2 ? 'active' : '') : ''"
-              @click="selectOption(false, 2)"
+              @click="selectOption2(false, 2)"
             >
               {{ currentQuestionss.t_Answer_C }}
             </div>
             <div
               class="option-r"
               :class="showResult ? (selectedOption2 === 3 ? 'active' : '') : ''"
-              @click="selectOption(false, 3)"
+              @click="selectOption2(false, 3)"
             >
               {{ currentQuestionss.t_Answer_D }}
             </div>
@@ -152,11 +164,15 @@
         </div> -->
         <div class="result-score">
           <div class="double-score">
-            <div class="result-score-button">Score: {{ score1 }}</div>
+            <div class="result-score-button">
+              Score: {{ score1 ? score1 : 0 }}
+            </div>
             <div class="circle1"></div>
           </div>
           <div class="double-score">
-            <div class="result-score-button">Score: {{ score2 }}</div>
+            <div class="result-score-button">
+              Score: {{ score2 ? score2 : 0 }}
+            </div>
             <div class="circle2"></div>
           </div>
           <!-- <div class="result-score-button">Accuracy: {{ accuracy1 }}%</div>
@@ -401,7 +417,7 @@ export default {
       score2: null,
       accuracy2: null,
       times2: null,
-      totalTime: 180,
+      totalTime: null,
       getTime: null,
       showResult: false, // 是否显示结果
       selectedOption1: null, // 用户选择的选项，初始为null
@@ -423,10 +439,13 @@ export default {
       ? this.$route.query.limitTime
       : false
     this.getTime = this.$route.query.time
-      ? this.$route.query.limitTime.time
-      : 360
+    this.totalTime = this.$route.query.time
+
     this.titleId = this.$route.query.id
     this._getListTheopictable(this.titleId)
+  },
+  beforeDestroy() {
+    clearInterval(this.timerId)
   },
   methods: {
     //获取选中当前题库下的题目列表
@@ -434,34 +453,31 @@ export default {
       try {
         const answerMap = ['A', 'B', 'C', 'D']
         const res = await getListThetopictable(id)
+        res.forEach((obj, i) => {
+          obj.selected = null
+          obj.index = i
+          answerMap.forEach((item, index) => {
+            if (obj.t_Answer === item) {
+              obj.answer = index
+            }
+          })
+        })
         this.questionList1 = res
-        this.questionList1.forEach((obj, i) => {
-          obj.selected = null
 
-          answerMap.forEach((item, index) => {
-            if (obj.t_Answer === item) {
-              obj.answer = index
-            }
-          })
-        })
+        let myArray = res
+
         this.currentQuestion = this.questionList1[this.currentQuestionIndex1]
-        this.questionList2 = this.shuffleArray(res)
-        this.questionList2.forEach((obj, i) => {
-          obj.selected = null
-
-          answerMap.forEach((item, index) => {
-            if (obj.t_Answer === item) {
-              obj.answer = index
-            }
-          })
-        })
+        //222222
+        // 使用sort方法将myArray随机排序
+        let shuffledArray = [...myArray].sort(() => Math.random() - 0.5)
+        // 使用slice方法将shuffledArray的副本赋值给newArray
+        this.questionList2 = shuffledArray.slice()
         this.currentQuestionss = this.questionList2[this.currentQuestionIndex2]
       } catch (e) {
         this.$message(`${e}` || '发生错误')
       }
     },
     getStageStatus1(i) {
-      console.log(i, this.currentQuestionIndex1, 'currentQuestionIndex1')
       if (i < this.currentQuestionIndex1 + 1) {
         return 'done'
       } else if (i === this.currentQuestionIndex1 + 1) {
@@ -471,8 +487,6 @@ export default {
       }
     },
     getStageStatus2(i) {
-      console.log(i, this.currentQuestionIndex1, 'currentQuestionIndex2')
-
       if (i < this.currentQuestionIndex2 + 1) {
         return 'done'
       } else if (i === this.currentQuestionIndex2 + 1) {
@@ -498,7 +512,7 @@ export default {
         this.totalTime -= this.interval / 1000
         // 每30秒进行提醒
         if (this.totalTime % this.alertInterval === 0 && !this.isAlerted) {
-          this.$toast(`已经过去 ${180 - this.totalTime} 秒`)
+          this.$toast(`已经过去 ${this.getTime - this.totalTime} 秒`)
           this.isAlerted = true
         } else if (this.totalTime % this.alertInterval !== 0) {
           this.isAlerted = false
@@ -508,13 +522,31 @@ export default {
           clearInterval(this.timerId)
           this.totalTime = 0
           this.$toast('时间到！')
+          this.showResultPopup = true
         }
       }, this.interval)
     },
+    async selectOption1(type, index) {
+      console.log(22222222222222222222)
+
+      if (this.showResult === true) return
+      this.selectedOption1 = index
+      await this.nextQuestion(type)
+    },
+    async selectOption2(type, index) {
+      console.log(22222222222222222222)
+
+      if (this.showResult === true) return
+      this.selectedOption2 = index
+      await this.nextQuestion(type)
+    },
     nextQuestion(flag) {
       try {
+        console.log(22222222222222222222)
         let self = this
         if (flag) {
+          //左边
+
           if (this.selectedOption1 === null) {
             this.showToast1 = true
             setTimeout(() => {
@@ -525,6 +557,7 @@ export default {
           this.questionList1[this.currentQuestionIndex1].selected =
             this.selectedOption1
           this.selected.left.push(this.selectedOption1)
+          //答完
           if (this.currentQuestionIndex1 + 1 === this.questionList1.length) {
             this.questionList1.forEach((item, index) => {
               if (item.selected === item.answer) {
@@ -543,6 +576,8 @@ export default {
               this.oneDone1 = true
             }
           } else {
+            //答题中
+
             this.currentQuestionIndex1++
             this.currentQuestion =
               this.questionList1[this.currentQuestionIndex1]
@@ -551,6 +586,8 @@ export default {
             this.showResult = false
           }
         } else {
+          //右边
+
           if (this.selectedOption2 === null) {
             this.showToast2 = true
             setTimeout(() => {
@@ -560,7 +597,13 @@ export default {
           }
           this.questionList2[this.currentQuestionIndex2].selected =
             this.selectedOption2
-          this.selected.right.push(this.selectedOption2)
+          // this.selected.right.push(this.selectedOption2)
+
+          this.selected.right[
+            this.questionList2[this.currentQuestionIndex2].index
+          ] = this.selectedOption2
+          console.log(this.selected.right, 'this.selected.right')
+          //答完
           if (this.currentQuestionIndex2 + 1 === this.questionList2.length) {
             this.questionList2.forEach((item, index) => {
               if (item.selected === item.answer) {
@@ -573,12 +616,29 @@ export default {
             ).toFixed(2)
             this.times1 && clearInterval(this.timerId)
             this.times2 = this.getTime - this.totalTime
+            //根据数组a内数字的顺序排序另一组数组b，数组b内的数据
+            let arr1 = []
+            this.questionList2.forEach(item => {
+              arr1.push(item.index)
+            })
+            // let arr2 = this.selected.right
+            // const newArr = []
+            // while (arr1.length) {
+            //   const min = Math.min(...arr1)
+            //   const index = arr1.indexOf(min)
+            //   newArr.push(arr2[index])
+            //   arr1.splice(index, 1)
+            //   arr2.splice(index, 1)
+            // }
+            // this.selected.right = newArr // 输出排序后的新数组
             if (this.oneDone1) {
               this.showResultPopup = true
             } else {
               this.oneDone2 = true
             }
           } else {
+            //答题中
+
             this.currentQuestionIndex2++
             this.currentQuestionss =
               this.questionList2[this.currentQuestionIndex2]
@@ -587,6 +647,11 @@ export default {
             this.showResult = false
           }
         }
+        console.log(
+          this.questionList1,
+          this.questionList2,
+          'questionList2questionList2',
+        )
       } catch (error) {
         console.log(error)
       }
@@ -599,29 +664,49 @@ export default {
           self.showResultPopupClass = 'result-popup bounceInDown animated'
           self.showResultPopup = false
         }, 599)
+        clearInterval(this.timerId)
+        this.goBack()
       } catch (error) {
         console.log(error)
       }
     },
-    selectOption(type, index) {
-      if (type) {
-        if (this.showResult === true) return
-        this.selectedOption1 = index
-        this.nextQuestion(type)
-      } else {
-        if (this.showResult === true) return
-        this.selectedOption2 = index
-        this.nextQuestion(type)
-      }
-    },
+
+    //数组乱序1
     shuffleArray(array) {
-      for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1))
-        var temp = array[i]
+      for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1))
+        let temp = array[i]
         array[i] = array[j]
         array[j] = temp
       }
+      console.log(array, 'array')
       return array
+    },
+    // 数组乱序方法
+    shuffleArray1(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[arr[i], arr[j]] = [arr[j], arr[i]]
+      }
+      return arr
+    },
+    // 数组复原方法
+    restoreArray(arr, originalArr) {
+      for (let i = 0; i < arr.length; i++) {
+        Object.assign(arr[i], originalArr[i])
+      }
+      return arr
+    },
+    // 数组顺序改回初始顺序的方法
+    restoreArrayOrder(arr, originalArr) {
+      const restoredArr = []
+      for (let i = 0; i < originalArr.length; i++) {
+        const originalObj = originalArr[i]
+        const index = arr.findIndex(obj => obj === originalObj)
+        restoredArr[i] = arr[index]
+        arr.splice(index, 1)
+      }
+      return restoredArr
     },
   },
 }
