@@ -1,0 +1,22 @@
+{
+  "text": {
+    "langType": 2,
+    "singleTitle": "SOLO",
+    "doubleTitle": "DOUBLE",
+    "hintText": "Gameplay guide",
+    "setting": "Set up",
+    "chooseSubject": "Select a topic",
+    "timingSetting": "Set timing",
+    "openTimer": "Open Timer",
+    "disableTiming": "Disable  timing",
+    "personalPassword": "Enter your personal password",
+    "submitButton": "Submit",
+    "startAnswering": "Start answering",
+    "close": "Close",
+    "oneMore": "Again",
+    "score": "Score",
+    "times": "Times",
+    "accuracy": "Accuracy",
+    "backToManagementSystem": "Back to management system"
+  }
+}

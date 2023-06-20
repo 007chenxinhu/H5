@@ -1,31 +1,27 @@
 <template>
   <div class="home">
     <div class="home_square">
-      <img
-        src="../assets/images/home_square.png"
-        class="home_square_img"
-        alt=""
-      />
+      <img src="../assets/images/home_square.png" class="home_square_img" />
     </div>
     <div class="content">
       <div class="container">
         <!-- <p class="a">The world's best</p>
         <p class="b">Knowledge</p>
         <p class="a">Contest</p> -->
-        <img src="../assets/images/home_title.png" class="home_title" alt="" />
+        <img src="../assets/images/home_title.png" class="home_title" />
       </div>
       <!-- 模式 -->
       <div class="category">
         <div class="category-single pulse animated" @click="singleCategory">
-          solo
+          {{ $t('text.singleTitle') }}
         </div>
         <div class="category-double pulse animated" @click="doubleCategory">
-          double
+          {{ $t('text.doubleTitle') }}
         </div>
       </div>
     </div>
     <div class="btn-back" v-if="isPreview" @click="GoManagement">
-      返回题库管理系统
+      {{ $t('text.backToManagementSystem') }}
     </div>
     <!-- 旁边栏目 -->
     <div class="sidebar">
@@ -43,7 +39,9 @@
       <div class="closeWrapper" @click="closePopup">
         <van-icon name="cross" />
       </div>
-      <div class="hint-title">玩法指南</div>
+      <div class="hint-title">
+        {{ $t('text.hintText') }}
+      </div>
       <div class="hint-text">答题模式：单人答题模式和双人竞赛答题模式。</div>
       <div class="hint-text">
         概述：世界之最知识选项答题是一款考验学生知识广度和深度的游戏。游戏分为单人答题模式和双人答题模式，
@@ -72,12 +70,14 @@
       <div class="closeWrapper" @click="closePopup">
         <van-icon name="cross" />
       </div>
-      <div class="hint-title">设置</div>
+      <div class="hint-title">
+        {{ $t('text.setting') }}
+      </div>
       <!-- <div class="setting-intro">
         设置题目类型、范围，做题时间限制，是否开启时间提醒
       </div> -->
       <div class="setting-TopicType">
-        <h2 class="setting-TopicType-title">题目类型:</h2>
+        <h2 class="setting-TopicType-title">{{ $t('text.chooseSubject') }}:</h2>
         <div class="options">
           <div class="choose-subject">
             <ul>
@@ -109,7 +109,7 @@
         <!-- <div class="teeth">
           <Teeth></Teeth>
         </div> -->
-        <div class="limit_time_title">计时提醒</div>
+        <div class="limit_time_title">{{ $t('text.timingSetting') }}</div>
         <div class="limit_time">
           <div class="limit_time_enable">
             <div class="limit_time_choose_img" @click="handleLimitTime(true)">
@@ -120,10 +120,9 @@
                     ? require('../assets/images/setting_btn_selected.png')
                     : require('../assets/images/setting_btn_normal.png')
                 "
-                alt=""
               />
             </div>
-            <div class="limit_time_text">启用计时</div>
+            <div class="limit_time_text">{{ $t('text.openTimer') }}</div>
             <div class="limit_time_choose">
               <div class="limit_time_time">{{ time }}s</div>
               <div class="limit_time_icon"></div>
@@ -153,7 +152,7 @@
                 alt=""
               />
             </div>
-            <div class="limit_time_text">禁用计时</div>
+            <div class="limit_time_text">{{ $t('text.disableTiming') }}</div>
           </div>
         </div>
       </div>
@@ -163,24 +162,26 @@
           class="get-personal-topic"
           max="6"
           v-model="paw"
-          placeholder="获取自定义题库"
+          :placeholder="$t('text.personalPassword')"
         />
         <div class="search_icon" @click="gerPersonalTopic">
           <img
             class="setting_btn_magnifier"
             src="../assets/images/setting_btn_magnifier.png"
-            alt=""
           />
         </div>
       </div>
-      <button @click="submit" class="submit-button">Confirm</button>
+      <button @click="submit" class="submit-button">
+        {{ $t('text.submitButton') }}
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 // import Teeth from '../components/teeth.vue'
-import { getHashSearchParam } from '../utils/tools'
+import { getParameter } from '../utils/indexExtends'
+
 import { listSubject, getListTitle, personalQuery } from '../api/index'
 
 export default {
@@ -222,16 +223,27 @@ export default {
       personalTitleList: [],
       paw: '',
       preUrl: '',
+      lang: 'en',
     }
   },
   async mounted() {
     if (this.$route.query.type === 'single') {
       this.showSettingPopup = true
     }
-    this.isPreview = getHashSearchParam('Preview') || false
-    this.preUrl = window.location.href
+    this.isPreview = getParameter('Preview') || false
+
     await this._listSubject()
     await this._getNewsList()
+    const langTypeMap = {
+      zh: 'zh-CN',
+      en: 'en-US',
+    }
+    this.lang = getParameter('language') || 'en'
+    // if (this.$i18n) {
+    //   this.$i18n.locale = langTypeMap[this.lang]
+    // }
+    window.localStorage.setItem('langType', langTypeMap[this.lang])
+    window.localStorage.setItem('hash', window.location.hash)
   },
   methods: {
     //获取个人题库
@@ -301,7 +313,6 @@ export default {
     //点击科目
     chooseSubject(id, index) {
       try {
-        console.log(id, index, '======')
         if (id === 'fff') {
           this.titleList = []
           this.personalTitleList.map(item => {
@@ -320,7 +331,6 @@ export default {
     //点击科目下的题库
     clickTitle(id, index) {
       this.showChooseTitle = index
-      console.log(id, index, 'id, index')
       this.titleId = id
       // this._getListTheopictable(id)
     },
@@ -382,7 +392,11 @@ export default {
       }
     },
     GoManagement() {
-      this.$router.push('/management')
+      let url = ''
+      url = window.localStorage.getItem('myManagement')
+      url = url.substring(1)
+      this.$router.push(`${url}`)
+      window.localStorage.removeItem('myManagement')
     },
     singleCategory() {
       this.$router.push({
@@ -410,7 +424,6 @@ export default {
     submit() {
       // 处理提交逻辑
       this.closePopup()
-      console.log(this.selectedOptions)
     },
     Setting() {
       try {

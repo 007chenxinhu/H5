@@ -32,9 +32,23 @@ export default {
 }
 
 .el-message-box__message {
-  margin-left: 25px;
+  font-size: 1.2rem;
+  margin-left: 1rem;
 }
 .el-message-box__btns {
   margin-top: 62px;
+}
+.el-message-box__title {
+  font-size: 1rem !important;
+}
+.el-button--small .el-button--small.is-round {
+  font-size: 1rem !important;
+}
+button {
+  font-size: 1rem !important;
+}
+.el-message-box__status {
+  width: 0.5rem;
+  height: 0.5rem;
 }
 </style>

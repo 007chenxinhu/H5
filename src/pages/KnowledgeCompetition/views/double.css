@@ -524,7 +524,7 @@
   font-size: 1.6vw;
   line-height: 2vw;
   margin-top: 1vw;
-  color: #67c23a;
+  color: #5f9f9f;
 }
 
 .result-popup .content-popup .topic-list .error {
@@ -536,7 +536,7 @@
 
 .result-popup .content-popup .topic-list .result-answer-s {
   font-size: 1.6vw;
-  color: #67c23a;
+  color: #f56c6c;
   margin-top: 1vw;
 }
 

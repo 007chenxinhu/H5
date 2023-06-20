@@ -1,7 +1,9 @@
 <template>
   <div class="content">
     <div class="startPopup" v-if="showStartPopup">
-      <div @click="startAnswer" class="start-btn">开始答题</div>
+      <div @click="startAnswer" class="start-btn">
+        {{ $t('text.startAnswering') }}
+      </div>
 
       <!-- <div class="start-animation">
         <div class="start-animation-left animated">
@@ -51,7 +53,7 @@
           </div>
         </div>
         <!-- 倒计时 -->
-        <div class="question">
+        <div class="question" @click="select2">
           <div class="title">{{ currentQuestion.t_content }}</div>
           <!-- <img src="../assets/cartoon/water.png" alt="" /> -->
           <div class="options">
@@ -113,7 +115,7 @@
         <!-- 倒计时 -->
         <div class="question">
           <div class="title">{{ currentQuestionss.t_content }}</div>
-          <div class="options">
+          <div class="options" @click="select2">
             <div
               class="option-r"
               :class="showResult ? (selectedOption2 === 0 ? 'active' : '') : ''"
@@ -165,13 +167,13 @@
         <div class="result-score">
           <div class="double-score">
             <div class="result-score-button">
-              Score: {{ score1 ? score1 : 0 }}
+              {{ $t('text.score') }}: {{ score1 ? score1 : 0 }}
             </div>
             <div class="circle1"></div>
           </div>
           <div class="double-score">
             <div class="result-score-button">
-              Score: {{ score2 ? score2 : 0 }}
+              {{ $t('text.score') }}: {{ score2 ? score2 : 0 }}
             </div>
             <div class="circle2"></div>
           </div>
@@ -259,10 +261,10 @@
         </div>
         <div class="result-score">
           <div class="result-score-button margin-bottom" @click="closePopup">
-            Close
+            {{ $t('text.close') }}
           </div>
           <div class="result-score-button margin-bottom" @click="oneMore">
-            Again
+            {{ $t('text.oneMore') }}
           </div>
         </div>
       </div>
@@ -396,8 +398,28 @@ export default {
     //   return this.selectedOption2 === this.currentQuestionss.answer
     // },
   },
+  created() {
+    this.TimeLimit = this.$route.query.limitTime
+      ? this.$route.query.limitTime
+      : false
+    this.getTime = this.$route.query.time
+    this.totalTime = this.$route.query.time
+
+    this.titleId = this.$route.query.id
+
+    this._getListTheopictable(this.titleId)
+  },
+  mounted() {
+    this.url = window.localStorage.getItem('hash')
+    this.url = this.url.substring(1)
+    this.$i18n.locale = window.localStorage.getItem('langType')
+  },
+  beforeDestroy() {
+    clearInterval(this.timerId)
+  },
   data() {
     return {
+      url: '',
       currentQuestion: null,
       currentQuestionss: null,
       selectedOptions: [],
@@ -434,20 +456,11 @@ export default {
       tableData: null,
     }
   },
-  created() {
-    this.TimeLimit = this.$route.query.limitTime
-      ? this.$route.query.limitTime
-      : false
-    this.getTime = this.$route.query.time
-    this.totalTime = this.$route.query.time
 
-    this.titleId = this.$route.query.id
-    this._getListTheopictable(this.titleId)
-  },
-  beforeDestroy() {
-    clearInterval(this.timerId)
-  },
   methods: {
+    select2(e) {
+      console.log(e)
+    },
     //获取选中当前题库下的题目列表
     async _getListTheopictable(id) {
       try {
@@ -502,10 +515,15 @@ export default {
       }
     },
     oneMore() {
-      this.$router.push('/index?type=double')
+      if (this.url.includes('?')) {
+        this.$router.push(`${this.url}&type=double`)
+      }
+      {
+        this.$router.push('/index?type=double')
+      }
     },
     goBack() {
-      this.$router.push('/index')
+      this.$router.push(`${this.url}`)
     },
     startCountdown() {
       this.timerId = setInterval(() => {
@@ -522,27 +540,32 @@ export default {
           clearInterval(this.timerId)
           this.totalTime = 0
           this.$toast('时间到！')
+          this.questionList1.forEach((item, index) => {
+            if (item.selected === item.answer) {
+              this.score1 = this.score1 + 50
+            }
+          })
+          this.questionList2.forEach((item, index) => {
+            if (item.selected === item.answer) {
+              this.score2 = this.score2 + 50
+            }
+          })
           this.showResultPopup = true
         }
       }, this.interval)
     },
     async selectOption1(type, index) {
-      console.log(22222222222222222222)
-
       if (this.showResult === true) return
       this.selectedOption1 = index
       await this.nextQuestion(type)
     },
     async selectOption2(type, index) {
-      console.log(22222222222222222222)
-
       if (this.showResult === true) return
       this.selectedOption2 = index
       await this.nextQuestion(type)
     },
     nextQuestion(flag) {
       try {
-        console.log(22222222222222222222)
         let self = this
         if (flag) {
           //左边
@@ -602,7 +625,6 @@ export default {
           this.selected.right[
             this.questionList2[this.currentQuestionIndex2].index
           ] = this.selectedOption2
-          console.log(this.selected.right, 'this.selected.right')
           //答完
           if (this.currentQuestionIndex2 + 1 === this.questionList2.length) {
             this.questionList2.forEach((item, index) => {
@@ -616,21 +638,6 @@ export default {
             ).toFixed(2)
             this.times1 && clearInterval(this.timerId)
             this.times2 = this.getTime - this.totalTime
-            //根据数组a内数字的顺序排序另一组数组b，数组b内的数据
-            let arr1 = []
-            this.questionList2.forEach(item => {
-              arr1.push(item.index)
-            })
-            // let arr2 = this.selected.right
-            // const newArr = []
-            // while (arr1.length) {
-            //   const min = Math.min(...arr1)
-            //   const index = arr1.indexOf(min)
-            //   newArr.push(arr2[index])
-            //   arr1.splice(index, 1)
-            //   arr2.splice(index, 1)
-            // }
-            // this.selected.right = newArr // 输出排序后的新数组
             if (this.oneDone1) {
               this.showResultPopup = true
             } else {
@@ -647,11 +654,6 @@ export default {
             this.showResult = false
           }
         }
-        console.log(
-          this.questionList1,
-          this.questionList2,
-          'questionList2questionList2',
-        )
       } catch (error) {
         console.log(error)
       }
@@ -679,7 +681,6 @@ export default {
         array[i] = array[j]
         array[j] = temp
       }
-      console.log(array, 'array')
       return array
     },
     // 数组乱序方法

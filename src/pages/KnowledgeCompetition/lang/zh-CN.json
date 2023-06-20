@@ -1,0 +1,22 @@
+{
+  "text": {
+    "langType": 1,
+    "singleTitle": "单人模式",
+    "doubleTitle": "双人模式",
+    "hintText": "玩法指南",
+    "setting": "设置",
+    "chooseSubject": "题目选择",
+    "timingSetting": "计时设置",
+    "openTimer": "启用计时",
+    "disableTiming": "禁用计时",
+    "personalPassword": "获取自定义题库",
+    "submitButton": "提交",
+    "startAnswering": "开始答题",
+    "close": "关闭",
+    "oneMore": "再来一次",
+    "score": "得分",
+    "times": "时间",
+    "accuracy": "正确率",
+    "backToManagementSystem": "返回管理系统"
+  }
+}

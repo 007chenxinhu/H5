@@ -1,7 +1,9 @@
 <template>
   <div class="content">
     <div class="startPopup" v-if="showStartPopup">
-      <div @click="startAnswer" class="start-btn">开始答题</div>
+      <div @click="startAnswer" class="start-btn">
+        {{ $t('text.startAnswering') }}
+      </div>
     </div>
     <div class="go_back" @click="goBack">
       <img class="go_back_img" src="../assets/images/star_btn_home.png" />
@@ -86,9 +88,15 @@
           <van-icon name="cross" />
         </div> -->
         <div class="result-score">
-          <div class="result-score-button">Score: {{ score ? score : 0 }}</div>
-          <div class="result-score-button">Accuracy: {{ accuracy }}%</div>
-          <div class="result-score-button">Time: {{ times }}s</div>
+          <div class="result-score-button">
+            {{ $t('text.score') }}: {{ score ? score : 0 }}
+          </div>
+          <div class="result-score-button">
+            {{ $t('text.accuracy') }}: {{ accuracy }}%
+          </div>
+          <div class="result-score-button">
+            {{ $t('text.times') }}: {{ times }}s
+          </div>
           <!-- <div class="more-btn" @click="oneMore()">再来一次</div> -->
         </div>
         <div
@@ -158,10 +166,10 @@
         </div>
         <div class="result-score">
           <div class="result-score-button margin-bottom" @click="closePopup">
-            Close
+            {{ $t('text.close') }}
           </div>
           <div class="result-score-button margin-bottom" @click="oneMore">
-            Again
+            {{ $t('text.oneMore') }}
           </div>
         </div>
       </div>
@@ -191,8 +199,14 @@ export default {
     this.titleId = this.$route.query.id
     this._getListTheopictable(this.titleId)
   },
+  mounted() {
+    this.url = window.localStorage.getItem('hash')
+    this.url = this.url.substring(1)
+    this.$i18n.locale = window.localStorage.getItem('langType')
+  },
   data() {
     return {
+      url: '',
       questionList: [
         // {
         //   title: '1. 世界上最长的河流是哪个？',
@@ -273,10 +287,15 @@ export default {
       }
     },
     oneMore() {
-      this.$router.push('/index?type=single')
+      if (this.url.includes('?')) {
+        this.$router.push(`${this.url}&type=single`)
+      }
+      {
+        this.$router.push('/index?type=single')
+      }
     },
     goBack() {
-      this.$router.push('/index')
+      this.$router.push(`${this.url}`)
     },
     startCountdown() {
       this.timerId = setInterval(() => {
@@ -293,6 +312,16 @@ export default {
           clearInterval(this.timerId)
           this.totalTime = 0
           this.$toast('时间到！')
+          this.questionList.forEach((item, index) => {
+            if (item.selected === item.answer) {
+              this.score = this.score + 50
+            }
+          })
+          this.accuracy = (
+            (this.score / (this.questionList.length * 50)) *
+            100
+          ).toFixed(2)
+          this.times = this.getTime
           this.showResultPopup = true
         }
       }, this.interval)
