@@ -1,7 +1,20 @@
 <template>
   <div class="content">
     <div class="startPopup" v-if="showStartPopup">
-      <div @click="startAnswer" class="start-btn">
+      <div class="loading">
+        <div class="loading_text">{{ loading }}</div>
+        <div class="g-container">
+          <div class="g-first"></div>
+          <div class="g-ball"></div>
+          <div class="g-ball"></div>
+          <div class="g-ball"></div>
+          <div class="g-ball"></div>
+          <div class="g-ball"></div>
+          <div class="g-ball"></div>
+          <div class="g-ball"></div>
+        </div>
+      </div>
+      <div @click="startAnswer" class="start-btn" v-show="showStartBtn">
         {{ $t('text.startAnswering') }}
       </div>
     </div>
@@ -174,11 +187,23 @@
         </div>
       </div>
     </div>
+    <audio id="audio" ref="audio" src="../assets/audio/index_btn.mp3" preload>
+      对不起，您的浏览器不支持HTML5音频播放。
+    </audio>
+    <audio
+      id="audio1"
+      ref="audio1"
+      src="../assets/audio/choose_btn.mp3"
+      preload
+    >
+      对不起，您的浏览器不支持HTML5音频播放。
+    </audio>
   </div>
 </template>
 
 <script>
 import { getListThetopictable } from '../api/index'
+import { getParameter } from '../utils/indexExtends'
 
 export default {
   name: 'SingleCategory',
@@ -203,6 +228,11 @@ export default {
     this.url = window.localStorage.getItem('hash')
     this.url = this.url.substring(1)
     this.$i18n.locale = window.localStorage.getItem('langType')
+    let _this = this
+    setTimeout(() => {
+      _this.loading = 'Loaded'
+      _this.showStartBtn = true
+    }, 2000)
   },
   data() {
     return {
@@ -246,12 +276,26 @@ export default {
       TimeLimit: null,
       titleId: null,
       tableData: null,
+      loading: 'Loading...',
+      showStartBtn: false,
     }
   },
   beforeDestroy() {
     clearInterval(this.timerId)
   },
   methods: {
+    playAudioBtn() {
+      let music1 = new Audio() //建立一个music1对象
+      music1 = require('../assets/audio/index_btn.mp3') //通过require引入音频
+      this.$refs.audio.src = music1 //此处的audio为代码ref="audio"中的audio
+      this.$refs.audio.play() //play()为播放函数
+    },
+    playAudioBtn1() {
+      let music1 = new Audio() //建立一个music1对象
+      music1 = require('../assets/audio/choose_btn.mp3') //通过require引入音频
+      this.$refs.audio1.src = music1 //此处的audio为代码ref="audio"中的audio
+      this.$refs.audio1.play() //play()为播放函数
+    },
     //获取选中当前题库下的题目列表
     async _getListTheopictable(id) {
       try {
@@ -287,12 +331,25 @@ export default {
       }
     },
     oneMore() {
-      if (this.url.includes('?')) {
-        this.$router.push(`${this.url}&type=single`)
-      }
-      {
-        this.$router.push('/index?type=single')
-      }
+      location.reload(true)
+
+      // let limitTime = getParameter('limitTime')
+      // let time = getParameter('time')
+      // let id = getParameter('id')
+      // this.$router
+      //   .push({
+      //     path: '/singleCategory',
+      //     query: {
+      //       limitTime: limitTime,
+      //       time: time,
+      //       id: id,
+      //     },
+      //   })
+      //   .catch(error => {
+      //     if (error.name !== 'NavigationDuplicated') {
+      //       throw error
+      //     }
+      //   })
     },
     goBack() {
       this.$router.push(`${this.url}`)
@@ -343,6 +400,7 @@ export default {
     selectOption(index) {
       if (this.showResult === true) return
       this.selectedOption = index
+      this.playAudioBtn1()
       this.nextQuestion()
     },
     checkAnswer() {

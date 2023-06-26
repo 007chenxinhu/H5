@@ -18,6 +18,14 @@
   font-weight: normal;
   font-style: normal;
 }
+html,
+body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  font-weight: bold;
+  background: #000;
+}
 .home {
   position: relative;
   @include wh(100vw, 100vh);
@@ -33,7 +41,6 @@
   /* Standard syntax 标准语法(谷歌) */
   user-select: none;
   overflow: hidden;
-
   .home_square {
     position: absolute;
     @include wh(20.25vw, 17.375vw);
@@ -43,16 +50,37 @@
     transform: translateX(-50%);
     .home_square_img {
       @include wh(20.25vw, 17.375vw);
+      animation: rotate-and-move 5s ease-in-out infinite;
     }
   }
 }
-html,
-body {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  font-weight: bold;
-  background: #000;
+@keyframes rotate-and-move {
+  0% {
+    transform: rotate(-20deg) translate(20px, 10px);
+  }
+  50% {
+    transform: rotate(10deg) translate(10px, 5px);
+  }
+  100% {
+    transform: rotate(-20deg) translate(20px, 10px);
+  }
+  // @keyframes rotate-move-and-fold {
+  // 0% {
+  //   transform: translate(-50%, -50%) rotate(0deg) translate3d(0, 0, 0);
+  // }
+  // 25% {
+  //   transform: translate(-50%, -50%) rotate(15deg) translate3d(0, -10px, -20px);
+  // }
+  // 50% {
+  //   transform: translate(-50%, -50%) rotate(0deg) translate3d(0, -20px, -40px);
+  // }
+  // 75% {
+  //   transform: translate(-50%, -50%) rotate(-15deg) translate3d(0, -10px, -20px);
+  // }
+  // 100% {
+  //   transform: translate(-50%, -50%) rotate(0deg) translate3d(0, 0, 0);
+  // }
+  // }
 }
 .btn-back {
   position: absolute;
@@ -248,31 +276,37 @@ body {
   left: 10vw;
   transform: translate(0, -50%);
   padding: 0 6.66vw;
+  overflow: auto;
   @include bg('../assets/images/play_bg_pop.png');
   .hint-title {
     width: 100%;
     text-align: center;
     font-size: 2.6vw;
     padding: 7.42vh 0 2.28vh;
+    font-weight: bold;
   }
   .hint-text {
     font-size: 2vw;
-    // margin-top: 2vw;
+    margin-top: 1vw;
   }
 }
 .closeWrapper {
-  position: fixed;
-  width: 2vw;
-  height: 2vw;
+  position: absolute;
+  width: 3.6vw;
+  height: 3.6vw;
   text-align: center;
   line-height: 2vw;
   top: 5vw;
   right: 5vw;
-  border: 0.1vw solid #0cc2cf;
-  border-radius: 50%;
-  /deep/.van-icon {
-    font-size: 2vw;
-    color: #0cc2cf;
+  // border: 0.1vw solid #0cc2cf;
+  // border-radius: 50%;
+  // /deep/.van-icon {
+  //   font-size: 2vw;
+  //   color: #0cc2cf;
+  // }
+  .setting_btn {
+    width: 3.6vw;
+    height: 3.6vw;
   }
 }
 // .setting-title {
@@ -299,9 +333,8 @@ body {
   // justify-content: center;
   // align-items: center;
   width: 100%;
-  font-size: 2vw;
   &-title {
-    font-size: 2vw;
+    font-size: 1.66vw;
     color: #2f3134;
     font-weight: 400;
     margin-bottom: 1.14vh;
@@ -313,7 +346,7 @@ body {
     justify-content: space-between;
     background-color: #ecf2ff;
     border: 1px solid rgba(12, 194, 207, 0.35);
-    border-radius: 1vw;
+    overflow: hidden;
     // flex-wrap: wrap;
     .choose-subject {
       overflow-y: auto;
@@ -321,7 +354,7 @@ body {
       height: 22.8vh;
       border-right: 1px solid rgba(12, 194, 207, 0.35);
       color: #2f3134;
-      font-size: 1.66vw;
+      font-size: 1.4vw;
 
       .li-item {
         overflow: hidden;
@@ -354,7 +387,7 @@ body {
       width: 50%;
       height: 22.8vh;
       color: #2f3134;
-      font-size: 1.66vw;
+      font-size: 1.4vw;
 
       .li-item {
         overflow: hidden;
@@ -384,11 +417,11 @@ body {
     }
   }
   .limit_time_title {
-    font-size: 2vw;
+    font-size: 1.66vw;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #2f3134;
-    margin: 2.2vh 0 1.4vh;
+    margin: 2vh 0 1.4vh;
   }
   .limit_time {
     display: flex;
@@ -396,13 +429,13 @@ body {
       display: flex;
       align-items: center;
       .limit_time_choose_img {
-        @include wh(2.33vw, 2.33vw);
+        @include wh(2.15vw, 2.15vw);
         .limit_time_img {
-          @include wh(2.33vw, 2.33vw);
+          @include wh(2.15vw, 2.15vw);
         }
       }
       .limit_time_text {
-        font-size: 1.66vw;
+        font-size: 1.4vw;
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
         color: #2f3134;
@@ -418,7 +451,7 @@ body {
         box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.1);
         border-radius: 0.5vw;
         .limit_time_time {
-          font-size: 1.66vw;
+          font-size: 1.4vw;
           font-family: PingFangSC-Regular, PingFang SC;
           font-weight: 400;
           color: #2f3134;
@@ -449,7 +482,7 @@ body {
             font-size: 1.66vw;
             overflow-y: scroll;
             .limit_time_choose_list {
-              font-size: 1.66vw;
+              font-size: 1.4vw;
               font-family: PingFangSC-Regular, PingFang SC;
               font-weight: 400;
               color: #2f3134;
@@ -472,17 +505,17 @@ body {
   align-items: center;
 }
 .get-personal-topic {
-  @include wh(30.66vw, 6.85vh);
+  @include wh(30.66vw, 6vh);
   border: none;
   text-align: center;
   background: #ffffff;
   box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.1);
   border-radius: 2px;
-  font-size: 1.66vw;
+  font-size: 1.4vw;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #2f3134;
-  margin: 3.42vh 1vw 3.42vh 0;
+  margin: 3vh 1vw 3vh 0;
 }
 .search_icon {
   position: absolute;
@@ -500,7 +533,7 @@ body {
   background: #0cc2cf;
   box-shadow: 0px 0.3vw 0px 0px #0b8891;
   border-radius: 0.4vw;
-  font-size: 2vw;
+  font-size: 2vw !important;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #ffffff;

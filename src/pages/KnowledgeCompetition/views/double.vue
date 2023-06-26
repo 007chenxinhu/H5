@@ -1,7 +1,20 @@
 <template>
   <div class="content">
     <div class="startPopup" v-if="showStartPopup">
-      <div @click="startAnswer" class="start-btn">
+      <div class="loading">
+        <div class="loading_text">{{ loading }}</div>
+        <div class="g-container">
+          <div class="g-first"></div>
+          <div class="g-ball"></div>
+          <div class="g-ball"></div>
+          <div class="g-ball"></div>
+          <div class="g-ball"></div>
+          <div class="g-ball"></div>
+          <div class="g-ball"></div>
+          <div class="g-ball"></div>
+        </div>
+      </div>
+      <div @click="startAnswer" class="start-btn" v-show="showStartBtn">
         {{ $t('text.startAnswering') }}
       </div>
 
@@ -53,35 +66,35 @@
           </div>
         </div>
         <!-- 倒计时 -->
-        <div class="question" @click="select2">
+        <div class="question">
           <div class="title">{{ currentQuestion.t_content }}</div>
           <!-- <img src="../assets/cartoon/water.png" alt="" /> -->
           <div class="options">
             <div
               class="option-l"
               :class="showResult ? (selectedOption1 === 0 ? 'active' : '') : ''"
-              @click="selectOption1(true, 0)"
+              @touchstart="selectOption1(true, 0)"
             >
               {{ currentQuestion.t_Answer_A }}
             </div>
             <div
               class="option-l"
               :class="showResult ? (selectedOption1 === 1 ? 'active' : '') : ''"
-              @click="selectOption1(true, 1)"
+              @touchstart="selectOption1(true, 1)"
             >
               {{ currentQuestion.t_Answer_B }}
             </div>
             <div
               class="option-l"
               :class="showResult ? (selectedOption1 === 2 ? 'active' : '') : ''"
-              @click="selectOption1(true, 2)"
+              @touchstart="selectOption1(true, 2)"
             >
               {{ currentQuestion.t_Answer_C }}
             </div>
             <div
               class="option-l"
               :class="showResult ? (selectedOption1 === 3 ? 'active' : '') : ''"
-              @click="selectOption1(true, 3)"
+              @touchstart="selectOption1(true, 3)"
             >
               {{ currentQuestion.t_Answer_D }}
             </div>
@@ -115,32 +128,32 @@
         <!-- 倒计时 -->
         <div class="question">
           <div class="title">{{ currentQuestionss.t_content }}</div>
-          <div class="options" @click="select2">
+          <div class="options">
             <div
               class="option-r"
               :class="showResult ? (selectedOption2 === 0 ? 'active' : '') : ''"
-              @click="selectOption2(false, 0)"
+              @touchstart="selectOption2(false, 0)"
             >
               {{ currentQuestionss.t_Answer_A }}
             </div>
             <div
               class="option-r"
               :class="showResult ? (selectedOption2 === 1 ? 'active' : '') : ''"
-              @click="selectOption2(false, 1)"
+              @touchstart="selectOption2(false, 1)"
             >
               {{ currentQuestionss.t_Answer_B }}
             </div>
             <div
               class="option-r"
               :class="showResult ? (selectedOption2 === 2 ? 'active' : '') : ''"
-              @click="selectOption2(false, 2)"
+              @touchstart="selectOption2(false, 2)"
             >
               {{ currentQuestionss.t_Answer_C }}
             </div>
             <div
               class="option-r"
               :class="showResult ? (selectedOption2 === 3 ? 'active' : '') : ''"
-              @click="selectOption2(false, 3)"
+              @touchstart="selectOption2(false, 3)"
             >
               {{ currentQuestionss.t_Answer_D }}
             </div>
@@ -372,12 +385,24 @@
         </div>
       </div> -->
     </div>
+    <audio id="audio" ref="audio" src="../assets/audio/index_btn.mp3" preload>
+      对不起，您的浏览器不支持HTML5音频播放。
+    </audio>
+    <audio
+      id="audio1"
+      ref="audio1"
+      src="../assets/audio/choose_btn.mp3"
+      preload
+    >
+      对不起，您的浏览器不支持HTML5音频播放。
+    </audio>
   </div>
 </template>
 
 <script>
 // import ProgressBar from '../components/ProgressBar.vue'
 import { getListThetopictable } from '../api/index'
+import { getParameter } from '../utils/indexExtends'
 
 export default {
   name: 'DoubleCategory',
@@ -398,25 +423,7 @@ export default {
     //   return this.selectedOption2 === this.currentQuestionss.answer
     // },
   },
-  created() {
-    this.TimeLimit = this.$route.query.limitTime
-      ? this.$route.query.limitTime
-      : false
-    this.getTime = this.$route.query.time
-    this.totalTime = this.$route.query.time
 
-    this.titleId = this.$route.query.id
-
-    this._getListTheopictable(this.titleId)
-  },
-  mounted() {
-    this.url = window.localStorage.getItem('hash')
-    this.url = this.url.substring(1)
-    this.$i18n.locale = window.localStorage.getItem('langType')
-  },
-  beforeDestroy() {
-    clearInterval(this.timerId)
-  },
   data() {
     return {
       url: '',
@@ -454,12 +461,55 @@ export default {
       time: null,
       titleId: null,
       tableData: null,
+      loading: 'Loading...',
+      showStartBtn: false,
     }
   },
+  created() {
+    this.TimeLimit = this.$route.query.limitTime
+      ? this.$route.query.limitTime
+      : false
+    this.getTime = this.$route.query.time
+    this.totalTime = this.$route.query.time
 
+    this.titleId = this.$route.query.id
+
+    this._getListTheopictable(this.titleId)
+  },
+  mounted() {
+    this.url = window.localStorage.getItem('hash')
+    this.url = this.url.substring(1)
+    console.log(window.location.hash)
+    this.$i18n.locale = window.localStorage.getItem('langType')
+    this.$el.addEventListener('contextmenu', this.handleContextMenu)
+
+    let _this = this
+    setTimeout(() => {
+      _this.loading = 'Loaded'
+      _this.showStartBtn = true
+    }, 2000)
+  },
+  destroyed() {
+    this.$el.removeEventListener('contextmenu', this.handleContextMenu)
+  },
+  beforeDestroy() {
+    clearInterval(this.timerId)
+  },
   methods: {
-    select2(e) {
-      console.log(e)
+    playAudioBtn() {
+      let music1 = new Audio() //建立一个music1对象
+      music1 = require('../assets/audio/index_btn.mp3') //通过require引入音频
+      this.$refs.audio.src = music1 //此处的audio为代码ref="audio"中的audio
+      this.$refs.audio.play() //play()为播放函数
+    },
+    playAudioBtn1() {
+      let music1 = new Audio() //建立一个music1对象
+      music1 = require('../assets/audio/choose_btn.mp3') //通过require引入音频
+      this.$refs.audio1.src = music1 //此处的audio为代码ref="audio"中的audio
+      this.$refs.audio1.play() //play()为播放函数
+    },
+    handleContextMenu(event) {
+      event.preventDefault()
     },
     //获取选中当前题库下的题目列表
     async _getListTheopictable(id) {
@@ -515,12 +565,24 @@ export default {
       }
     },
     oneMore() {
-      if (this.url.includes('?')) {
-        this.$router.push(`${this.url}&type=double`)
-      }
-      {
-        this.$router.push('/index?type=double')
-      }
+      location.reload(true)
+      // let limitTime = getParameter('limitTime')
+      // let time = getParameter('time')
+      // let id = getParameter('id')
+      // this.$router
+      //   .push({
+      //     path: '/doubleCategory',
+      //     query: {
+      //       limitTime: limitTime,
+      //       time: time,
+      //       id: id,
+      //     },
+      //   })
+      //   .catch(error => {
+      //     if (error.name !== 'NavigationDuplicated') {
+      //       throw error
+      //     }
+      //   })
     },
     goBack() {
       this.$router.push(`${this.url}`)
@@ -555,11 +617,13 @@ export default {
       }, this.interval)
     },
     async selectOption1(type, index) {
+      this.playAudioBtn1()
       if (this.showResult === true) return
       this.selectedOption1 = index
       await this.nextQuestion(type)
     },
     async selectOption2(type, index) {
+      this.playAudioBtn1()
       if (this.showResult === true) return
       this.selectedOption2 = index
       await this.nextQuestion(type)

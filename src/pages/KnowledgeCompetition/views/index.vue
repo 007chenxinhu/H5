@@ -37,28 +37,22 @@
     <!-- 提示说明 -->
     <div :class="showHintPopupClass" v-show="showHintPopup">
       <div class="closeWrapper" @click="closePopup">
-        <van-icon name="cross" />
+        <img class="setting_btn" src="../assets/images/setting_btn_close.png" />
       </div>
       <div class="hint-title">
         {{ $t('text.hintText') }}
       </div>
-      <div class="hint-text">答题模式：单人答题模式和双人竞赛答题模式。</div>
-      <div class="hint-text">
-        概述：世界之最知识选项答题是一款考验学生知识广度和深度的游戏。游戏分为单人答题模式和双人答题模式，
-        学生需要在规定的时间内回答尽可能多的问题，获得尽可能高的得分。
-      </div>
-      <div class="hint-text">
-        时间提示：在单人答题模式下，游戏开始后，每隔30秒会有一个时间提示。在双人答题模式下，
-        每轮回合开始前会有一个时间提示，每个回合时长为1分钟。
-      </div>
+      <div class="hint-text">答题模式：个人答题模式和双人竞赛答题模式。</div>
       <div class="hint-text">
         题目类型：涵盖世界各个领域的知识，包括但不限于科学、历史、文化、地理等。
       </div>
       <div class="hint-text">
-        游戏细节： 游戏中，学生无法修改已提交的答案。
-        在双人答题模式下，学生需要尊重对手，不能使用不公平或不正当的手段干扰对手。
-        游戏结束后，系统将公布学生的得分排名，单人模式可记录历史最高得分。
-        未开始答题时可手动刷新题库，限制3次。
+        时间提示：开启时间提示之后，在答题模式下，游戏开始后，每隔30秒会有一个时间提示，时间到了停止做题，展示答案校验结果。
+      </div>
+      <div class="hint-text">
+        游戏细节：
+        游戏中，学生无法修改已提交的答案，题目全部选完之后，会展示答案校验结果。
+        在双人答题模式下，需要两名学生都答完，才会展示答案校验结果。
       </div>
     </div>
     <!-- 设置 -->
@@ -68,7 +62,8 @@
       v-show="showSettingPopup"
     >
       <div class="closeWrapper" @click="closePopup">
-        <van-icon name="cross" />
+        <!-- <van-icon name="cross" /> -->
+        <img class="setting_btn" src="../assets/images/setting_btn_close.png" />
       </div>
       <div class="hint-title">
         {{ $t('text.setting') }}
@@ -175,6 +170,9 @@
         {{ $t('text.submitButton') }}
       </button>
     </div>
+    <audio id="audio" ref="audio" src="../assets/audio/index_btn.mp3" preload>
+      对不起，您的浏览器不支持HTML5音频播放。
+    </audio>
   </div>
 </template>
 
@@ -246,6 +244,16 @@ export default {
     window.localStorage.setItem('hash', window.location.hash)
   },
   methods: {
+    playAudioBtn() {
+      try {
+        let music1 = new Audio() //建立一个music1对象
+        music1 = require('../assets/audio/index_btn.mp3') //通过require引入音频
+        this.$refs.audio.src = music1 //此处的audio为代码ref="audio"中的audio
+        this.$refs.audio.play() //play()为播放函数
+      } catch (error) {
+        console.log(error)
+      }
+    },
     //获取个人题库
     async gerPersonalTopic() {
       try {
@@ -399,6 +407,7 @@ export default {
       window.localStorage.removeItem('myManagement')
     },
     singleCategory() {
+      this.playAudioBtn()
       this.$router.push({
         path: '/singleCategory',
         query: {
@@ -409,6 +418,7 @@ export default {
       })
     },
     doubleCategory() {
+      this.playAudioBtn()
       this.$router.push({
         path: '/doubleCategory',
         query: {

@@ -66,7 +66,7 @@ const langTypeMap = {
   zh: 'zh-CN',
   en: 'en-US',
 }
-Vue.use(VueI18n)
+// Vue.use(VueI18n)
 
 const lang = getParameter('language') || 'en'
 const i18n = new VueI18n({

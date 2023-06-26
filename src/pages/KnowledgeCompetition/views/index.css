@@ -6,6 +6,15 @@
   font-style: normal;
 }
 
+html,
+body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  font-weight: bold;
+  background: #000;
+}
+
 .home {
   position: relative;
   width: 100vw;
@@ -39,15 +48,19 @@
 .home .home_square .home_square_img {
   width: 20.25vw;
   height: 17.375vw;
+  animation: rotate-and-move 5s ease-in-out infinite;
 }
 
-html,
-body {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  font-weight: bold;
-  background: #000;
+@keyframes rotate-and-move {
+  0% {
+    transform: rotate(-20deg) translate(20px, 10px);
+  }
+  50% {
+    transform: rotate(10deg) translate(10px, 5px);
+  }
+  100% {
+    transform: rotate(-20deg) translate(20px, 10px);
+  }
 }
 
 .btn-back {
@@ -198,6 +211,7 @@ body {
   left: 10vw;
   transform: translate(0, -50%);
   padding: 0 6.66vw;
+  overflow: auto;
   background-image: url("../assets/images/play_bg_pop.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -208,27 +222,27 @@ body {
   text-align: center;
   font-size: 2.6vw;
   padding: 7.42vh 0 2.28vh;
+  font-weight: bold;
 }
 
 .hint-popup .hint-text {
   font-size: 2vw;
+  margin-top: 1vw;
 }
 
 .closeWrapper {
-  position: fixed;
-  width: 2vw;
-  height: 2vw;
+  position: absolute;
+  width: 3.6vw;
+  height: 3.6vw;
   text-align: center;
   line-height: 2vw;
   top: 5vw;
   right: 5vw;
-  border: 0.1vw solid #0cc2cf;
-  border-radius: 50%;
 }
 
-.closeWrapper /deep/.van-icon {
-  font-size: 2vw;
-  color: #0cc2cf;
+.closeWrapper .setting_btn {
+  width: 3.6vw;
+  height: 3.6vw;
 }
 
 .setting-TopicType {
@@ -236,11 +250,10 @@ body {
   flex-direction: column;
   text-align: left;
   width: 100%;
-  font-size: 2vw;
 }
 
 .setting-TopicType-title {
-  font-size: 2vw;
+  font-size: 1.66vw;
   color: #2f3134;
   font-weight: 400;
   margin-bottom: 1.14vh;
@@ -253,7 +266,7 @@ body {
   justify-content: space-between;
   background-color: #ecf2ff;
   border: 1px solid rgba(12, 194, 207, 0.35);
-  border-radius: 1vw;
+  overflow: hidden;
 }
 
 .setting-TopicType .options .choose-subject {
@@ -262,7 +275,7 @@ body {
   height: 22.8vh;
   border-right: 1px solid rgba(12, 194, 207, 0.35);
   color: #2f3134;
-  font-size: 1.66vw;
+  font-size: 1.4vw;
 }
 
 .setting-TopicType .options .choose-subject .li-item {
@@ -298,7 +311,7 @@ body {
   width: 50%;
   height: 22.8vh;
   color: #2f3134;
-  font-size: 1.66vw;
+  font-size: 1.4vw;
 }
 
 .setting-TopicType .options .choose-title .li-item {
@@ -330,11 +343,11 @@ body {
 }
 
 .setting-TopicType .limit_time_title {
-  font-size: 2vw;
+  font-size: 1.66vw;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #2f3134;
-  margin: 2.2vh 0 1.4vh;
+  margin: 2vh 0 1.4vh;
 }
 
 .setting-TopicType .limit_time {
@@ -347,17 +360,17 @@ body {
 }
 
 .setting-TopicType .limit_time .limit_time_enable .limit_time_choose_img {
-  width: 2.33vw;
-  height: 2.33vw;
+  width: 2.15vw;
+  height: 2.15vw;
 }
 
 .setting-TopicType .limit_time .limit_time_enable .limit_time_choose_img .limit_time_img {
-  width: 2.33vw;
-  height: 2.33vw;
+  width: 2.15vw;
+  height: 2.15vw;
 }
 
 .setting-TopicType .limit_time .limit_time_enable .limit_time_text {
-  font-size: 1.66vw;
+  font-size: 1.4vw;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #2f3134;
@@ -377,7 +390,7 @@ body {
 }
 
 .setting-TopicType .limit_time .limit_time_enable .limit_time_choose .limit_time_time {
-  font-size: 1.66vw;
+  font-size: 1.4vw;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #2f3134;
@@ -414,7 +427,7 @@ body {
 }
 
 .setting-TopicType .limit_time .limit_time_enable .limit_time_choose .choose_box .limit_time_choose_box .limit_time_choose_list {
-  font-size: 1.66vw;
+  font-size: 1.4vw;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #2f3134;
@@ -433,17 +446,17 @@ body {
 
 .get-personal-topic {
   width: 30.66vw;
-  height: 6.85vh;
+  height: 6vh;
   border: none;
   text-align: center;
   background: #ffffff;
   box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.1);
   border-radius: 2px;
-  font-size: 1.66vw;
+  font-size: 1.4vw;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #2f3134;
-  margin: 3.42vh 1vw 3.42vh 0;
+  margin: 3vh 1vw 3vh 0;
 }
 
 .search_icon {
@@ -465,7 +478,7 @@ body {
   background: #0cc2cf;
   box-shadow: 0px 0.3vw 0px 0px #0b8891;
   border-radius: 0.4vw;
-  font-size: 2vw;
+  font-size: 2vw !important;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #ffffff;
