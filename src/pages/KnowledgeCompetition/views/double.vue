@@ -267,7 +267,8 @@
             </div>
           </div>
           <div class="result-answer-s">
-            正确答案是{{
+            {{ $t('text.correctAnswer')
+            }}{{
               questionList1[index].t_Answer + questionList1[index].t_Explain
             }}
           </div>
@@ -396,6 +397,9 @@
     >
       对不起，您的浏览器不支持HTML5音频播放。
     </audio>
+    <audio id="audio2" ref="audio2" src="../assets/audio/warning.mp3" preload>
+      对不起，您的浏览器不支持HTML5音频播放。
+    </audio>
   </div>
 </template>
 
@@ -463,6 +467,8 @@ export default {
       tableData: null,
       loading: 'Loading...',
       showStartBtn: false,
+      leftOver: false,
+      rightOver: false,
     }
   },
   created() {
@@ -479,7 +485,6 @@ export default {
   mounted() {
     this.url = window.localStorage.getItem('hash')
     this.url = this.url.substring(1)
-    console.log(window.location.hash)
     this.$i18n.locale = window.localStorage.getItem('langType')
     this.$el.addEventListener('contextmenu', this.handleContextMenu)
 
@@ -508,6 +513,12 @@ export default {
       this.$refs.audio1.src = music1 //此处的audio为代码ref="audio"中的audio
       this.$refs.audio1.play() //play()为播放函数
     },
+    playAudioBtn2() {
+      let music1 = new Audio() //建立一个music1对象
+      music1 = require('../assets/audio/warning.mp3') //通过require引入音频
+      this.$refs.audio2.src = music1 //此处的audio为代码ref="audio"中的audio
+      this.$refs.audio2.play() //play()为播放函数
+    },
     handleContextMenu(event) {
       event.preventDefault()
     },
@@ -526,9 +537,7 @@ export default {
           })
         })
         this.questionList1 = res
-
         let myArray = res
-
         this.currentQuestion = this.questionList1[this.currentQuestionIndex1]
         //222222
         // 使用sort方法将myArray随机排序
@@ -559,13 +568,62 @@ export default {
       }
     },
     startAnswer() {
+      this.playAudioBtn()
       this.showStartPopup = false
       if (this.TimeLimit === 'true') {
         this.startCountdown()
       }
     },
     oneMore() {
-      location.reload(true)
+      this.playAudioBtn()
+      this.showStartPopup = true
+      this.loading = 'Loading...'
+
+      let self = this
+      this.showResultPopupClass = 'result-popup bounceOutRight animated'
+      setTimeout(() => {
+        self.showResultPopupClass = 'result-popup bounceInDown animated'
+        self.showResultPopup = false
+      }, 599)
+      clearInterval(this.timerId)
+      this.currentQuestion = []
+      this.currentQuestionss = []
+      this.currentQuestionIndex1 = 0
+      this.currentQuestionIndex2 = 0
+
+      this.selected = Object.assign({}, { left: [], right: [] })
+
+      this.selectedOption1 = null
+      this.selectedOption2 = null
+
+      this.showResult = false
+      setTimeout(() => {
+        self.loading = 'Loaded'
+        self.showStartBtn = true
+      }, 2000)
+      this.TimeLimit = this.$route.query.limitTime
+        ? this.$route.query.limitTime
+        : false
+      this.getTime = this.$route.query.time
+      this.totalTime = this.$route.query.time
+      this.titleId = this.$route.query.id
+      this._getListTheopictable(this.titleId)
+
+      this.score1 = 0
+      this.accuracy1 = 0
+      this.times1 = 0
+      this.score2 = 0
+      this.accuracy2 = 0
+      this.times2 = 0
+      this.leftOver = false
+      this.rightOver = false
+
+      // let _this = this
+      // setTimeout(() => {
+      //   _this.$router.go(0)
+      // }, 100)
+
+      // location.reload(true)
       // let limitTime = getParameter('limitTime')
       // let time = getParameter('time')
       // let id = getParameter('id')
@@ -585,44 +643,72 @@ export default {
       //   })
     },
     goBack() {
-      this.$router.push(`${this.url}`)
+      this.playAudioBtn()
+      let _this = this
+      setTimeout(() => {
+        _this.$router.push(`${this.url}`)
+      }, 100)
     },
     startCountdown() {
+      let _this = this
       this.timerId = setInterval(() => {
-        this.totalTime -= this.interval / 1000
+        _this.totalTime -= _this.interval / 1000
         // 每30秒进行提醒
-        if (this.totalTime % this.alertInterval === 0 && !this.isAlerted) {
-          this.$toast(`已经过去 ${this.getTime - this.totalTime} 秒`)
-          this.isAlerted = true
-        } else if (this.totalTime % this.alertInterval !== 0) {
-          this.isAlerted = false
+        if (_this.totalTime % _this.alertInterval === 0 && !_this.isAlerted) {
+          _this.$toast(
+            `${_this.$t('text.TheTime')} ${_this.getTime - _this.totalTime} s`,
+          )
+          _this.isAlerted = true
+          let count = 0
+          const interval = setInterval(() => {
+            // 播放声音的代码
+            _this.playAudioBtn2()
+            count++
+            if (count === 3) {
+              clearInterval(interval)
+            }
+          }, 1000)
+        } else if (_this.totalTime % _this.alertInterval !== 0) {
+          _this.isAlerted = false
         }
 
-        if (this.totalTime < 0) {
-          clearInterval(this.timerId)
-          this.totalTime = 0
-          this.$toast('时间到！')
-          this.questionList1.forEach((item, index) => {
-            if (item.selected === item.answer) {
-              this.score1 = this.score1 + 50
-            }
-          })
-          this.questionList2.forEach((item, index) => {
-            if (item.selected === item.answer) {
-              this.score2 = this.score2 + 50
-            }
-          })
-          this.showResultPopup = true
+        if (_this.totalTime < 0) {
+          clearInterval(_this.timerId)
+          _this.totalTime = 0
+          _this.$toast(this.$t('text.TimeOut'))
+          // if (!_this.leftOver) {
+          //   _this.questionList1.forEach((item, index) => {
+          //     if (item.selected === item.answer) {
+          //       _this.score1 = _this.score1 + 50
+          //     }
+          //   })
+          // }
+          // if (!_this.rightOver) {
+          //   _this.questionList2.forEach((item, index) => {
+          //     if (item.selected === item.answer) {
+          //       _this.score2 = _this.score2 + 50
+          //     }
+          //   })
+          // }
+          _this.showResultPopup = true
         }
       }, this.interval)
     },
+    //左选择
     async selectOption1(type, index) {
+      if (this.leftOver || this.showResultPopup) {
+        return
+      }
       this.playAudioBtn1()
       if (this.showResult === true) return
       this.selectedOption1 = index
       await this.nextQuestion(type)
     },
+    //右选择
     async selectOption2(type, index) {
+      if (this.rightOver || this.showResultPopup) {
+        return
+      }
       this.playAudioBtn1()
       if (this.showResult === true) return
       this.selectedOption2 = index
@@ -643,20 +729,29 @@ export default {
           }
           this.questionList1[this.currentQuestionIndex1].selected =
             this.selectedOption1
+          //左边加分
+          if (
+            this.questionList1[this.currentQuestionIndex1].selected ===
+            this.questionList1[this.currentQuestionIndex1].answer
+          ) {
+            this.score1 = this.score1 + 50
+          }
           this.selected.left.push(this.selectedOption1)
+          // this.questionList1.forEach((item, index) => {
+          //   if (item.selected === item.answer) {
+          //     this.score1 = this.score1 + 50
+          //   }
+          // })
           //答完
           if (this.currentQuestionIndex1 + 1 === this.questionList1.length) {
-            this.questionList1.forEach((item, index) => {
-              if (item.selected === item.answer) {
-                this.score1 = this.score1 + 50
-              }
-            })
-            this.accuracy1 = (
-              (this.score1 / (this.questionList1.length * 50)) *
-              100
-            ).toFixed(2)
+            this.leftOver = true
+
+            // this.accuracy1 = (
+            //   (this.score1 / (this.questionList1.length * 50)) *
+            //   100
+            // ).toFixed(2)
             this.times2 && clearInterval(this.timerId)
-            this.times1 = this.getTime - this.totalTime
+            // this.times1 = this.getTime - this.totalTime
             if (this.oneDone2) {
               this.showResultPopup = true
             } else {
@@ -684,24 +779,33 @@ export default {
           }
           this.questionList2[this.currentQuestionIndex2].selected =
             this.selectedOption2
-          // this.selected.right.push(this.selectedOption2)
 
+          //右边加分
+          if (
+            this.questionList2[this.currentQuestionIndex2].selected ===
+            this.questionList2[this.currentQuestionIndex2].answer
+          ) {
+            this.score2 = this.score2 + 50
+          }
+          // this.selected.right.push(this.selectedOption2)
           this.selected.right[
             this.questionList2[this.currentQuestionIndex2].index
           ] = this.selectedOption2
           //答完
           if (this.currentQuestionIndex2 + 1 === this.questionList2.length) {
-            this.questionList2.forEach((item, index) => {
-              if (item.selected === item.answer) {
-                this.score2 = this.score2 + 50
-              }
-            })
-            this.accuracy2 = (
-              (this.score2 / (this.questionList2.length * 50)) *
-              100
-            ).toFixed(2)
+            this.rightOver = true
+
+            // this.questionList2.forEach((item, index) => {
+            //   if (item.selected === item.answer) {
+            //     this.score2 = this.score2 + 50
+            //   }
+            // })
+            // this.accuracy2 = (
+            //   (this.score2 / (this.questionList2.length * 50)) *
+            //   100
+            // ).toFixed(2)
             this.times1 && clearInterval(this.timerId)
-            this.times2 = this.getTime - this.totalTime
+            // this.times2 = this.getTime - this.totalTime
             if (this.oneDone1) {
               this.showResultPopup = true
             } else {
@@ -724,6 +828,8 @@ export default {
     },
     closePopup() {
       try {
+        this.playAudioBtn()
+
         let self = this
         this.showResultPopupClass = 'result-popup bounceOutRight animated'
         setTimeout(() => {

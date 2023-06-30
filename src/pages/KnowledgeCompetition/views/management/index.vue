@@ -7,9 +7,11 @@
             <div class="icon-box">
               <img src="../../assets/icon.png" class="icon" />
             </div>
-            <div class="aside-title-box">世界之最知识<br />竞赛管理系统</div>
+            <div class="aside-title-box">
+              {{ $t('text.managementSystem') }}
+            </div>
           </div>
-          <div class="aside-subject">科目</div>
+          <div class="aside-subject">{{ $t('text.subject') }}</div>
         </div>
         <template v-for="(item, index) in subjectList">
           <el-menu :key="index">
@@ -48,21 +50,21 @@
             v-if="isPersonalPower || isAdministrators"
             @click="handleClickFilterButton('add', null)"
           >
-            新增
+            {{ $t('text.add') }}
           </el-button>
           <el-button
             font-size="26px"
             type="primary"
             @click="handleOutputButton()"
           >
-            导出题库模板
+            {{ $t('text.ExportTheQuestion') }}
           </el-button>
           <el-button
             type="primary"
             v-if="!isAdministrators"
             @click="handleInputButton()"
           >
-            导入题库
+            {{ $t('text.ImportQuestion') }}
           </el-button>
           <el-button
             font-size="26px"
@@ -70,50 +72,57 @@
             v-if="!isAdministrators"
             @click="getPersonalSubject()"
           >
-            获取个人题库
+            {{ $t('text.GetPersonal') }}
           </el-button>
           <el-button
             font-size="16px"
             type="primary"
             @click="GoKnowledgeCompetition()"
           >
-            游戏界面预览
+            {{ $t('text.GameInterfacePreview') }}
           </el-button>
           <el-button
             type="primary"
             v-if="isAdministrators"
             @click="administratorsInputButton()"
           >
-            管理人员导入默认题库
+            {{ $t('text.AdministratorImportQuestion') }}
           </el-button>
         </el-header>
         <el-main>
           <el-table :data="tableData" center border stripe>
             <!-- <el-table-column prop="index" label="序号" width="140">
             </el-table-column> -->
-            <el-table-column type="index" label="序号"> </el-table-column>
-            <el-table-column prop="t_content" label="题目"> </el-table-column>
+            <el-table-column type="index" :label="$t('text.Index')">
+            </el-table-column>
+            <el-table-column prop="t_content" :label="$t('text.topic')">
+            </el-table-column>
             <el-table-column prop="t_Answer_A" label="A"> </el-table-column>
             <el-table-column prop="t_Answer_B" label="B"> </el-table-column>
             <el-table-column prop="t_Answer_C" label="C"> </el-table-column>
             <el-table-column prop="t_Answer_D" label="D"> </el-table-column>
-            <el-table-column prop="t_Answer" label="答案"> </el-table-column>
-            <el-table-column prop="t_Explain" label="解析"> </el-table-column>
-            <el-table-column label="操作" v-if="isShowClickButton">
+            <el-table-column prop="t_Answer" :label="$t('text.answer')">
+            </el-table-column>
+            <el-table-column prop="t_Explain" :label="$t('text.analyze')">
+            </el-table-column>
+            <el-table-column
+              :label="$t('text.Controls')"
+              v-if="isShowClickButton"
+            >
               <template slot-scope="scope">
                 <el-button
                   @click="handleClickFilterButton('edit', scope.row)"
                   type="text"
                   size="small"
                 >
-                  编辑
+                  {{ $t('text.EDITOR') }}
                 </el-button>
                 <el-button
                   type="text"
                   size="small"
                   @click="deteleTopic(scope.row)"
                 >
-                  删除
+                  {{ $t('text.delete') }}
                 </el-button>
               </template>
               <!-- <span class="btn-delete">编辑</span>&nbsp;&nbsp;
@@ -126,7 +135,7 @@
     <!-- 11111111111111111111111111111111获取个人题库 -->
     <el-dialog
       class="dialog-box"
-      title="获取个人题库列表"
+      :title="$t('text.GetPersonalTopicList')"
       :visible.sync="dialogVisible2"
       width="70%"
       style="border-radius: 2vw"
@@ -134,25 +143,27 @@
     >
       <div>
         <el-form>
-          <el-form-item label="个人题库密码: ">
+          <el-form-item :label="$t('text.PersonalCode')">
             <input type="text" v-model="sixStringPwa" />
           </el-form-item>
           <div class="hint">
-            注：输入六位数字、字母或者符号组成个人题库密码,请妥善保存密码方便查阅题库。
+            {{ $t('text.hintPersonal') }}
           </div>
         </el-form>
       </div>
       <div class="buttom-button">
         <el-button type="primary" @click="hangleGetPersonalSubject(null)">
-          获取
+          {{ $t('text.Get') }}
         </el-button>
-        <el-button @click="dialogVisible2 = false">关闭</el-button>
+        <el-button @click="dialogVisible2 = false">
+          {{ $t('text.close') }}
+        </el-button>
       </div>
     </el-dialog>
     <!-- 22222222222222222222222用户-管理员导入题库 -->
     <el-dialog
       class="dialog-box"
-      title="导入题库"
+      :title="$t('text.ImportQuestion')"
       :visible.sync="dialogVisible1"
       width="70%"
       style="border-radius: 2vw"
@@ -162,7 +173,7 @@
         <el-form>
           <el-form-item
             v-if="isAdministrators"
-            label="科目:"
+            :label="$t('text.subjects')"
             prop="subjectID"
             label-width="100px"
           >
@@ -178,10 +189,13 @@
               </el-radio>
             </div>
           </el-form-item>
-          <el-form-item label="输入个人题库名称: ">
+          <el-form-item :label="$t('text.EnterPersonalName')">
             <input v-model.trim="subjectName" type="text" />
           </el-form-item>
-          <el-form-item v-if="!isAdministrators" label="输入个人题库密码: ">
+          <el-form-item
+            v-if="!isAdministrators"
+            :label="$t('text.EnterPersonalPassword')"
+          >
             <input
               v-model.trim="sixStringPwa"
               type="text"
@@ -190,7 +204,7 @@
             />
           </el-form-item>
           <div class="hint" v-if="!isAdministrators">
-            注：输入六位数字、字母或者符号组成个人题库密码,请妥善保存密码方便查阅题库。
+            {{ $t('text.hintPersonal') }}
           </div>
         </el-form>
       </div>
@@ -202,7 +216,7 @@
             : subjectName && sixStringPwa.length === 6
         "
         type="file"
-        text="导入题库"
+        :text="$t('text.ImportQuestion')"
         accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         @change="handleChooseFiles"
       />
@@ -210,23 +224,23 @@
     <!-- 111111111111111111111111成功导入的题目列表 -->
     <el-dialog
       class="dialog-box"
-      title="成功导入的题目列表"
+      :title="$t('text.ListImportedTopics')"
       :visible.sync="dialogVisible3"
       width="70%"
       style="border-radius: 2vw"
       :before-close="handleClose3"
     >
-      <div>
+      <div class="dialog-box_success_item">
         <div v-for="(item, index) in uploadList" :key="index">
           {{ index + 1 + ' ' + item.t_content }}
         </div>
       </div>
-      <el-button @click="handleClose3">关闭</el-button>
+      <el-button @click="handleClose3">{{ $t('text.close') }}</el-button>
     </el-dialog>
     <!-- 22222222222222222222222新增题目编辑题目 -->
     <el-dialog
       class="dialog-box"
-      :title="dialogType === 'add' ? '新增题目' : '编辑题目'"
+      :title="dialogType === 'add' ? $t('text.NewTopic') : $t('text.EditTopic')"
       :visible.sync="dialogVisible"
       width="70%"
       style="border-radius: 2vw"
@@ -235,7 +249,7 @@
       <el-form :v-model="formData" class="el-form-box">
         <el-form-item
           v-if="dialogType === 'add'"
-          label="科目:"
+          :label="$t('text.subjects')"
           prop="t_title"
           label-width="100px"
         >
@@ -253,7 +267,7 @@
         </el-form-item>
         <el-form-item
           v-if="value && dialogType === 'add'"
-          label="题库名称:"
+          :label="$t('text.QuestionBankName')"
           prop="t_FatherlevelID"
           label-width="100px"
         >
@@ -270,11 +284,15 @@
               </el-radio>
             </template>
             <template v-else>
-              <div>无</div>
+              <div>{{ $t('text.empty') }}</div>
             </template>
           </div>
         </el-form-item>
-        <el-form-item label="题目:" prop="t_content" label-width="100px">
+        <el-form-item
+          :label="$t('text.topics')"
+          prop="t_content"
+          label-width="100px"
+        >
           <el-input
             type="textarea"
             class="inputBox"
@@ -319,7 +337,11 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="答案:" prop="t_Answer" label-width="100px">
+        <el-form-item
+          :label="$t('text.answers')"
+          prop="t_Answer"
+          label-width="100px"
+        >
           <el-input
             class="inputBox"
             type="textarea"
@@ -328,7 +350,11 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="解析:" prop="t_Explain" label-width="100px">
+        <el-form-item
+          :label="$t('text.analyzes')"
+          prop="t_Explain"
+          label-width="100px"
+        >
           <el-input
             type="textarea"
             class="inputBox"
@@ -338,8 +364,12 @@
           </el-input>
         </el-form-item>
         <div class="buttom-button">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="handleSubmit"> 提交 </el-button>
+          <el-button @click="dialogVisible = false">
+            {{ $t('text.cancel') }}
+          </el-button>
+          <el-button type="primary" @click="handleSubmit">
+            {{ $t('text.submitButton') }}
+          </el-button>
         </div>
       </el-form>
     </el-dialog>
@@ -438,7 +468,7 @@ export default {
           this.addFormTitleList = []
           //没数据时
           if (!this.personalTitleList.length) {
-            this.$message('个人题库为空，请下载模板再导入！')
+            this.$message(this.$t('text.personalTitleListNull'))
             return
           }
           //个人获取题库之后 的新增
@@ -457,14 +487,14 @@ export default {
             this.isShowClickButton = false
           }
 
-          if (e.label === '世界之最') {
+          if (e.label === this.$t('text.bestInTheWorld')) {
             this.value = e.val
             this.subjectID = e.val
           }
           this._getNewsList(e.val, index)
         }
       } catch (error) {
-        this.$message(`${error}` || '发生错误')
+        this.$message(`${error}` || this.$t('text.error'))
       }
     },
     changeRadioTitle(e) {
@@ -474,16 +504,16 @@ export default {
     deteleTopic(e) {
       try {
         const self = this
-        this.$confirm('此操作将永久删除该题目, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('text.deleteHint'), this.$t('text.hint'), {
+          confirmButtonText: this.$t('text.confirm'),
+          cancelButtonText: this.$t('text.cancel'),
           type: 'warning',
         })
           .then(() => {
             this._DeleteThetopictable(e.id)
             this.$message({
               type: 'success',
-              message: '删除成功!',
+              message: this.$t('text.successfullyDelete'),
             })
             setTimeout(() => {
               self._getListTheopictable(self.titleId)
@@ -492,11 +522,11 @@ export default {
           .catch(() => {
             this.$message({
               type: 'info',
-              message: '已取消删除',
+              message: this.$t('text.undelete'),
             })
           })
       } catch (e) {
-        this.$message(`${e}` || '发生错误')
+        // this.$message(`${e}` || '发生错误')
       }
     },
     //获取个人题库
@@ -521,12 +551,12 @@ export default {
             return
           }
           this.subjectList.push({
-            label: '个人题库',
+            label: this.$t('text.PersonalQuestionBank'),
             val: 'fff',
           })
           this.addFormSubject = [
             {
-              label: '个人题库',
+              label: this.$t('text.PersonalQuestionBank'),
               val: 'fff',
             },
           ]
@@ -534,11 +564,11 @@ export default {
         } else {
           //手动获取个人题库
           if (!this.sixStringPwa) {
-            this.$message('请先输入密码！')
+            this.$message(this.$t('text.enterUPsw'))
             return
           }
           if (this.sixStringPwa.length !== 6) {
-            this.$message('请输入6位密码！')
+            this.$message(this.$t('text.enterSixPsw'))
             return
           }
           let subject = {
@@ -559,12 +589,12 @@ export default {
 
           if (!this.personalTitleList.length) {
             this.$message({
-              message: '个人题库为空，请下载模板再导入！',
+              message: this.$t('text.personalTitleListNull'),
               type: 'error',
             })
           } else {
             this.$message({
-              message: '获取成功！',
+              message: this.$t('text.ObtainSuccess'),
               type: 'success',
             })
           }
@@ -573,19 +603,19 @@ export default {
             return
           }
           this.subjectList.push({
-            label: '个人题库',
+            label: this.$t('text.PersonalQuestionBank'),
             val: 'fff',
           })
           this.addFormSubject = [
             {
-              label: '个人题库',
+              label: this.$t('text.PersonalQuestionBank'),
               val: 'fff',
             },
           ]
           this.isPersonalPower = true
         }
       } catch (error) {
-        this.$message(`${error}` || '发生错误')
+        this.$message(`${error}` || this.$t('text.error'))
       }
     },
     //输入个人密码
@@ -597,7 +627,7 @@ export default {
       try {
         await DeleteThetopictable(id)
       } catch (error) {
-        this.$message(`${error}` || '发生错误')
+        console.log(error.message)
       }
     },
     //点击科目
@@ -605,9 +635,12 @@ export default {
       try {
         if (id === 'fff') {
           this.titleList = []
-          this.personalTitleList.map(item => {
-            this.titleList.push(item)
-          })
+          if (this.isPersonalPower) {
+            this.personalTitleList.map(item => {
+              this.titleList.push(item)
+            })
+          }
+
           this.titleId = this.titleList[0].val
           this.showTitleList = index
           this.isShowClickButton = true
@@ -619,7 +652,7 @@ export default {
           this._getNewsList(id, index)
         }
       } catch (error) {
-        this.$message(`${error}` || '发生错误')
+        console.log(error.message)
       }
     },
     //点击科目下的题库
@@ -633,19 +666,19 @@ export default {
         this.subjectName = ''
         this.dialogVisible1 = true
       } catch (error) {
-        this.$message(`${error}` || '发生错误')
+        this.$message(`${error}` || this.$t('text.error'))
       }
     },
     //导入题库
     async handleChooseFiles(e) {
       try {
         if (!this.subjectName) {
-          this.$message('请先输入个人题库名称！')
+          this.$message(this.$t('text.PleaseEnterName'))
           return
         }
         if (!this.isAdministrators) {
           if (!this.sixStringPwa) {
-            this.$message('请先输入密码！')
+            this.$message(this.$t('text.enterUPsw'))
             return
           }
         }
@@ -665,11 +698,12 @@ export default {
         this.uploadList = res.result
         this.dialogVisible3 = true
         document.getElementById('input-id').value = ''
-      } catch (e) {
         this.$message({
-          message: `${e}`,
-          type: 'error',
+          message: this.$t('text.ImportSuccess'),
+          type: 'success',
         })
+      } catch (e) {
+        console.log(e)
       }
     },
     //新增编辑按钮
@@ -682,7 +716,7 @@ export default {
           // 个人权限新增显示默认选择第一个科目
           if (this.isPersonalPower) {
             const arr = {
-              label: '个人题库',
+              label: this.$t('text.PersonalQuestionBank'),
               val: 'fff',
             }
             this.changeRadio(arr, 'person')
@@ -698,7 +732,7 @@ export default {
           this.dialogVisible = true
         }
       } catch (e) {
-        this.$message(`${e}` || '发生错误')
+        this.$message(`${e}` || this.$t('text.error'))
       }
     },
     //关闭新增
@@ -736,7 +770,7 @@ export default {
             this._getListTheopictable()
 
             this.$message({
-              message: '新增成功！',
+              message: this.$t('text.NewSuccess'),
               type: 'success',
             })
           }
@@ -748,7 +782,7 @@ export default {
             this._getListTheopictable()
 
             this.$message({
-              message: '修改成功！',
+              message: this.$t('text.ModifiedSuccessfully'),
               type: 'success',
             })
           }
@@ -778,7 +812,7 @@ export default {
         subject.map((item, index) => {
           if (item.val === 5) {
             arr = {
-              label: '世界之最',
+              label: this.$t('text.bestInTheWorld'),
               val: item.val,
             }
             subject.splice(index, 1)
@@ -788,7 +822,7 @@ export default {
         this.addFormSubject = subject
         this.subjectList = subject
       } catch (e) {
-        this.$message(`${e}` || '发生错误')
+        this.$message(`${e}` || this.$t('text.error'))
       }
     },
     // 查询科目下题目题库列表
@@ -816,7 +850,7 @@ export default {
           this.titleList = []
         }
       } catch (e) {
-        this.$message(`${e}` || '发生错误')
+        this.$message(`${e}` || this.$t('text.error'))
       }
     },
     //下载模板
@@ -826,7 +860,7 @@ export default {
           'http://47.113.88.149:5572/game/download?fileName=题目导入模板.xlsx',
         )
       } catch (e) {
-        this.$message(`${e}` || '发生错误')
+        this.$message(`${e}` || this.$t('text.error'))
       }
     },
     //获取选中当前题库下的题目列表
@@ -838,7 +872,7 @@ export default {
 
         this.tableData = res
       } catch (e) {
-        this.$message(`${e}` || '发生错误')
+        this.$message(`${e}` || this.$t('text.error'))
       }
     },
     // //获取#后面的参数
@@ -1092,7 +1126,6 @@ export default {
     display: flex;
     .icon-box {
       margin-top: 1vh;
-
       width: 3.5vw;
       height: 3.5vw;
       .icon {
@@ -1122,5 +1155,16 @@ export default {
   font-size: 1rem;
   margin: 10px 0 20px;
   color: #900404;
+}
+#input-id {
+  width: 100%;
+  font-size: 0.8rem;
+}
+.dialog-box_success_item {
+  height: 1000px;
+  font-size: 1rem;
+  overflow: auto;
+  border: 1px solid #000;
+  box-shadow: 5px 5px 5px #ccc;
 }
 </style>

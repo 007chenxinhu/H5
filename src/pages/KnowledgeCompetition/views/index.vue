@@ -42,17 +42,15 @@
       <div class="hint-title">
         {{ $t('text.hintText') }}
       </div>
-      <div class="hint-text">答题模式：个人答题模式和双人竞赛答题模式。</div>
+      <div class="hint-text">{{ $t('text.hint1') }}</div>
       <div class="hint-text">
-        题目类型：涵盖世界各个领域的知识，包括但不限于科学、历史、文化、地理等。
+        {{ $t('text.hint2') }}
       </div>
       <div class="hint-text">
-        时间提示：开启时间提示之后，在答题模式下，游戏开始后，每隔30秒会有一个时间提示，时间到了停止做题，展示答案校验结果。
+        {{ $t('text.hint3') }}
       </div>
       <div class="hint-text">
-        游戏细节：
-        游戏中，学生无法修改已提交的答案，题目全部选完之后，会展示答案校验结果。
-        在双人答题模式下，需要两名学生都答完，才会展示答案校验结果。
+        {{ $t('text.hint4') }}
       </div>
     </div>
     <!-- 设置 -->
@@ -196,10 +194,10 @@ export default {
       // },
       time: 360,
       selectTime: [
-        40, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190,
-        200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330,
-        340, 350, 360, 370, 380, 390, 400, 410, 420, 430, 440, 450, 460, 470,
-        480, 490, 500, 510, 520, 530, 540,
+        60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200,
+        210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340,
+        350, 360, 370, 380, 390, 400, 410, 420, 430, 440, 450, 460, 470, 480,
+        490, 500, 510, 520, 530, 540,
       ],
       selectedOptions: [],
       showHintPopup: false,
@@ -258,11 +256,11 @@ export default {
     async gerPersonalTopic() {
       try {
         if (!this.paw) {
-          this.$message('请先输入密码！')
+          this.$message(this.$t('text.enterUPsw'))
           return
         }
         if (this.paw.length !== 6) {
-          this.$message('请输入6位密码！')
+          this.$message(this.$t('text.enterSixPsw'))
           return
         }
         let subject = {
@@ -281,15 +279,15 @@ export default {
           this.personalTitleList.push(item)
         })
         this.subjectList.push({
-          label: '个人题库',
+          label: this.$t('text.PersonalQuestionBank'),
           val: 'fff',
         })
         this.$message({
-          message: '获取成功！',
+          message: this.$t('text.ObtainSuccess'),
           type: 'success',
         })
       } catch (error) {
-        this.$message(`${error}` || '发生错误')
+        this.$message(`${error}` || this.$t('text.error'))
       }
     },
     handleLimitTime(e) {
@@ -333,7 +331,7 @@ export default {
           this._getNewsList(id, index)
         }
       } catch (error) {
-        this.$message(`${error}` || '发生错误')
+        this.$message(`${error}` || this.$t('text.error'))
       }
     },
     //点击科目下的题库
@@ -360,7 +358,7 @@ export default {
         subject.map((item, index) => {
           if (item.val === 5) {
             arr = {
-              label: '世界之最',
+              label: this.$t('text.bestInTheWorld'),
               val: item.val,
             }
             subject.splice(index, 1)
@@ -369,7 +367,7 @@ export default {
         subject.unshift(arr)
         this.subjectList = subject
       } catch (e) {
-        this.$message(`${e}` || '发生错误')
+        this.$message(`${e}` || this.$t('text.error'))
       }
     },
     // 查询科目下题目标题列表
@@ -396,7 +394,7 @@ export default {
           this.titleList = []
         }
       } catch (e) {
-        this.$message(`${e}` || '发生错误')
+        this.$message(`${e}` || this.$t('text.error'))
       }
     },
     GoManagement() {
@@ -408,25 +406,31 @@ export default {
     },
     singleCategory() {
       this.playAudioBtn()
-      this.$router.push({
-        path: '/singleCategory',
-        query: {
-          limitTime: this.limitTime,
-          time: this.time,
-          id: this.titleId,
-        },
-      })
+      let _this = this
+      setTimeout(() => {
+        _this.$router.push({
+          path: '/singleCategory',
+          query: {
+            limitTime: this.limitTime,
+            time: this.time,
+            id: this.titleId,
+          },
+        })
+      }, 100)
     },
     doubleCategory() {
       this.playAudioBtn()
-      this.$router.push({
-        path: '/doubleCategory',
-        query: {
-          limitTime: this.limitTime,
-          time: this.time,
-          id: this.titleId,
-        },
-      })
+      let _this = this
+      setTimeout(() => {
+        _this.$router.push({
+          path: '/doubleCategory',
+          query: {
+            limitTime: this.limitTime,
+            time: this.time,
+            id: this.titleId,
+          },
+        })
+      }, 100)
     },
     // gerPersonalTopic() {
     //   this.showInputPassword = true
@@ -437,6 +441,8 @@ export default {
     },
     Setting() {
       try {
+        this.playAudioBtn()
+
         if (this.showHintPopup) {
           this.showHintPopup = false
         }
@@ -455,6 +461,8 @@ export default {
       }
     },
     ViewInstructions() {
+      this.playAudioBtn()
+
       if (this.showSettingPopup) {
         this.showSettingPopup = false
       }
@@ -463,6 +471,8 @@ export default {
     closePopup() {
       try {
         let self = this
+        this.playAudioBtn()
+
         this.showHintPopupClass = 'hint-popup bounceOutRight animated'
         this.showSettingPopupClass = 'hint-popup bounceOutRight animated'
         setTimeout(() => {

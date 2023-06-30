@@ -167,13 +167,15 @@
               v-if="questionList[index].selected === questionList[index].answer"
               class="result-answer-s"
             >
-              恭喜你选对了,{{ questionList[index].t_Explain }}
+              {{ $t('text.CongratulationsYouChoice')
+              }}{{ questionList[index].t_Explain }}
             </div>
             <div
               v-if="questionList[index].selected !== questionList[index].answer"
               class="result-answer-e"
             >
-              你选错了,{{ questionList[index].t_Explain }}
+              {{ $t('text.YouChoseTheWrongOne')
+              }}{{ questionList[index].t_Explain }}
             </div>
           </div>
         </div>
@@ -196,6 +198,9 @@
       src="../assets/audio/choose_btn.mp3"
       preload
     >
+      对不起，您的浏览器不支持HTML5音频播放。
+    </audio>
+    <audio id="audio2" ref="audio2" src="../assets/audio/warning.mp3" preload>
       对不起，您的浏览器不支持HTML5音频播放。
     </audio>
   </div>
@@ -296,6 +301,12 @@ export default {
       this.$refs.audio1.src = music1 //此处的audio为代码ref="audio"中的audio
       this.$refs.audio1.play() //play()为播放函数
     },
+    playAudioBtn2() {
+      let music1 = new Audio() //建立一个music1对象
+      music1 = require('../assets/audio/warning.mp3') //通过require引入音频
+      this.$refs.audio2.src = music1 //此处的audio为代码ref="audio"中的audio
+      this.$refs.audio2.play() //play()为播放函数
+    },
     //获取选中当前题库下的题目列表
     async _getListTheopictable(id) {
       try {
@@ -312,7 +323,7 @@ export default {
         })
         this.currentQuestion = this.questionList[this.currentQuestionIndex]
       } catch (e) {
-        this.$message(`${e}` || '发生错误')
+        this.$message(`${e}` || this.$t('text.error'))
       }
     },
     getStageStatus(i) {
@@ -325,42 +336,96 @@ export default {
       }
     },
     startAnswer() {
+      this.playAudioBtn()
       this.showStartPopup = false
       if (this.TimeLimit === 'true') {
         this.startCountdown()
       }
     },
     oneMore() {
-      location.reload(true)
+      this.playAudioBtn()
+      this.showStartPopup = true
+      this.loading = 'Loading...'
 
-      // let limitTime = getParameter('limitTime')
-      // let time = getParameter('time')
-      // let id = getParameter('id')
-      // this.$router
-      //   .push({
-      //     path: '/singleCategory',
+      let self = this
+      this.showResultPopupClass = 'result-popup bounceOutRight animated'
+      setTimeout(() => {
+        self.showResultPopupClass = 'result-popup bounceInDown animated'
+        self.showResultPopup = false
+      }, 599)
+      clearInterval(this.timerId)
+      this.currentQuestion = []
+      this.currentQuestionIndex = 0
+      this.selectedOption = null
+      this.showResult = false
+      setTimeout(() => {
+        self.loading = 'Loaded'
+        self.showStartBtn = true
+      }, 2000)
+      this.TimeLimit = this.$route.query.limitTime
+        ? this.$route.query.limitTime
+        : false
+      this.getTime = this.$route.query.time
+      this.totalTime = this.$route.query.time
+      this.titleId = this.$route.query.id
+      this._getListTheopictable(this.titleId)
+
+      this.score = 0
+      this.accuracy = 0
+      this.times = 0
+      // let _this = this
+      // setTimeout(() => {
+      //   _this.$router.go(0)
+      // }, 100)
+      // location.reload(true)
+      // setTimeout(() => {
+      //   let limitTime = getParameter('limitTime')
+      //   let time = getParameter('time')
+      //   let id = getParameter('id')
+      //   this.$router.push({
+      //     path: this.url,
       //     query: {
       //       limitTime: limitTime,
       //       time: time,
       //       id: id,
       //     },
       //   })
-      //   .catch(error => {
-      //     if (error.name !== 'NavigationDuplicated') {
-      //       throw error
-      //     }
-      //   })
+      // }, 100)
+
+      // .catch(error => {
+      //   if (error.name !== 'NavigationDuplicated') {
+      //     throw error
+      // }
+      // })
     },
     goBack() {
-      this.$router.push(`${this.url}`)
+      this.playAudioBtn()
+      let _this = this
+      setTimeout(() => {
+        _this.$router.push(`${this.url}`)
+      }, 100)
     },
     startCountdown() {
       this.timerId = setInterval(() => {
         this.totalTime -= this.interval / 1000
         // 每30秒进行提醒
         if (this.totalTime % this.alertInterval === 0 && !this.isAlerted) {
-          this.$toast(`已经过去 ${this.getTime - this.totalTime} 秒`)
+          this.$toast(
+            `${_this.$t('text.TheTime')} ${this.getTime - this.totalTime} s`,
+          )
           this.isAlerted = true
+
+          let count = 0
+          let _this = this
+
+          const interval = setInterval(() => {
+            // 播放声音的代码
+            _this.playAudioBtn2()
+            count++
+            if (count === 3) {
+              clearInterval(interval)
+            }
+          }, 1000)
         } else if (this.totalTime % this.alertInterval !== 0) {
           this.isAlerted = false
         }
@@ -368,7 +433,7 @@ export default {
         if (this.totalTime < 0) {
           clearInterval(this.timerId)
           this.totalTime = 0
-          this.$toast('时间到！')
+          this.$toast(this.$t('text.TimeOut'))
           this.questionList.forEach((item, index) => {
             if (item.selected === item.answer) {
               this.score = this.score + 50
@@ -385,6 +450,7 @@ export default {
     },
     closePopup() {
       try {
+        this.playAudioBtn()
         let self = this
         this.showResultPopupClass = 'result-popup bounceOutRight animated'
         setTimeout(() => {

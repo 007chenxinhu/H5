@@ -22,6 +22,18 @@ export default {
   font-weight: normal;
   font-style: normal;
 }
+/*alert 成功弹出框样式*/
+.el-message--success {
+  font-size: 1rem;
+}
+
+.el-message .el-icon-success {
+  font-size: 1rem;
+}
+
+.el-message--success .el-message__content {
+  font-size: 1rem;
+}
 .el-message-box {
   min-width: 50vw;
   min-height: 10vh;
@@ -32,7 +44,7 @@ export default {
 }
 
 .el-message-box__message {
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-left: 1rem;
 }
 .el-message-box__btns {
