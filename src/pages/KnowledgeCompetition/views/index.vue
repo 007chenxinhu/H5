@@ -256,11 +256,11 @@ export default {
     async gerPersonalTopic() {
       try {
         if (!this.paw) {
-          this.$message(this.$t('text.enterUPsw'))
+          this.$message.error(this.$t('text.enterUPsw'))
           return
         }
         if (this.paw.length !== 6) {
-          this.$message(this.$t('text.enterSixPsw'))
+          this.$message.error(this.$t('text.enterSixPsw'))
           return
         }
         let subject = {
@@ -268,6 +268,11 @@ export default {
           val: '',
         }
         const res = await personalQuery(this.paw)
+        console.log(res.length, 'res')
+        if (res.length === 0) {
+          this.$message.error(this.$t('text.enterSixPsw'))
+          return
+        }
         subject = res.map(item => {
           return {
             label: item.t_title,
@@ -278,16 +283,19 @@ export default {
         subject.map(item => {
           this.personalTitleList.push(item)
         })
-        this.subjectList.push({
-          label: this.$t('text.PersonalQuestionBank'),
-          val: 'fff',
-        })
+        if (this.subjectList[this.subjectList.length - 1].val !== 'fff') {
+          this.subjectList.push({
+            label: this.$t('text.PersonalQuestionBank'),
+            val: 'fff',
+          })
+        }
+
         this.$message({
           message: this.$t('text.ObtainSuccess'),
           type: 'success',
         })
       } catch (error) {
-        this.$message(`${error}` || this.$t('text.error'))
+        // this.$message(`${error}` || this.$t('text.error'))
       }
     },
     handleLimitTime(e) {
@@ -321,16 +329,22 @@ export default {
       try {
         if (id === 'fff') {
           this.titleList = []
+          this.showTitleList = index
+
+          if (this.personalTitleList.length === 0) {
+            return
+          }
+          console.log(this.titleList, 'this.titleList')
           this.personalTitleList.map(item => {
             this.titleList.push(item)
           })
           this.titleId = this.titleList[0].val
-          this.showTitleList = index
           // this._getListTheopictable(this.titleId)
         } else {
           this._getNewsList(id, index)
         }
       } catch (error) {
+        console.log(error, 'error')
         this.$message(`${error}` || this.$t('text.error'))
       }
     },

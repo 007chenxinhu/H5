@@ -34,3 +34,11 @@ export const DeleteThetopictable = params =>
 //根据密码查询题库
 export const personalQuery = params =>
   api.get(`/personalQuery?password=${params}`)
+
+//批量删除题目（也可以单删除）
+export const DatchDeleteThetopictable = params =>
+  api.post('/DatchDeleteThetopictable', params)
+
+//删除题库（也可以单删除）
+export const DatchDeleteThetopictablet_FatherlevelID = params =>
+  api.post('/DatchDeleteThetopictablet_FatherlevelID', params)

@@ -88,11 +88,30 @@
           >
             {{ $t('text.AdministratorImportQuestion') }}
           </el-button>
+          <!-- <el-button
+            type="primary"
+            v-if="isPersonalPower || isAdministrators"
+            @click="deleteTopicButton()"
+          >
+            {{ $t('text.deleteTopic') }}
+          </el-button> -->
+          <el-button
+            type="primary"
+            v-if="isPersonalPower || isAdministrators"
+            @click="batchDeleteTopicButton()"
+          >
+            {{ $t('text.batchDeleteTopic') }}
+          </el-button>
         </el-header>
         <el-main>
-          <el-table :data="tableData" center border stripe>
-            <!-- <el-table-column prop="index" label="序号" width="140">
-            </el-table-column> -->
+          <el-table
+            :data="tableData"
+            @selection-change="handleSelectionChange"
+            center
+            border
+            stripe
+          >
+            <el-table-column type="selection" width="44"> </el-table-column>
             <el-table-column type="index" :label="$t('text.Index')">
             </el-table-column>
             <el-table-column prop="t_content" :label="$t('text.topic')">
@@ -373,6 +392,22 @@
         </div>
       </el-form>
     </el-dialog>
+    <!-- 111111111111111111111111删除题库弹窗 -->
+    <el-dialog
+      class="dialog-box"
+      :title="$t('text.deleteTopic')"
+      :visible.sync="dialogVisible4"
+      width="70%"
+      style="border-radius: 2vw"
+      :before-close="handleClose4"
+    >
+      <div class="dialog-box_success_item">
+        <div v-for="(item, index) in uploadList" :key="index">
+          {{ index + 1 + ' ' + item.t_content }}
+        </div>
+      </div>
+      <el-button @click="handleClose4">{{ $t('text.close') }}</el-button>
+    </el-dialog>
   </div>
 </template>
 
@@ -386,6 +421,8 @@ import {
   DeleteThetopictable,
   personalQuery,
   Thetopictablerevise,
+  DatchDeleteThetopictable,
+  DatchDeleteThetopictablet_FatherlevelID,
 } from '../../api/index'
 import { getParameter } from '../../utils/indexExtends'
 import { debounce } from 'lodash'
@@ -404,6 +441,7 @@ export default {
       dialogVisible1: false,
       dialogVisible2: false,
       dialogVisible3: false,
+      dialogVisible4: false,
       showTitleList: 0,
       titleList: null,
       personalTitleList: null,
@@ -433,6 +471,7 @@ export default {
       subjectID: 5,
       addFormSubject: [],
       addFormTitleList: [],
+      batchDeleteTopicList: [],
     }
   },
   async mounted() {
@@ -453,6 +492,43 @@ export default {
     }
   },
   methods: {
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
+      } else {
+        this.$refs.multipleTable.clearSelection()
+      }
+    },
+    deleteTopicButton() {},
+    async batchDeleteTopicButton() {
+      try {
+        let idList = []
+        idList = this.batchDeleteTopicList.map(obj => ({ id: obj.id }))
+        console.log(idList, 'id')
+        if (idList.length === 0) {
+          return
+        }
+        const res = await DatchDeleteThetopictable(idList)
+        console.log(res, 'result')
+        if (res) {
+          this.$message({
+            type: 'success',
+            message: this.$t('text.successfullyDelete'),
+          })
+          this._getListTheopictable(this.titleId)
+        } else {
+          this.$message(this.$t('text.error'))
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    handleSelectionChange(e) {
+      console.log(e, '==')
+      this.batchDeleteTopicList = e
+    },
     //管理人员导入默认题库
     administratorsInputButton() {
       this.subjectName = ''
@@ -759,10 +835,27 @@ export default {
         this.chooseSubject(this.chooseSub, this.showTitleList)
       }
     },
+    checkAnswer(obj) {
+      const answer = obj.t_Answer
+      const regex = /^[ABCD]+$/
+      return regex.test(answer)
+    },
+    //关闭删除题库弹窗
+    handleClose4() {
+      this.dialogVisible4 = false
+    },
     //新增&编辑
     handleSubmit: debounce(async function () {
       try {
         let params = Object.assign({}, this.formData)
+        if (!this.checkAnswer(params)) {
+          this.$message({
+            message: `${this.$t('text.t_answers')}`,
+            type: 'error',
+          })
+          return
+        }
+
         if (this.dialogType === 'add') {
           const res = await NewInterface(params)
           if (res === true) {
@@ -857,7 +950,9 @@ export default {
     async handleOutputButton() {
       try {
         window.open(
-          'http://47.113.88.149:5572/game/download?fileName=题目导入模板.xlsx',
+          `http://47.113.88.149:5572/game/download?fileName=${this.$t(
+            'text.link',
+          )}`,
         )
       } catch (e) {
         this.$message(`${e}` || this.$t('text.error'))
@@ -869,7 +964,6 @@ export default {
         const params = id ? id : this.titleList[0].val
         this.titleId = params
         const res = await getListThetopictable(params)
-
         this.tableData = res
       } catch (e) {
         this.$message(`${e}` || this.$t('text.error'))

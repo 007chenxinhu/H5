@@ -34,6 +34,13 @@ export default {
 .el-message--success .el-message__content {
   font-size: 1rem;
 }
+.el-message .el-icon-error {
+  font-size: 1rem;
+}
+
+.el-message--error .el-message__content {
+  font-size: 1rem;
+}
 .el-message-box {
   min-width: 50vw;
   min-height: 10vh;
@@ -41,6 +48,10 @@ export default {
 }
 .el-message-box__content {
   margin: 20px 0;
+}
+.el-checkbox__inner {
+  width: 1.187rem !important;
+  height: 1.187rem !important;
 }
 
 .el-message-box__message {

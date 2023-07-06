@@ -58,7 +58,7 @@
     "undelete": "已取消删除",
     "PersonalQuestionBank": "个人题库",
     "enterUPsw": "请先输入密码！",
-    "enterSixPsw": "请输入6位密码！",
+    "enterSixPsw": "密码错误！",
     "ObtainSuccess": "获取成功!",
     "PleaseEnterName": "请先输入个人题库名称！",
     "ImportSuccess": "导入成功！",
@@ -73,6 +73,10 @@
     "TheTime": "已经过去",
     "correctAnswer": "正确答案是",
     "CongratulationsYouChoice": "恭喜你选对了,",
-    "YouChoseTheWrongOne": "你选错了,"
+    "YouChoseTheWrongOne": "你选错了,",
+    "deleteTopic": "删除题库",
+    "batchDeleteTopic": "批量删除题目",
+    "link": "题目导入模板.xlsx",
+    "t_answers": "答案格式错误！"
   }
 }

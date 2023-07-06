@@ -434,11 +434,6 @@ export default {
           clearInterval(this.timerId)
           this.totalTime = 0
           this.$toast(this.$t('text.TimeOut'))
-          this.questionList.forEach((item, index) => {
-            if (item.selected === item.answer) {
-              this.score = this.score + 50
-            }
-          })
           this.accuracy = (
             (this.score / (this.questionList.length * 50)) *
             100
@@ -464,7 +459,7 @@ export default {
       }
     },
     selectOption(index) {
-      if (this.showResult === true) return
+      if (this.showResultPopup === true) return
       this.selectedOption = index
       this.playAudioBtn1()
       this.nextQuestion()
@@ -486,13 +481,13 @@ export default {
         }
         this.questionList[this.currentQuestionIndex].selected =
           this.selectedOption
-
+        if (
+          this.questionList[this.currentQuestionIndex].selected ===
+          this.questionList[this.currentQuestionIndex].answer
+        ) {
+          this.score = this.score + 50
+        }
         if (this.currentQuestionIndex + 1 === this.questionList.length) {
-          this.questionList.forEach((item, index) => {
-            if (item.selected === item.answer) {
-              this.score = this.score + 50
-            }
-          })
           this.accuracy = (
             (this.score / (this.questionList.length * 50)) *
             100

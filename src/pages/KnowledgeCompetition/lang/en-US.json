@@ -58,7 +58,7 @@
     "undelete": "Undelete",
     "PersonalQuestionBank": "Personal question bank",
     "enterUPsw": "Please enter your password first!",
-    "enterSixPsw": "Please enter a 6-digit password!",
+    "enterSixPsw": "Wrong password!",
     "ObtainSuccess": "Obtain success",
     "PleaseEnterName": "Please enter the name of personal question bank first!",
     "ImportSuccess": "Import success!",
@@ -73,6 +73,10 @@
     "TheTime": "The time has passed for ",
     "correctAnswer": "The correct answer is ",
     "CongratulationsYouChoice": "Congratulations on your choice,",
-    "YouChoseTheWrongOne": "You chose the wrong one,"
+    "YouChoseTheWrongOne": "You chose the wrong one,",
+    "deleteTopic": "Delete question bank",
+    "batchDeleteTopic": "Batch delete topic",
+    "link": "TitleImportTemplate.xlsx",
+    "t_answers": "Answer format wrong!"
   }
 }

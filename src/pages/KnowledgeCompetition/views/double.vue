@@ -575,6 +575,7 @@ export default {
       }
     },
     oneMore() {
+      console.log(this.leftOver, '123123', this.rightOver)
       this.playAudioBtn()
       this.showStartPopup = true
       this.loading = 'Loading...'
@@ -590,6 +591,10 @@ export default {
       this.currentQuestionss = []
       this.currentQuestionIndex1 = 0
       this.currentQuestionIndex2 = 0
+      this.leftOver = false
+      this.rightOver = false
+      this.oneDone1 = false
+      this.oneDone2 = false
 
       this.selected = Object.assign({}, { left: [], right: [] })
 
@@ -615,8 +620,6 @@ export default {
       this.score2 = 0
       this.accuracy2 = 0
       this.times2 = 0
-      this.leftOver = false
-      this.rightOver = false
 
       // let _this = this
       // setTimeout(() => {
@@ -716,6 +719,8 @@ export default {
     },
     nextQuestion(flag) {
       try {
+        console.log(this.leftOver, '00000000', this.rightOver)
+
         let self = this
         if (flag) {
           //左边
