@@ -268,7 +268,6 @@ export default {
           val: '',
         }
         const res = await personalQuery(this.paw)
-        console.log(res.length, 'res')
         if (res.length === 0) {
           this.$message.error(this.$t('text.enterSixPsw'))
           return
@@ -279,10 +278,12 @@ export default {
             val: item.t_FatherlevelID,
           }
         })
+        this.personalTitleList = []
         //个人题库
         subject.map(item => {
           this.personalTitleList.push(item)
         })
+
         if (this.subjectList[this.subjectList.length - 1].val !== 'fff') {
           this.subjectList.push({
             label: this.$t('text.PersonalQuestionBank'),
@@ -334,7 +335,6 @@ export default {
           if (this.personalTitleList.length === 0) {
             return
           }
-          console.log(this.titleList, 'this.titleList')
           this.personalTitleList.map(item => {
             this.titleList.push(item)
           })

@@ -80,9 +80,23 @@ export default class BaseRequest {
           // IE兼容性问题
           data = JSON.parse(data)
         }
+        console.log(data.message, 'data')
+        const langTypeMap = {
+          3321: '参数错误!',
+          3322: '标题已存在!',
+          3323: '导入失败，请检查原因!',
+          3324: '密码不可以为空!，',
+          3325: '不存在!',
+          3326: '新增失败!',
+        }
+        if ([3321, 3322, 3323, 3324].includes(Number(data.message))) {
+          const code = Number(data.message)
+          Message.error(langTypeMap[code] || '出错误了！')
+          return Promise.reject(res)
+        }
         if (data) {
           if ([110006, 110002, 100006, 110007].includes(data.code)) {
-            MessageBox.alert(data.msg, '提示', {
+            MessageBox.alert(data.message, '提示', {
               confirmButtonText: '确定',
               callback: () => {
                 // YX.goLogin()
@@ -91,8 +105,8 @@ export default class BaseRequest {
 
             return Promise.reject(data)
           } else if (data.statusCode !== 0) {
-            if (data.error && data.msg !== data.error) {
-              data.msg = data.msg + ' ' + data.error
+            if (data.error && data.message !== data.error) {
+              data.message = data.message + ' ' + data.error
               data.error = ''
             }
 
@@ -115,7 +129,7 @@ export default class BaseRequest {
               }
 
               Message({
-                message: data.msg || '未知错误',
+                message: data.message || '出错误了！',
                 type: 'error',
               })
             }

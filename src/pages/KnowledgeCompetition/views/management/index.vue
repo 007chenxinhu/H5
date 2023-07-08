@@ -88,13 +88,13 @@
           >
             {{ $t('text.AdministratorImportQuestion') }}
           </el-button>
-          <!-- <el-button
+          <el-button
             type="primary"
             v-if="isPersonalPower || isAdministrators"
             @click="deleteTopicButton()"
           >
             {{ $t('text.deleteTopic') }}
-          </el-button> -->
+          </el-button>
           <el-button
             type="primary"
             v-if="isPersonalPower || isAdministrators"
@@ -392,7 +392,7 @@
         </div>
       </el-form>
     </el-dialog>
-    <!-- 111111111111111111111111删除题库弹窗 -->
+    <!-- 33333333333333333删除题库弹窗 -->
     <el-dialog
       class="dialog-box"
       :title="$t('text.deleteTopic')"
@@ -401,11 +401,63 @@
       style="border-radius: 2vw"
       :before-close="handleClose4"
     >
-      <div class="dialog-box_success_item">
-        <div v-for="(item, index) in uploadList" :key="index">
-          {{ index + 1 + ' ' + item.t_content }}
-        </div>
+      <div class="dialog-box_delete_item">
+        <!-- 管理员删除题库================= -->
+        <template v-if="isAdministrators">
+          <el-form :v-model="formData" class="el-form-box">
+            <el-form-item
+              :label="$t('text.subjects')"
+              prop="t_Explain"
+              label-width="100px"
+            >
+              <div class="radio-box">
+                <el-radio
+                  v-for="(item, index) in addFormSubject"
+                  :key="index"
+                  v-model="value"
+                  :label="item.val"
+                  @input="changeRadio(item, index)"
+                >
+                  {{ item.label }}
+                </el-radio>
+              </div>
+            </el-form-item>
+            <el-form-item
+              :label="$t('text.QuestionBankName')"
+              prop="t_Explain"
+              label-width="100px"
+            >
+              <el-checkbox-group v-model="checkList">
+                <el-checkbox
+                  v-for="(title, index) in addFormTitleList"
+                  :key="index"
+                  :label="title.label"
+                ></el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+          </el-form>
+        </template>
+        <!-- 用户删除个人题库================= -->
+        <template v-if="isPersonalPower">
+          <el-form :v-model="formData" class="el-form-box">
+            <el-form-item
+              :label="$t('text.QuestionBankName')"
+              prop="t_Explain"
+              label-width="100px"
+            >
+              <el-checkbox-group v-model="checkList">
+                <el-checkbox
+                  v-for="(title, index) in addFormTitleList"
+                  :key="index"
+                  :label="title.label"
+                  :value="title.val"
+                ></el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+          </el-form>
+        </template>
       </div>
+      <el-button @click="handleDeleteTopic">{{ $t('text.delete') }}</el-button>
       <el-button @click="handleClose4">{{ $t('text.close') }}</el-button>
     </el-dialog>
   </div>
@@ -472,6 +524,7 @@ export default {
       addFormSubject: [],
       addFormTitleList: [],
       batchDeleteTopicList: [],
+      checkList: [],
     }
   },
   async mounted() {
@@ -492,26 +545,66 @@ export default {
     }
   },
   methods: {
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row)
+    handleDeleteTopic: debounce(async function () {
+      //题库删除
+      try {
+        const self = this
+        this.$confirm(this.$t('text.deleteHint'), this.$t('text.hint'), {
+          confirmButtonText: this.$t('text.confirm'),
+          cancelButtonText: this.$t('text.cancel'),
+          type: 'warning',
         })
-      } else {
-        this.$refs.multipleTable.clearSelection()
+          .then(() => {
+            let params = []
+            this.checkList.forEach((item, index) => {
+              this.addFormTitleList.forEach(i => {
+                if (item === i.label) {
+                  params.push({ t_FatherlevelID: i.val })
+                }
+              })
+            })
+            let res = DatchDeleteThetopictablet_FatherlevelID(params)
+            if (res) {
+              this.$message({
+                type: 'success',
+                message: this.$t('text.successfullyDelete'),
+              })
+              //刷新个人题库
+              if (this.isPersonalPower) {
+                self.hangleGetPersonalSubject(
+                  window.localStorage.getItem('sixStringPwa'),
+                )
+              }
+              //刷新个人系统题库
+              if (this.isAdministrators) {
+                this._listSubject()
+                this._getNewsList()
+              }
+            }
+            this.dialogVisible4 = false
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: this.$t('text.undelete'),
+            })
+          })
+      } catch (e) {
+        // this.$message(`${e}` || '发生错误')
+      }
+    }, 500),
+    deleteTopicButton() {
+      this.dialogVisible4 = true
+      if (this.isPersonalPower) {
+        this.changeRadio({ val: 'fff' }, 'person')
+        this.value = 'fff'
       }
     },
-    deleteTopicButton() {},
     async batchDeleteTopicButton() {
       try {
         let idList = []
         idList = this.batchDeleteTopicList.map(obj => ({ id: obj.id }))
-        console.log(idList, 'id')
-        if (idList.length === 0) {
-          return
-        }
         const res = await DatchDeleteThetopictable(idList)
-        console.log(res, 'result')
         if (res) {
           this.$message({
             type: 'success',
@@ -526,7 +619,6 @@ export default {
       }
     },
     handleSelectionChange(e) {
-      console.log(e, '==')
       this.batchDeleteTopicList = e
     },
     //管理人员导入默认题库
@@ -542,6 +634,7 @@ export default {
           this.isShowClickButton = true
           this.titleList = []
           this.addFormTitleList = []
+
           //没数据时
           if (!this.personalTitleList.length) {
             this.$message(this.$t('text.personalTitleListNull'))
@@ -761,6 +854,9 @@ export default {
 
         const file = e.target.files[0]
         const formData = new FormData()
+        //   zh-CN: 'ZH',
+        //   en-US: 'US',
+        const lang = this.$i18n.locale === 'zh-CN' ? 'CN' : 'US'
         formData.append('file', file)
         if (this.isAdministrators === true) {
           formData.append('subjectID', this.subjectID)
@@ -769,16 +865,22 @@ export default {
         }
         formData.append('password', this.sixStringPwa)
         formData.append('title', this.subjectName)
+        formData.append('type', lang)
 
         const res = await upload(formData)
-        this.uploadList = res.result
+        this.uploadList = res
         this.dialogVisible3 = true
         document.getElementById('input-id').value = ''
-        this.$message({
-          message: this.$t('text.ImportSuccess'),
-          type: 'success',
-        })
+        if (res) {
+          this.$message({
+            message: this.$t('text.ImportSuccess'),
+            type: 'success',
+          })
+        } else {
+          document.getElementById('input-id').value = ''
+        }
       } catch (e) {
+        document.getElementById('input-id').value = ''
         console.log(e)
       }
     },
@@ -835,19 +937,26 @@ export default {
         this.chooseSubject(this.chooseSub, this.showTitleList)
       }
     },
-    checkAnswer(obj) {
-      const answer = obj.t_Answer
-      const regex = /^[ABCD]+$/
-      return regex.test(answer)
-    },
     //关闭删除题库弹窗
     handleClose4() {
       this.dialogVisible4 = false
+    },
+    checkAnswer(obj) {
+      const answer = obj.t_Answer
+      const regex = /^[ABCD]$/
+      return regex.test(answer)
     },
     //新增&编辑
     handleSubmit: debounce(async function () {
       try {
         let params = Object.assign({}, this.formData)
+        if (!params.t_FatherlevelID) {
+          this.$message({
+            message: `${this.$t('text.t_FatherlevelID')}`,
+            type: 'error',
+          })
+          return
+        }
         if (!this.checkAnswer(params)) {
           this.$message({
             message: `${this.$t('text.t_answers')}`,
@@ -860,7 +969,7 @@ export default {
           const res = await NewInterface(params)
           if (res === true) {
             this.dialogVisible = false
-            this._getListTheopictable()
+            this._getListTheopictable(this.titleId)
 
             this.$message({
               message: this.$t('text.NewSuccess'),
@@ -872,7 +981,7 @@ export default {
 
           if (res === true) {
             this.dialogVisible = false
-            this._getListTheopictable()
+            this._getListTheopictable(this.titleId)
 
             this.$message({
               message: this.$t('text.ModifiedSuccessfully'),
@@ -1260,5 +1369,12 @@ export default {
   overflow: auto;
   border: 1px solid #000;
   box-shadow: 5px 5px 5px #ccc;
+}
+.dialog-box_delete_item {
+  height: 1000px;
+  font-size: 1rem;
+  overflow: auto;
+  // border: 1px solid #000;
+  // box-shadow: 5px 5px 5px #ccc;
 }
 </style>
