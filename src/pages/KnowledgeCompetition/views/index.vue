@@ -117,7 +117,10 @@
             </div>
             <div class="limit_time_text">{{ $t('text.openTimer') }}</div>
             <div class="limit_time_choose">
-              <div class="limit_time_time">{{ time }}s</div>
+              <div class="limit_time_time">
+                <input type="text" v-model="time" placeholder="360" />
+              </div>
+
               <div class="limit_time_icon"></div>
               <div class="choose_box" v-show="showChooseBox">
                 <div class="limit_time_choose_box">
@@ -132,6 +135,7 @@
                 </div>
               </div>
             </div>
+            <span class="text-s">&nbsp; S</span>
           </div>
           <div class="limit_time_enable">
             <div class="limit_time_choose_img" @click="handleLimitTime(false)">
@@ -219,7 +223,7 @@ export default {
       personalTitleList: [],
       paw: '',
       preUrl: '',
-      lang: 'en',
+      lang: '',
     }
   },
   async mounted() {
@@ -235,9 +239,7 @@ export default {
       en: 'en-US',
     }
     this.lang = getParameter('language') || 'en'
-    // if (this.$i18n) {
-    //   this.$i18n.locale = langTypeMap[this.lang]
-    // }
+    this.$i18n.locale = langTypeMap[this.lang]
     window.localStorage.setItem('langType', langTypeMap[this.lang])
     window.localStorage.setItem('hash', window.location.hash)
   },
@@ -323,7 +325,6 @@ export default {
     },
     // handleChooseBox() {
     //   this.showChooseBox = true
-    //   console.log(1, this.showChooseBox)
     // },
     //点击科目
     chooseSubject(id, index) {
@@ -463,13 +464,6 @@ export default {
         this._listSubject()
 
         this.showSettingPopup = true
-
-        // let self = this
-        // this.showHintPopupClass = 'hint-popup bounceOutRight animated'
-        // setTimeout(() => {
-        //   self.showHintPopupClass = 'hint-popup bounceInDown animated'
-        //   self.showSettingPopup = false
-        // }, 599)
       } catch (error) {
         console.log(error)
       }

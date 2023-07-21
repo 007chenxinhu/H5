@@ -46,6 +46,14 @@
       <el-container>
         <el-header style="text-align: left; font-size: 40px">
           <el-button
+            font-size="26px"
+            type="success"
+            v-if="!isAdministrators"
+            @click="getPersonalSubject()"
+          >
+            {{ $t('text.GetPersonal') }}
+          </el-button>
+          <el-button
             type="primary"
             v-if="isPersonalPower || isAdministrators"
             @click="handleClickFilterButton('add', null)"
@@ -65,14 +73,6 @@
             @click="handleInputButton()"
           >
             {{ $t('text.ImportQuestion') }}
-          </el-button>
-          <el-button
-            font-size="26px"
-            type="primary"
-            v-if="!isAdministrators"
-            @click="getPersonalSubject()"
-          >
-            {{ $t('text.GetPersonal') }}
           </el-button>
           <el-button
             font-size="16px"
@@ -97,7 +97,9 @@
           </el-button>
           <el-button
             type="primary"
-            v-if="isPersonalPower || isAdministrators"
+            v-show="
+              isAdministrators ? true : chooseSub === 'fff' ? true : false
+            "
             @click="batchDeleteTopicButton()"
           >
             {{ $t('text.batchDeleteTopic') }}
@@ -525,6 +527,7 @@ export default {
       addFormTitleList: [],
       batchDeleteTopicList: [],
       checkList: [],
+      lang: 'en',
     }
   },
   async mounted() {
@@ -533,6 +536,12 @@ export default {
       this.isAdministrators = true
       this.isShowClickButton = true
     }
+    this.lang = getParameter('language') || 'en'
+    const langTypeMap = {
+      zh: 'zh-CN',
+      en: 'en-US',
+    }
+    this.$i18n.locale = langTypeMap[this.lang]
     await this._listSubject()
     await this._getNewsList()
     await this._getListTheopictable()
@@ -809,7 +818,7 @@ export default {
               this.titleList.push(item)
             })
           }
-
+          this.chooseSub = id
           this.titleId = this.titleList[0].val
           this.showTitleList = index
           this.isShowClickButton = true
@@ -1094,8 +1103,25 @@ export default {
     // },
     //跳往游戏界面
     GoKnowledgeCompetition() {
-      window.localStorage.setItem('myManagement', window.location.hash)
-      this.$router.push('/index?Preview=true')
+      if (window.location.hash.includes('language')) {
+        // 如果包含"language"字符串，執行以下代碼
+        window.localStorage.setItem('myManagement', window.location.hash)
+      } else {
+        // 如果不包含"language"字符串，執行以下代碼
+        if (window.location.hash.includes('?')) {
+          // 如果不包含"?"字符串，執行以下代碼
+          window.localStorage.setItem(
+            'myManagement',
+            window.location.hash + '&language=en',
+          )
+        } else {
+          window.localStorage.setItem(
+            'myManagement',
+            window.location.hash + `?language=${this.lang}`,
+          )
+        }
+      }
+      this.$router.push(`/index?Preview=true&language=${this.lang}`)
     },
   },
 }

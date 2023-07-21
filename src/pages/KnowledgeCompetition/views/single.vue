@@ -20,15 +20,9 @@
     </div>
     <div class="go_back" @click="goBack">
       <img class="go_back_img" src="../assets/images/star_btn_home.png" />
-      <!-- <van-icon name="wap-home" size="3vw" /> -->
     </div>
     <!-- 进度条 -->
     <div class="progress">
-      <!-- <progress-bar
-        :stage="questionList.length"
-        :is-single="true"
-        :current-stage="currentQuestionIndex + 1"
-      ></progress-bar> -->
       <div class="progress-bar-single">
         <div
           v-for="i in questionList.length"
@@ -57,49 +51,11 @@
         <div class="option" @click="selectOption(3)">
           {{ currentQuestion.t_Answer_D }}
         </div>
-        <!-- <div
-          class="option"
-          v-for="(option, index) in currentQuestion.options"
-          :key="index"
-          :class="
-            showResult
-              ? selectedOption === index
-                ? currentQuestion.selected === currentQuestion.answer
-                  ? 'success'
-                  : 'error'
-                : ''
-              : selectedOption === index
-              ? 'active'
-              : ''
-          "
-          @click="selectOption(index)"
-        >
-          {{ option }}
-        </div> -->
       </div>
-      <!-- <div class="submit"> -->
-      <!-- <button @click="checkAnswer">检查答案</button> -->
-      <!-- <button @click="nextQuestion">
-          {{
-            currentQuestionIndex + 1 === questionList.length ? '提交' : '下一题'
-          }}
-        </button> -->
-      <!-- </div> -->
-      <!-- <div class="result" v-if="showResult">
-        {{
-          isAnswerCorrect
-            ? '回答正确！'
-            : '回答错误！正确答案是：' +
-              currentQuestion.options[currentQuestion.answer]
-        }}
-      </div> -->
     </div>
     <!-- 结果弹窗 -->
     <div :class="showResultPopupClass" v-if="showResultPopup">
       <div class="content-popup">
-        <!-- <div class="closeWrapper" @click="closePopup">
-          <van-icon name="cross" />
-        </div> -->
         <div class="result-score">
           <div class="result-score-button">
             {{ $t('text.score') }}: {{ score ? score : 0 }}
@@ -110,7 +66,6 @@
           <div class="result-score-button">
             {{ $t('text.times') }}: {{ times }}s
           </div>
-          <!-- <div class="more-btn" @click="oneMore()">再来一次</div> -->
         </div>
         <div
           class="topic-list"
@@ -242,20 +197,7 @@ export default {
   data() {
     return {
       url: '',
-      questionList: [
-        // {
-        //   title: '1. 世界上最长的河流是哪个？',
-        //   options: ['A. 尼罗河', 'B. 亚马逊河', 'C. 长江', 'D. 密西西比河'],
-        //   selected: null, //已选选项
-        //   answer: 0, // 答案为选项A
-        // },
-        // {
-        //   title: '2. 世界上最大的洲是哪个？',
-        //   options: ['A. 亚洲', 'B. 非洲', 'C. 欧洲', 'D. 北美洲'],
-        //   selected: null,
-        //   answer: 0,
-        // },
-      ],
+      questionList: [],
       currentQuestion: [],
       showResultPopup: false,
       showResultPopupClass: 'result-popup bounceInDown animated',
@@ -373,30 +315,6 @@ export default {
       this.score = 0
       this.accuracy = 0
       this.times = 0
-      // let _this = this
-      // setTimeout(() => {
-      //   _this.$router.go(0)
-      // }, 100)
-      // location.reload(true)
-      // setTimeout(() => {
-      //   let limitTime = getParameter('limitTime')
-      //   let time = getParameter('time')
-      //   let id = getParameter('id')
-      //   this.$router.push({
-      //     path: this.url,
-      //     query: {
-      //       limitTime: limitTime,
-      //       time: time,
-      //       id: id,
-      //     },
-      //   })
-      // }, 100)
-
-      // .catch(error => {
-      //   if (error.name !== 'NavigationDuplicated') {
-      //     throw error
-      // }
-      // })
     },
     goBack() {
       this.playAudioBtn()
@@ -409,14 +327,20 @@ export default {
       this.timerId = setInterval(() => {
         this.totalTime -= this.interval / 1000
         // 每30秒进行提醒
+        console.log(
+          this.totalTime % this.alertInterval === 0,
+          this.totalTime,
+          '=',
+          this.alertInterval,
+        )
         if (this.totalTime % this.alertInterval === 0 && !this.isAlerted) {
-          this.$toast(
-            `${_this.$t('text.TheTime')} ${this.getTime - this.totalTime} s`,
-          )
-          this.isAlerted = true
-
           let count = 0
           let _this = this
+
+          this.$toast(
+            `${this.$t('text.TheTime')} ${this.getTime - this.totalTime} s`,
+          )
+          this.isAlerted = true
 
           const interval = setInterval(() => {
             // 播放声音的代码
@@ -463,15 +387,6 @@ export default {
       this.selectedOption = index
       this.playAudioBtn1()
       this.nextQuestion()
-    },
-    checkAnswer() {
-      if (this.selectedOption === null) {
-        this.$toast('请选择一个选项...')
-        return
-      }
-      this.questionList[this.currentQuestionIndex].selected =
-        this.selectedOption
-      this.showResult = true
     },
     nextQuestion() {
       try {

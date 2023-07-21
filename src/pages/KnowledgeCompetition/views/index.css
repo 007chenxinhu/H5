@@ -396,6 +396,13 @@ body {
   color: #2f3134;
 }
 
+.setting-TopicType .limit_time .limit_time_enable .limit_time_choose .limit_time_time input {
+  width: 8vw;
+  height: 4.71vh;
+  text-align: center;
+  border: none;
+}
+
 .setting-TopicType .limit_time .limit_time_enable .limit_time_choose .limit_time_icon {
   position: absolute;
   right: 0.5vw;
@@ -431,6 +438,10 @@ body {
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #2f3134;
+}
+
+.setting-TopicType .limit_time .limit_time_enable .text-s {
+  font-size: 1.4vw;
 }
 
 .setting-TopicType .limit_time .limit_time_enable:nth-last-child(1) {
