@@ -648,9 +648,21 @@ export default {
     goBack() {
       this.playAudioBtn()
       let _this = this
-      setTimeout(() => {
-        _this.$router.push(`${this.url}`)
-      }, 100)
+      if (this.url.includes('noFirst')) {
+        setTimeout(() => {
+          _this.$router.push(`${this.url}`)
+        }, 100)
+      } else {
+        if (this.url.includes('?')) {
+          setTimeout(() => {
+            _this.$router.push(`${this.url + '&noFirst=true'}`)
+          }, 100)
+        } else {
+          setTimeout(() => {
+            _this.$router.push(`${this.url + '?noFirst=true'}`)
+          }, 100)
+        }
+      }
     },
     startCountdown() {
       let _this = this

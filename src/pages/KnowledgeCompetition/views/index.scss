@@ -26,6 +26,19 @@ body {
   font-weight: bold;
   background: #000;
 }
+.home-top {
+  position: relative;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  background-color: rgb(31, 31, 35);
+}
+.video-box {
+  height: 100%;
+}
 .home {
   position: relative;
   @include wh(100vw, 100vh);

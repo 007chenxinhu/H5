@@ -1,180 +1,204 @@
 <template>
-  <div class="home">
-    <div class="home_square">
-      <img src="../assets/images/home_square.png" class="home_square_img" />
-    </div>
-    <div class="content">
-      <div class="container">
-        <!-- <p class="a">The world's best</p>
+  <div class="home-top">
+    <video
+      class="video-box"
+      v-if="isPlayVideo"
+      data-end="1"
+      muted
+      play-duration="10s"
+      poster="../assets/poster.jpg"
+      preload="auto"
+      autoplay
+      src="../assets/video/poster.mp4"
+    ></video>
+    <div class="home" v-if="!isPlayVideo">
+      <div class="home_square">
+        <img src="../assets/images/home_square.png" class="home_square_img" />
+      </div>
+      <div class="content">
+        <div class="container">
+          <!-- <p class="a">The world's best</p>
         <p class="b">Knowledge</p>
         <p class="a">Contest</p> -->
-        <img src="../assets/images/home_title.png" class="home_title" />
-      </div>
-      <!-- 模式 -->
-      <div class="category">
-        <div class="category-single pulse animated" @click="singleCategory">
-          {{ $t('text.singleTitle') }}
+          <img src="../assets/images/home_title.png" class="home_title" />
         </div>
-        <div class="category-double pulse animated" @click="doubleCategory">
-          {{ $t('text.doubleTitle') }}
+        <!-- 模式 -->
+        <div class="category">
+          <div class="category-single pulse animated" @click="singleCategory">
+            {{ $t('text.singleTitle') }}
+          </div>
+          <div class="category-double pulse animated" @click="doubleCategory">
+            {{ $t('text.doubleTitle') }}
+          </div>
         </div>
       </div>
-    </div>
-    <div class="btn-back" v-if="isPreview" @click="GoManagement">
-      {{ $t('text.backToManagementSystem') }}
-    </div>
-    <!-- 旁边栏目 -->
-    <div class="sidebar">
+      <div class="btn-back" v-if="isPreview" @click="GoManagement">
+        {{ $t('text.backToManagementSystem') }}
+      </div>
+      <!-- 旁边栏目 -->
+      <div class="sidebar">
+        <!-- 提示说明 -->
+        <div class="sidebar-hint" @click="ViewInstructions"></div>
+        <!-- star支持 -->
+        <!-- <div class="sidebar-star"></div> -->
+        <!-- 历史排行 -->
+        <!-- <div class="sidebar-ranking"></div> -->
+        <!-- 设置 -->
+        <div class="sidebar-setting" @click="Setting"></div>
+      </div>
       <!-- 提示说明 -->
-      <div class="sidebar-hint" @click="ViewInstructions"></div>
-      <!-- star支持 -->
-      <!-- <div class="sidebar-star"></div> -->
-      <!-- 历史排行 -->
-      <!-- <div class="sidebar-ranking"></div> -->
+      <div :class="showHintPopupClass" v-show="showHintPopup">
+        <div class="closeWrapper" @click="closePopup">
+          <img
+            class="setting_btn"
+            src="../assets/images/setting_btn_close.png"
+          />
+        </div>
+        <div class="hint-title">
+          {{ $t('text.hintText') }}
+        </div>
+        <div class="hint-text">{{ $t('text.hint1') }}</div>
+        <div class="hint-text">
+          {{ $t('text.hint2') }}
+        </div>
+        <div class="hint-text">
+          {{ $t('text.hint3') }}
+        </div>
+        <div class="hint-text">
+          {{ $t('text.hint4') }}
+        </div>
+      </div>
       <!-- 设置 -->
-      <div class="sidebar-setting" @click="Setting"></div>
-    </div>
-    <!-- 提示说明 -->
-    <div :class="showHintPopupClass" v-show="showHintPopup">
-      <div class="closeWrapper" @click="closePopup">
-        <img class="setting_btn" src="../assets/images/setting_btn_close.png" />
-      </div>
-      <div class="hint-title">
-        {{ $t('text.hintText') }}
-      </div>
-      <div class="hint-text">{{ $t('text.hint1') }}</div>
-      <div class="hint-text">
-        {{ $t('text.hint2') }}
-      </div>
-      <div class="hint-text">
-        {{ $t('text.hint3') }}
-      </div>
-      <div class="hint-text">
-        {{ $t('text.hint4') }}
-      </div>
-    </div>
-    <!-- 设置 -->
-    <div
-      :class="showSettingPopupClass"
-      @click="clickPop"
-      v-show="showSettingPopup"
-    >
-      <div class="closeWrapper" @click="closePopup">
-        <!-- <van-icon name="cross" /> -->
-        <img class="setting_btn" src="../assets/images/setting_btn_close.png" />
-      </div>
-      <div class="hint-title">
-        {{ $t('text.setting') }}
-      </div>
-      <!-- <div class="setting-intro">
+      <div
+        :class="showSettingPopupClass"
+        @click="clickPop"
+        v-show="showSettingPopup"
+      >
+        <div class="closeWrapper" @click="closePopup">
+          <!-- <van-icon name="cross" /> -->
+          <img
+            class="setting_btn"
+            src="../assets/images/setting_btn_close.png"
+          />
+        </div>
+        <div class="hint-title">
+          {{ $t('text.setting') }}
+        </div>
+        <!-- <div class="setting-intro">
         设置题目类型、范围，做题时间限制，是否开启时间提醒
       </div> -->
-      <div class="setting-TopicType">
-        <h2 class="setting-TopicType-title">{{ $t('text.chooseSubject') }}:</h2>
-        <div class="options">
-          <div class="choose-subject">
-            <ul>
-              <li
-                :class="showTitleList === i ? 'li-item-choose' : 'li-item'"
-                v-for="(subject, i) in subjectList"
-                :key="subject.val"
-                @click="chooseSubject(subject.val, i)"
-              >
-                {{ subject.label }}
-              </li>
-            </ul>
+        <div class="setting-TopicType">
+          <h2 class="setting-TopicType-title">
+            {{ $t('text.chooseSubject') }}:
+          </h2>
+          <div class="options">
+            <div class="choose-subject">
+              <ul>
+                <li
+                  :class="showTitleList === i ? 'li-item-choose' : 'li-item'"
+                  v-for="(subject, i) in subjectList"
+                  :key="subject.val"
+                  @click="chooseSubject(subject.val, i)"
+                >
+                  {{ subject.label }}
+                </li>
+              </ul>
+            </div>
+            <div class="choose-title">
+              <ul>
+                <li
+                  :class="
+                    showChooseTitle === index ? 'li-item-choose' : 'li-item'
+                  "
+                  v-for="(title, index) in titleList"
+                  :key="title.val"
+                  @click="clickTitle(title.val, index)"
+                >
+                  {{ title.label }}
+                </li>
+              </ul>
+            </div>
           </div>
-          <div class="choose-title">
-            <ul>
-              <li
-                :class="
-                  showChooseTitle === index ? 'li-item-choose' : 'li-item'
-                "
-                v-for="(title, index) in titleList"
-                :key="title.val"
-                @click="clickTitle(title.val, index)"
-              >
-                {{ title.label }}
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!-- <div class="teeth">
+          <!-- <div class="teeth">
           <Teeth></Teeth>
         </div> -->
-        <div class="limit_time_title">{{ $t('text.timingSetting') }}</div>
-        <div class="limit_time">
-          <div class="limit_time_enable">
-            <div class="limit_time_choose_img" @click="handleLimitTime(true)">
-              <img
-                class="limit_time_img"
-                :src="
-                  limitTime
-                    ? require('../assets/images/setting_btn_selected.png')
-                    : require('../assets/images/setting_btn_normal.png')
-                "
-              />
-            </div>
-            <div class="limit_time_text">{{ $t('text.openTimer') }}</div>
-            <div class="limit_time_choose">
-              <div class="limit_time_time">
-                <input type="text" v-model="time" placeholder="360" />
+          <div class="limit_time_title">{{ $t('text.timingSetting') }}</div>
+          <div class="limit_time">
+            <div class="limit_time_enable">
+              <div class="limit_time_choose_img" @click="handleLimitTime(true)">
+                <img
+                  class="limit_time_img"
+                  :src="
+                    limitTime
+                      ? require('../assets/images/setting_btn_selected.png')
+                      : require('../assets/images/setting_btn_normal.png')
+                  "
+                />
               </div>
+              <div class="limit_time_text">{{ $t('text.openTimer') }}</div>
+              <div class="limit_time_choose">
+                <div class="limit_time_time">
+                  <input type="text" v-model="time" placeholder="360" />
+                </div>
 
-              <div class="limit_time_icon"></div>
-              <div class="choose_box" v-show="showChooseBox">
-                <div class="limit_time_choose_box">
-                  <div
-                    class="limit_time_choose_list"
-                    v-for="(item, index) in selectTime"
-                    :key="index"
-                    @click="chooseLimitTime(index)"
-                  >
-                    {{ item }}s
+                <div class="limit_time_icon"></div>
+                <div class="choose_box" v-show="showChooseBox">
+                  <div class="limit_time_choose_box">
+                    <div
+                      class="limit_time_choose_list"
+                      v-for="(item, index) in selectTime"
+                      :key="index"
+                      @click="chooseLimitTime(index)"
+                    >
+                      {{ item }}s
+                    </div>
                   </div>
                 </div>
               </div>
+              <span class="text-s">&nbsp; S</span>
             </div>
-            <span class="text-s">&nbsp; S</span>
-          </div>
-          <div class="limit_time_enable">
-            <div class="limit_time_choose_img" @click="handleLimitTime(false)">
-              <img
-                class="limit_time_img"
-                :src="
-                  limitTime
-                    ? require('../assets/images/setting_btn_normal.png')
-                    : require('../assets/images/setting_btn_selected.png')
-                "
-                alt=""
-              />
+            <div class="limit_time_enable">
+              <div
+                class="limit_time_choose_img"
+                @click="handleLimitTime(false)"
+              >
+                <img
+                  class="limit_time_img"
+                  :src="
+                    limitTime
+                      ? require('../assets/images/setting_btn_normal.png')
+                      : require('../assets/images/setting_btn_selected.png')
+                  "
+                  alt=""
+                />
+              </div>
+              <div class="limit_time_text">{{ $t('text.disableTiming') }}</div>
             </div>
-            <div class="limit_time_text">{{ $t('text.disableTiming') }}</div>
           </div>
         </div>
-      </div>
-      <div class="get-personal">
-        <input
-          type="password"
-          class="get-personal-topic"
-          max="6"
-          v-model="paw"
-          :placeholder="$t('text.personalPassword')"
-        />
-        <div class="search_icon" @click="gerPersonalTopic">
-          <img
-            class="setting_btn_magnifier"
-            src="../assets/images/setting_btn_magnifier.png"
+        <div class="get-personal">
+          <input
+            type="password"
+            class="get-personal-topic"
+            max="6"
+            v-model="paw"
+            :placeholder="$t('text.personalPassword')"
           />
+          <div class="search_icon" @click="gerPersonalTopic">
+            <img
+              class="setting_btn_magnifier"
+              src="../assets/images/setting_btn_magnifier.png"
+            />
+          </div>
         </div>
+        <button @click="submit" class="submit-button">
+          {{ $t('text.submitButton') }}
+        </button>
       </div>
-      <button @click="submit" class="submit-button">
-        {{ $t('text.submitButton') }}
-      </button>
+      <audio id="audio" ref="audio" src="../assets/audio/index_btn.mp3" preload>
+        对不起，您的浏览器不支持HTML5音频播放。
+      </audio>
     </div>
-    <audio id="audio" ref="audio" src="../assets/audio/index_btn.mp3" preload>
-      对不起，您的浏览器不支持HTML5音频播放。
-    </audio>
   </div>
 </template>
 
@@ -182,7 +206,7 @@
 // import Teeth from '../components/teeth.vue'
 import { getParameter } from '../utils/indexExtends'
 
-import { listSubject, getListTitle, personalQuery } from '../api/index'
+import { foreEndlistSubject, getListTitle, personalQuery } from '../api/index'
 
 export default {
   name: 'Home',
@@ -196,6 +220,7 @@ export default {
       //     'url(' +
       //     require(`../assets/bg${parseInt(Math.random() * 13 + 1)}.png`),
       // },
+      isPlayVideo: true,
       time: 360,
       selectTime: [
         60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200,
@@ -226,13 +251,25 @@ export default {
       lang: '',
     }
   },
+  created() {
+    let self = this
+
+    console.log(getParameter('noFirst'), '===1')
+    if (getParameter('noFirst')) {
+      self.isPlayVideo = false
+    } else {
+      setTimeout(() => {
+        self.isPlayVideo = false
+      }, 5000)
+    }
+  },
   async mounted() {
     if (this.$route.query.type === 'single') {
       this.showSettingPopup = true
     }
     this.isPreview = getParameter('Preview') || false
 
-    await this._listSubject()
+    await this._foreEndlistSubject()
     await this._getNewsList()
     const langTypeMap = {
       zh: 'zh-CN',
@@ -356,30 +393,36 @@ export default {
       // this._getListTheopictable(id)
     },
     // 查询科目列表
-    async _listSubject() {
+    async _foreEndlistSubject() {
       try {
         let subject = {
           label: '',
           val: '',
         }
-        let arr = null
-        const res = await listSubject()
+        let params = ''
+
+        if (this.lang === 'zh') {
+          params = 'CN'
+        } else {
+          params = 'EN'
+        }
+        const res = await foreEndlistSubject(params)
         subject = res.map(item => {
           return {
             label: item.name,
             val: item.id,
           }
         })
-        subject.map((item, index) => {
-          if (item.val === 5) {
-            arr = {
-              label: this.$t('text.bestInTheWorld'),
-              val: item.val,
-            }
-            subject.splice(index, 1)
-          }
-        })
-        subject.unshift(arr)
+        // subject.map((item, index) => {
+        //   if (item.val === 5) {
+        //     arr = {
+        //       label: this.$t('text.bestInTheWorld'),
+        //       val: item.val,
+        //     }
+        //     subject.splice(index, 1)
+        //   }
+        // })
+        // subject.unshift(arr)
         this.subjectList = subject
       } catch (e) {
         this.$message(`${e}` || this.$t('text.error'))
@@ -461,7 +504,7 @@ export default {
         if (this.showHintPopup) {
           this.showHintPopup = false
         }
-        this._listSubject()
+        this._foreEndlistSubject()
 
         this.showSettingPopup = true
       } catch (error) {

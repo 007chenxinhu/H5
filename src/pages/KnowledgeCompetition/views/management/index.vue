@@ -1012,28 +1012,37 @@ export default {
           label: '',
           val: '',
         }
-        let arr = null
-        const res = await listSubject()
+        let params = ''
+        if (this.lang === 'zh') {
+          params = 'CN'
+        } else {
+          params = 'EN'
+        }
+
+        const res = await listSubject(params)
+        console.log(res, 'res==')
         subject = res.map(item => {
           return {
             label: item.name,
             val: item.id,
           }
         })
-        subject.map((item, index) => {
-          if (item.val === 5) {
-            arr = {
-              label: this.$t('text.bestInTheWorld'),
-              val: item.val,
-            }
-            subject.splice(index, 1)
-          }
-        })
-        subject.unshift(arr)
+        console.log(subject, 'subject==')
+        // subject.map((item, index) => {
+        //   if (item.val === 5) {
+        //     arr = {
+        //       label: this.$t('text.bestInTheWorld'),
+        //       val: item.val,
+        //     }
+        //     subject.splice(index, 1)
+        //   }
+        // })
+        // subject.unshift(arr)
         this.addFormSubject = subject
         this.subjectList = subject
       } catch (e) {
-        this.$message(`${e}` || this.$t('text.error'))
+        console.log(e)
+        // this.$message(`${e}` || this.$t('text.error'))
       }
     },
     // 查询科目下题目题库列表
@@ -1061,14 +1070,15 @@ export default {
           this.titleList = []
         }
       } catch (e) {
-        this.$message(`${e}` || this.$t('text.error'))
+        console.log(e)
+        // this.$message(`${e}` || this.$t('text.error'))
       }
     },
     //下载模板
     async handleOutputButton() {
       try {
         window.open(
-          `http://47.113.88.149:5572/game/download?fileName=${this.$t(
+          `http://47.244.154.186:5005/game/download?fileName=${this.$t(
             'text.link',
           )}`,
         )
@@ -1162,8 +1172,8 @@ export default {
     width: 100%;
     border-top: 0.01vw solid #ccc;
     background-color: #b3c0d1;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    // white-space: nowrap;
+    // text-overflow: ellipsis;
     .subject-t-icon1 {
       position: absolute;
       right: 2px;
@@ -1191,8 +1201,8 @@ export default {
     position: relative;
     width: 100%;
     border-top: 0.01vw solid #ccc;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    // white-space: nowrap;
+    // text-overflow: ellipsis;
     .subject-t-icon1 {
       position: absolute;
       right: 2px;

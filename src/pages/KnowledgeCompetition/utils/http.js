@@ -82,12 +82,12 @@ export default class BaseRequest {
         }
         console.log(data.message, 'data')
         const langTypeMap = {
-          3321: '参数错误!',
-          3322: '标题已存在!',
-          3323: '导入失败，请检查原因!',
-          3324: '密码不可以为空!，',
-          3325: '不存在!',
-          3326: '新增失败!',
+          3321: 'Parameter error!',
+          3322: 'Title already exists!',
+          3323: 'The import fails. Check the cause!',
+          3324: 'The password must not be empty!，',
+          3325: 'Nonentity!',
+          3326: 'Add failure!',
         }
         if ([3321, 3322, 3323, 3324].includes(Number(data.message))) {
           const code = Number(data.message)
