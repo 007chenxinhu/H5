@@ -15,7 +15,7 @@
         </div>
         <template v-for="(item, index) in subjectList">
           <el-menu :key="index">
-            <div>
+            <div id="aside">
               <div
                 :class="chooseSub === item.val ? 'subject-t' : 'subject-f'"
                 @click="chooseSubject(item.val, index)"
@@ -24,7 +24,9 @@
                 <div
                   :class="
                     chooseSub === item.val
-                      ? 'subject-t-icon1'
+                      ? !unSub
+                        ? 'subject-t-icon1'
+                        : 'subject-t-icon2'
                       : 'subject-t-icon2'
                   "
                 ></div>
@@ -33,7 +35,7 @@
                 :class="titleId === title.val ? 'title-t' : 'title-f'"
                 v-for="(title, fk) in titleList"
                 :key="fk"
-                v-show="showTitleList === index"
+                v-show="showTitleList === index && !unSub"
                 @click="chooseTitle(title.val)"
               >
                 {{ title.label }}
@@ -192,6 +194,26 @@
     >
       <div>
         <el-form>
+          <el-form-item label=" " label-width="100px">
+            <div class="choose-type">
+              <div class="a">
+                <div
+                  class="checkout-add"
+                  :style="checkoutType ? 'background: #008000;' : ''"
+                  @click="checkoutType = true"
+                ></div>
+                <div>新增</div>
+              </div>
+              <div class="a">
+                <div
+                  class="checkout-overlay"
+                  :style="checkoutType ? '' : 'background: #008000;'"
+                  @click="checkoutType = false"
+                ></div>
+                <div>叠加</div>
+              </div>
+            </div>
+          </el-form-item>
           <el-form-item
             v-if="isAdministrators"
             :label="$t('text.subjects')"
@@ -210,7 +232,28 @@
               </el-radio>
             </div>
           </el-form-item>
-          <el-form-item :label="$t('text.EnterPersonalName')">
+          <el-form-item
+            v-if="!checkoutType"
+            :label="$t('text.QuestionBankName')"
+            prop="titleId"
+            label-width="100px"
+          >
+            <div class="radio-box">
+              <el-radio
+                v-for="(title, fk) in titleList"
+                :key="fk"
+                v-model="titleId"
+                :label="title.val"
+                @input="chooseTitle(title.val)"
+              >
+                {{ title.label }}
+              </el-radio>
+            </div>
+          </el-form-item>
+          <el-form-item
+            :label="$t('text.EnterPersonalName')"
+            v-if="checkoutType"
+          >
             <input v-model.trim="subjectName" type="text" />
           </el-form-item>
           <el-form-item
@@ -233,8 +276,12 @@
         id="input-id"
         v-show="
           isAdministrators
-            ? subjectName
-            : subjectName && sixStringPwa.length === 6
+            ? checkoutType
+              ? subjectName
+              : titleId
+            : checkoutType
+            ? subjectName && sixStringPwa.length === 6
+            : sixStringPwa.length === 6
         "
         type="file"
         :text="$t('text.ImportQuestion')"
@@ -506,6 +553,7 @@ export default {
       isAdministrators: false, //管理员 有所有权限
       isShowClickButton: false, //表格操作按钮
       formData: {
+        // 新增表单数据
         // id: null,
         // t_FatherlevelID: null,
         t_Answer: '',
@@ -528,6 +576,8 @@ export default {
       batchDeleteTopicList: [],
       checkList: [],
       lang: 'en',
+      checkoutType: true,
+      unSub: false, // 点击同一个侧边栏科目，收缩控制参数
     }
   },
   async mounted() {
@@ -793,7 +843,7 @@ export default {
           this.isPersonalPower = true
         }
       } catch (error) {
-        this.$message(`${error}` || this.$t('text.error'))
+        // this.$message(`${error}` || this.$t('text.error'))
       }
     },
     //输入个人密码
@@ -811,6 +861,7 @@ export default {
     //点击科目
     chooseSubject(id, index) {
       try {
+        //点击私人题库
         if (id === 'fff') {
           this.titleList = []
           if (this.isPersonalPower) {
@@ -818,12 +869,26 @@ export default {
               this.titleList.push(item)
             })
           }
-          this.chooseSub = id
+          if (this.chooseSub === id) {
+            this.unSub = !this.unSub
+          } else {
+            this.chooseSub = id
+            this.unSub = false
+          }
           this.titleId = this.titleList[0].val
           this.showTitleList = index
           this.isShowClickButton = true
           this._getListTheopictable(this.titleId)
         } else {
+          //不是私人题库点击
+
+          if (this.chooseSub === id) {
+            this.unSub = !this.unSub
+          } else {
+            this.chooseSub = id
+            this.unSub = false
+          }
+          console.log(this.unSub, 'this.unSub')
           if (!this.isAdministrators) {
             this.isShowClickButton = false
           }
@@ -850,10 +915,14 @@ export default {
     //导入题库
     async handleChooseFiles(e) {
       try {
-        if (!this.subjectName) {
-          this.$message(this.$t('text.PleaseEnterName'))
-          return
+        //新增覆盖类型选择
+        if (this.checkoutType) {
+          if (!this.subjectName) {
+            this.$message(this.$t('text.PleaseEnterName'))
+            return
+          }
         }
+
         if (!this.isAdministrators) {
           if (!this.sixStringPwa) {
             this.$message(this.$t('text.enterUPsw'))
@@ -865,7 +934,9 @@ export default {
         const formData = new FormData()
         //   zh-CN: 'ZH',
         //   en-US: 'US',
+        console.log(this.titleId, ' this.titleId')
         const lang = this.$i18n.locale === 'zh-CN' ? 'CN' : 'US'
+        const t_FatherlevelID = this.titleId
         formData.append('file', file)
         if (this.isAdministrators === true) {
           formData.append('subjectID', this.subjectID)
@@ -875,6 +946,9 @@ export default {
         formData.append('password', this.sixStringPwa)
         formData.append('title', this.subjectName)
         formData.append('type', lang)
+        if (!this.checkoutType) {
+          formData.append('t_FatherlevelID', t_FatherlevelID)
+        }
 
         const res = await upload(formData)
         this.uploadList = res
@@ -885,6 +959,11 @@ export default {
             message: this.$t('text.ImportSuccess'),
             type: 'success',
           })
+          if (this.isPersonalPower) {
+            this.hangleGetPersonalSubject(
+              window.localStorage.getItem('sixStringPwa'),
+            )
+          }
         } else {
           document.getElementById('input-id').value = ''
         }
@@ -1148,6 +1227,16 @@ export default {
   color: #333;
   //   line-height: 10vh;
 }
+#aside {
+  /* 火狐 */
+  -moz-user-select: none;
+  /* Safari 和 欧朋 */
+  -webkit-user-select: none;
+  /* IE10+ and Edge */
+  -ms-user-select: none;
+  /* Standard syntax 标准语法(谷歌) */
+  user-select: none;
+}
 .el-button {
   font-size: 1rem !important;
 }
@@ -1252,7 +1341,7 @@ export default {
 }
 .title-f:hover {
   color: #bbb6b6;
-  background-color: #3a3939;
+  background-color: #393a39;
 }
 // /deep/.el-submenu .el-submenu__title {
 //   line-height: 10vh;
@@ -1283,6 +1372,7 @@ export default {
   .el-form-item__content {
     font-size: 70px;
     .radio-box {
+      margin-top: 20px;
       display: flex;
       flex-wrap: wrap;
       font-size: 70px;
@@ -1398,6 +1488,27 @@ export default {
 #input-id {
   width: 100%;
   font-size: 0.8rem;
+}
+.choose-type {
+  display: flex;
+  .a {
+    display: flex;
+    align-items: center;
+    .checkout-add {
+      width: 1rem;
+      height: 1rem;
+      border: 1px solid #000;
+      cursor: pointer;
+      margin-right: 20px;
+    }
+    .checkout-overlay {
+      width: 1rem;
+      height: 1rem;
+      border: 1px solid #000;
+      cursor: pointer;
+      margin: 0 20px;
+    }
+  }
 }
 .dialog-box_success_item {
   height: 1000px;

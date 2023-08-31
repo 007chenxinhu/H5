@@ -1,7 +1,8 @@
 // 统一请求路径前缀在commmon/axios.js中修改
 // import { getRequest, postRequest } from '../utils/http-request.js'
 import BaseRequest from '../utils/http'
-const api = new BaseRequest('http://47.244.154.186:5005/game/')
+const api = new BaseRequest('http://47.113.88.149:5572/game/')
+//'http://47.244.154.186:5005/game/'  正式
 
 // 查询科目列表
 export const listSubject = params => api.get(`/listSubject?type=${params}`)
