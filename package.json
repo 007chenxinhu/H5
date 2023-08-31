@@ -13,6 +13,7 @@
     "new:page": "node scripts/createPage.js"
   },
   "dependencies": {
+    "element-ui": "^2.15.13",
     "lodash": "^4.17.21",
     "vant": "^2.9.0",
     "vue": "^2.6.11",
@@ -28,6 +29,7 @@
     "@vue/eslint-config-standard": "^5.1.2",
     "axios": "^0.19.2",
     "babel-eslint": "^10.1.0",
+    "babel-plugin-component": "^1.1.1",
     "chalk": "^4.1.0",
     "compression-webpack-plugin": "^1.1.12",
     "core-js": "^3.6.5",
