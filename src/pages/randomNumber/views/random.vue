@@ -73,7 +73,7 @@
     </div>
     <div :class="showPopupClass" v-show="showPopup">
       <template v-if="isRandom">
-        <div class="random-title">{{ $t('text.randomNumber') }}</div>
+        <div class="random-title">{{ $t('text.title') }}</div>
         <div class="closeWrapper" @click="closePopup">
           <van-icon name="cross" />
         </div>
@@ -100,7 +100,7 @@
           <van-icon name="cross" />
         </div>
         <div class="selectAllNumber">
-          <div class="title-number">{{ $t('text.TotalNumberOfPeople') }}：</div>
+          <div class="title-number">{{ $t('text.TotalNumberOfPeople') }}:</div>
           <van-slider v-model="value1" :min="3">
             <template #button>
               <div class="custom-button">{{ value1 }}</div>
@@ -122,7 +122,11 @@
     </div>
     <!-- 结果展示款 -->
     <div :class="showResultPopupClass" v-show="isShowResultPopup">
-      <div class="closeWrapper" @click="closeResultPopup">
+      <div
+        class="closeWrapper"
+        :style="'top:' + ScrollTop + 'px;'"
+        @click="closeResultPopup"
+      >
         <van-icon name="cross" />
       </div>
       <template v-if="isRandom">
@@ -196,6 +200,7 @@ export default {
       isShowResultPopup: false,
       randomColor: `#${Math.floor(Math.random() * 0xffffff).toString(16)}`,
       randomNumberBg: [],
+      ScrollTop: window.innerWidth * 0.02,
     }
   },
   created: function () {
@@ -205,7 +210,20 @@ export default {
       self.showPopup = true
     }, 500)
   },
+  mounted() {
+    this.$nextTick(() => {
+      if (document.querySelector('.result-popup')) {
+        const selectWrap = document.querySelector('.result-popup')
+        selectWrap.addEventListener('scroll', this.scrollResultPopup)
+      }
+    })
+  },
   methods: {
+    scrollResultPopup() {
+      let scrollWrap = document.querySelector('.result-popup')
+      var currentScrollTop = scrollWrap.scrollTop
+      this.ScrollTop = window.innerWidth * 0.02 + currentScrollTop
+    },
     playAudioBtn() {
       let music1 = new Audio() //建立一个music1对象
       music1 = require('../assets/audio/btn.mp3') //通过require引入音频
@@ -296,11 +314,20 @@ export default {
     },
     setParam: debounce(function (flag) {
       try {
+        this.numberArr = []
+        this.arrResult = []
+        clearInterval(this.getResultTimer)
+        clearInterval(this.timer)
+        this.showResultPopupClass = 'result-popup zoomIn animated'
+        this.isShowResultPopup = false
         this.isRandom = flag
         if (this.isShowResultPopup) {
           return
         }
-        if (this.isSubmit) this.isSubmit = false
+        if (this.isSubmit) {
+          this.isSubmit = false
+          return
+        }
         this.showPopup = true
         this.playAudioBtn()
       } catch (error) {
